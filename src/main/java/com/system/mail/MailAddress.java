@@ -13,7 +13,7 @@ import static java.util.regex.Pattern.matches;
 @Embeddable
 @EqualsAndHashCode
 @Builder
-public class Mail {
+public class MailAddress {
 
     @Email
     private String address;
