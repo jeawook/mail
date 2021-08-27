@@ -3,6 +3,7 @@ package com.system.mail.sendinfo;
 import com.system.mail.MailAddress;
 import com.system.mail.mailgroup.MailGroup;
 import lombok.Builder;
+import lombok.Getter;
 
 import javax.persistence.*;
 import javax.validation.constraints.Min;
@@ -11,6 +12,7 @@ import java.time.LocalDateTime;
 
 @Entity
 @Builder
+@Getter
 public class SendInfo {
 
     @Id @GeneratedValue

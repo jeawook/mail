@@ -3,6 +3,7 @@ package com.system.mail.mailinfo;
 import com.system.mail.MailAddress;
 import com.system.mail.sendinfo.SendInfo;
 import lombok.Builder;
+import lombok.Getter;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotBlank;
@@ -10,6 +11,7 @@ import javax.validation.constraints.NotNull;
 
 @Entity
 @Builder
+@Getter
 public class MailInfo {
 
     @Id @GeneratedValue
