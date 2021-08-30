@@ -6,8 +6,12 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.web.PageableDefault;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.validation.BindingResult;
+import org.springframework.validation.annotation.Validated;
+import org.springframework.web.bind.annotation.*;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
+
+import java.util.Optional;
 
 @Controller
 @RequestMapping("/mailInfo")
@@ -19,6 +23,32 @@ public class MailInfoController {
     @GetMapping
     public String mailInfoList(@PageableDefault(size = 10, sort = "id") Pageable pageable, Model model) {
         Page<MailInfo> mailInfoList = mailInfoService.findMailInfoList(pageable);
-        return "test";
+        return "mailInfo/mailInfoList";
+    }
+
+    @GetMapping("/{mailInfoId}")
+    public String mailInfo(@PathVariable Long mailInfoId, Model model) {
+        Optional<MailInfo> mailInfo = mailInfoService.findMailInfoById(mailInfoId);
+        if (mailInfo.isEmpty()) {
+            return "mailInfo/mailInfoList";
+        }
+        model.addAttribute("mailInfo", mailInfo.get());
+        return "mailInfo/mailInfo";
+    }
+
+
+
+    @PostMapping("/new")
+    public String createMailInfo(@Validated @ModelAttribute(name = "mailInfo") MailInfoForm mailInfoForm,
+                                 BindingResult bindingResult, RedirectAttributes redirectAttributes) {
+        if (bindingResult.hasErrors()) {
+            return "mailInfo/createMailInfo";
+        }
+        MailInfo mailInfo = MailInfo.builder(mailInfoForm).build();
+        MailInfo saveMailInfo = mailInfoService.saveMailInfo(mailInfo);
+
+        redirectAttributes.addAttribute("mailInfoId", saveMailInfo.getId());
+
+        return "redirect:/mailInfo/{mailInfoId}";
     }
 }

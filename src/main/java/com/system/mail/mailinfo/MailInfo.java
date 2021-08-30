@@ -1,15 +1,18 @@
 package com.system.mail.mailinfo;
 
 import com.system.mail.common.MailAddress;
+import lombok.AccessLevel;
 import lombok.Builder;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
 
 @Entity
-@Builder
+@NoArgsConstructor(access = AccessLevel.PROTECTED)
+@Builder(builderMethodName = "MailInfoBuilder")
 @Getter
 public class MailInfo {
 
@@ -18,7 +21,7 @@ public class MailInfo {
     private Long id;
 
     @NotBlank
-    private String name;
+    private String mailInfoName;
 
     @Embedded
     @NotNull
@@ -50,5 +53,14 @@ public class MailInfo {
     @NotBlank
     private String contentType;
 
-
+    public static MailInfoBuilder builder(MailInfoForm mailInfoForm) {
+        return MailInfoBuilder()
+                .mailInfoName(mailInfoForm.getMailInfoName())
+                .mailFrom(mailInfoForm.getMailForm())
+                .mailTo(mailInfoForm.getMailTo())
+                .replyTo(mailInfoForm.getReplyTo())
+                .charset(mailInfoForm.getCharset())
+                .contentType(mailInfoForm.getContentType())
+                .content(mailInfoForm.getContent());
+    }
 }

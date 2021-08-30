@@ -1,0 +1,49 @@
+<!DOCTYPE HTML>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="utf-8">
+    <link th:href="@{/css/bootstrap.min.css}"
+          href="../css/bootstrap.min.css" rel="stylesheet">
+</head>
+<body>
+
+<div class="container" style="max-width: 600px">
+    <div class="py-5 text-center">
+        <h2 th:text="#{page.items}">상품 목록</h2>
+    </div>
+
+    <div class="row">
+        <div class="col">
+            <button class="btn btn-primary float-end"
+                    onclick="location.href='addMailInfo.html'"
+                    th:onclick="|location.href='@{/mailInfo/add}'|"
+                    type="button" th:text="#{page.addItem}">메일 발송 정보 등록</button>
+        </div>
+    </div>
+
+    <hr class="my-4">
+    <div>
+        <table class="table">
+            <thead>
+            <tr>
+                <th th:text="#{label.item.id}">ID</th>
+                <th th:text="#{label.item.itemName}">메일 발송 정보</th>
+                <th th:text="#{label.item.price}">등록일</th>
+                <th th:text="#{label.item.quantity}">수정일</th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr th:each="item : ${items}">
+                <td><a href="item.html" th:href="@{/mailInfo/edit/{mailInfoId}(mailInfoId=${mailInfo.id})}" th:text="${mailInfo.id}">메일 발송 정보 id</a></td>
+                <td><a href="item.html" th:href="@{/mailInfo/edit/{mailInfoId}(mailInfoId=${mailInfo.id})}" th:text="${mailInfo.mailInfoName}">메일 발송 정보</a></td>
+                <td th:text="${item.price}">10000</td>
+                <td th:text="${item.quantity}">10</td>
+            </tr>
+            </tbody>
+        </table>
+    </div>
+
+</div> <!-- /container -->
+
+</body>
+</html>

@@ -17,7 +17,7 @@ public class MailGroup {
     @Column(name = "mail_group_id")
     private Long id;
 
-    private String name;
+    private String mailGroupName;
 
     private String macroKey;
 
