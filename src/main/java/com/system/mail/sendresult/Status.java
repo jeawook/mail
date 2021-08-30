@@ -1,4 +1,4 @@
-package com.system.mail.sendinfo;
+package com.system.mail.sendresult;
 
 public enum Status {
     WAIT, SENDING, COMPLETE

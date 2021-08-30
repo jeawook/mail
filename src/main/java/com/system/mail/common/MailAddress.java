@@ -1,4 +1,4 @@
-package com.system.mail;
+package com.system.mail.common;
 
 
 import lombok.Builder;

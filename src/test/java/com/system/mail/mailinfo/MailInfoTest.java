@@ -1,6 +1,6 @@
 package com.system.mail.mailinfo;
 
-import com.system.mail.MailAddress;
+import com.system.mail.common.MailAddress;
 import com.system.mail.mailgroup.MailGroup;
 import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.DisplayName;
@@ -17,11 +17,6 @@ class MailInfoTest {
 
         HashMap<String, String> macro = new HashMap<>();
         macro.put("name", "박재욱");
-        MailGroup mailGroup = MailGroup.builder()
-                .mailAddress(mailAddress)
-                .macro(macro)
-                .build();
-        Assertions.assertThat(mailGroup.getMailAddress()).isEqualTo(mailAddress);
 
     }
 

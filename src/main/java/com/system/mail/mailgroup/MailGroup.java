@@ -1,20 +1,12 @@
 package com.system.mail.mailgroup;
 
-import com.system.mail.MailAddress;
-import com.system.mail.sendinfo.SendInfo;
 import lombok.AccessLevel;
-import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
-import org.springframework.util.Assert;
 
 import javax.persistence.*;
-import javax.validation.constraints.NotBlank;
-import javax.validation.constraints.NotNull;
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 @Entity
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
@@ -22,24 +14,14 @@ import java.util.Map;
 public class MailGroup {
 
     @Id @GeneratedValue
+    @Column(name = "mail_group_id")
     private Long id;
 
     private String name;
 
-    private MailAddress mailAddress;
+    private String macroKey;
 
-    @MapKeyColumn(name = "macroKey")
-    @Column(name = "macroValue")
-    private Map<String, String> macro = new HashMap<>();
+    @OneToMany(mappedBy = "mailGroup")
+    private List<MailList> mailLists = new ArrayList<>();
 
-    @OneToMany(mappedBy = "sendInfo", fetch = FetchType.LAZY)
-    private List<SendInfo> sendInfoList = new ArrayList<>();
-
-
-    @Builder
-    public MailGroup(@NotBlank String name,@NotNull MailAddress mailAddress, Map<String, String> macro) {
-        this.name = name;
-        this.mailAddress = mailAddress;
-        this.macro = macro;
-    }
 }

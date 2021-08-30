@@ -1,7 +1,6 @@
 package com.system.mail.mailinfo;
 
-import com.system.mail.MailAddress;
-import com.system.mail.sendinfo.SendInfo;
+import com.system.mail.common.MailAddress;
 import lombok.Builder;
 import lombok.Getter;
 
@@ -15,6 +14,7 @@ import javax.validation.constraints.NotNull;
 public class MailInfo {
 
     @Id @GeneratedValue
+    @Column(name = "mail_info_id")
     private Long id;
 
     @NotBlank
@@ -50,7 +50,5 @@ public class MailInfo {
     @NotBlank
     private String contentType;
 
-    @OneToOne
-    private SendInfo sendInfo;
 
 }

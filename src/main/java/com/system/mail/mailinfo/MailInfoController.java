@@ -17,7 +17,8 @@ public class MailInfoController {
     private final MailInfoService mailInfoService;
 
     @GetMapping
-    public Page mailInfoList(@PageableDefault(size = 10, sort = "id") Pageable pageable, Model model) {
+    public String mailInfoList(@PageableDefault(size = 10, sort = "id") Pageable pageable, Model model) {
         Page<MailInfo> mailInfoList = mailInfoService.findMailInfoList(pageable);
+        return "test";
     }
 }

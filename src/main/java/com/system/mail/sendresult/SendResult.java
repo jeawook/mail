@@ -1,7 +1,6 @@
-package com.system.mail.sendinfo;
+package com.system.mail.sendresult;
 
-import com.system.mail.MailAddress;
-import com.system.mail.mailgroup.MailGroup;
+import com.system.mail.common.MailAddress;
 import lombok.Builder;
 import lombok.Getter;
 
@@ -13,9 +12,10 @@ import java.time.LocalDateTime;
 @Entity
 @Builder
 @Getter
-public class SendInfo {
+public class SendResult {
 
     @Id @GeneratedValue
+    @Column(name = "send_result_id")
     private Long id;
 
     @NotNull
@@ -37,9 +37,5 @@ public class SendInfo {
     @NotNull
     @Min(0)
     private Long completedCnt;
-
-    @ManyToOne
-    @NotNull
-    private MailGroup mailGroup;
 
 }
