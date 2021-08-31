@@ -30,15 +30,18 @@ public class MailInfoController {
     public String mailInfo(@PathVariable Long mailInfoId, Model model) {
         Optional<MailInfo> mailInfo = mailInfoService.findMailInfoById(mailInfoId);
         if (mailInfo.isEmpty()) {
-            return "mailInfo/mailInfoList";
+            return "mailInfo/ailInfoList";
         }
         model.addAttribute("mailInfo", mailInfo.get());
         return "mailInfo/mailInfo";
     }
 
+    @GetMapping("/add")
+    public String mailInfo(@ModelAttribute(name = "mailInfo") MailInfoForm mailInfoForm) {
+        return "mailInfo/createMailInfo";
+    }
 
-
-    @PostMapping("/new")
+    @PostMapping("/add")
     public String createMailInfo(@Validated @ModelAttribute(name = "mailInfo") MailInfoForm mailInfoForm,
                                  BindingResult bindingResult, RedirectAttributes redirectAttributes) {
         if (bindingResult.hasErrors()) {

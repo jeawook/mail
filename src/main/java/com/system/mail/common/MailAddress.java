@@ -1,8 +1,7 @@
 package com.system.mail.common;
 
 
-import lombok.Builder;
-import lombok.EqualsAndHashCode;
+import lombok.*;
 
 import javax.persistence.Column;
 import javax.persistence.Embeddable;
@@ -12,7 +11,10 @@ import static java.util.regex.Pattern.matches;
 
 @Embeddable
 @EqualsAndHashCode
+@AllArgsConstructor
+@NoArgsConstructor(access = AccessLevel.PROTECTED)
 @Builder
+@Getter
 public class MailAddress {
 
     @Email

@@ -1,5 +1,6 @@
 package com.system.mail;
 
+import com.system.mail.converter.MailAddressToString;
 import com.system.mail.converter.StringToMailAddress;
 import org.modelmapper.ModelMapper;
 import org.springframework.context.annotation.Bean;
@@ -20,5 +21,6 @@ public class MailApplicationConfig implements WebMvcConfigurer {
     @Override
     public void addFormatters(FormatterRegistry registry) {
         registry.addConverter(new StringToMailAddress());
+        registry.addConverter(new MailAddressToString());
     }
 }

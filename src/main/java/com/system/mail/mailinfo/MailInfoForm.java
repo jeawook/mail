@@ -3,11 +3,13 @@ package com.system.mail.mailinfo;
 
 import com.system.mail.common.MailAddress;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
 
 @Data
+@NoArgsConstructor
 public class MailInfoForm {
 
     @NotBlank
@@ -20,7 +22,7 @@ public class MailInfoForm {
     private String content;
 
     @NotNull
-    private MailAddress mailForm;
+    private MailAddress mailFrom;
 
     @NotNull
     private MailAddress mailTo;
