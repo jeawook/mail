@@ -1,20 +1,19 @@
 package com.system.mail.mailinfo;
 
+import com.system.mail.common.BaseTimeEntity;
 import com.system.mail.common.MailAddress;
-import lombok.AccessLevel;
-import lombok.Builder;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
 
 @Entity
+@AllArgsConstructor
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @Builder(builderMethodName = "MailInfoBuilder")
 @Getter
-public class MailInfo {
+public class MailInfo extends BaseTimeEntity {
 
     @Id @GeneratedValue
     @Column(name = "mail_info_id")
@@ -56,7 +55,7 @@ public class MailInfo {
     public static MailInfoBuilder builder(MailInfoForm mailInfoForm) {
         return MailInfoBuilder()
                 .mailInfoName(mailInfoForm.getMailInfoName())
-                .mailFrom(mailInfoForm.getMailForm())
+                .mailFrom(mailInfoForm.getMailFrom())
                 .mailTo(mailInfoForm.getMailTo())
                 .replyTo(mailInfoForm.getReplyTo())
                 .charset(mailInfoForm.getCharset())
