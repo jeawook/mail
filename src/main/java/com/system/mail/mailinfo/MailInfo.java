@@ -12,7 +12,7 @@ import javax.validation.constraints.NotNull;
 @AllArgsConstructor
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @Builder(builderMethodName = "MailInfoBuilder")
-@Getter
+@Getter @Setter
 public class MailInfo extends BaseTimeEntity {
 
     @Id @GeneratedValue

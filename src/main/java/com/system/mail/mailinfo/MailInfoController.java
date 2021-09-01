@@ -1,5 +1,6 @@
 package com.system.mail.mailinfo;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -19,10 +20,10 @@ import java.util.Optional;
 public class MailInfoController {
 
     private final MailInfoService mailInfoService;
-
     @GetMapping
     public String mailInfoList(@PageableDefault(size = 10, sort = "id") Pageable pageable, Model model) {
         Page<MailInfo> mailInfoList = mailInfoService.findMailInfoList(pageable);
+        model.addAttribute("mailInfoList", mailInfoList);
         return "mailInfo/mailInfoList";
     }
 
@@ -30,10 +31,38 @@ public class MailInfoController {
     public String mailInfo(@PathVariable Long mailInfoId, Model model) {
         Optional<MailInfo> mailInfo = mailInfoService.findMailInfoById(mailInfoId);
         if (mailInfo.isEmpty()) {
-            return "mailInfo/ailInfoList";
+            return "mailInfo/mailInfoList";
         }
         model.addAttribute("mailInfo", mailInfo.get());
         return "mailInfo/mailInfo";
+    }
+
+    @GetMapping("/{mailInfoId}/edit")
+    public String editForm(@PathVariable Long mailInfoId, Model model) {
+        Optional<MailInfo> mailInfo = mailInfoService.findMailInfoById(mailInfoId);
+        if (mailInfo.isEmpty()) {
+            return "mailInfo/mailInfoList";
+        }
+        model.addAttribute("mailInfo", mailInfo.get());
+        return "mailInfo/editMailInfo";
+    }
+
+    @PostMapping("/{mailInfoId}/edit")
+    public String edit(@PathVariable Long mailInfoId,
+                       @ModelAttribute(name = "mailInfo") MailInfoForm mailInfoForm,
+                       BindingResult bindingResult) {
+        if (bindingResult.hasErrors()) {
+            return "mailInfo/editMailInfo";
+        }
+        Optional<MailInfo> mailInfoById = mailInfoService.findMailInfoById(mailInfoId);
+        if (mailInfoById.isEmpty()) {
+            return "mailInfo/mailInfoList";
+        }
+
+        mailInfoService.updateMailInfo(mailInfoId, mailInfoForm);
+
+        return "redirect:/mailInfo/{mailInfoId}/edit";
+
     }
 
     @GetMapping("/add")

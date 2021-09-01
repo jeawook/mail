@@ -8,10 +8,6 @@
         .container {
             max-width: 560px;
         }
-        .field-error {
-            border-color: #dc3545;
-            color: #dc3545;
-        }
     </style>
 </head>
 <body>
@@ -19,66 +15,56 @@
 <div class="container">
 
     <div class="py-5 text-center">
-        <h2 th:text="#{page.addItem}">메일 발송 정보 등록</h2>
+        <h2 th:text="#{page.mailInfo}">메일 설정 정보</h2>
     </div>
 
-    <form action="mailInfo.html" th:action th:object="${mailInfo}" method="post">
-        <div th:if="${#fields.hasGlobalErrors()}">
-            <p class="field-error" th:each="err : ${#fields.globalErrors()}" th:text="${err}">전체 오류 메시지</p>
-        </div>
-        <div>
-            <label for="mailInfoName" th:text="#{label.mailInfoName}">메일 발송 정보 명</label>
-            <input type="text" id="mailInfoName" th:field="*{mailInfoName}"
-                   th:errorclass="field-error"
-                   class="form-control" placeholder="이름을 입력하세요">
-            <div class="field-error" th:errors="*{mailInfoName}">
-                메일 발송 정보 오류
-            </div>
-        </div>
-        <div>
-            <label for="charset" th:text="#{label.item.price}">charset</label>
-            <input type="text" id="charset" th:field="*{charset}"
-                   th:errorclass="field-error"
-                   class="form-control" placeholder="가격을 입력하세요">
-            <div class="field-error" th:errors="*{price}">
-                가격 오류
-            </div>
-        </div>
-        <div>
-            <label for="contentType" th:text="#{label.item.quantity}">contentType</label>
-            <input type="text" id="contentType" th:field="*{contentType}"
-                   th:errorclass="field-error"
-                   class="form-control" placeholder="수량을 입력하세요">
-            <div class="field-error" th:errors="*{quantity}">
-                수량 오류
-            </div>
-        </div>
+    <!-- 추가 -->
+    <h2 th:if="${param.status}" th:text="'저장 완료'"></h2>
+    <div>
+        <label for="itemId" th:text="#{label.id}">ID</label>
+        <input type="text" id="itemId" name="itemId" class="form-control" value="1" th:value="${mailInfo.id}" readonly>
+    </div>
+    <div>
+        <label for="mailInfoName" th:text="#{label.item.itemName}">설정명</label>
+        <input type="text" id="mailInfoName" name="mailInfoName" class="form-control" value="설정명" th:value="${mailInfo.mailInfoName}" readonly>
+    </div>
+    <div>
+        <label for="mailFrom" th:text="#{label.item.price}">mailFrom</label>
+        <input type="text" id="mailFrom" name="mailFrom" class="form-control" value="10000" th:value="${mailInfo.mailFrom}" readonly>
+    </div>
+    <div>
+        <label for="mailTo" th:text="#{label.item.quantity}">mailTo</label>
+        <input type="text" id="mailTo" name="mailTo" class="form-control" value="10" th:value="${mailInfo.mailTo}" readonly>
+    </div>
+    <div>
+        <label for="replyTo" th:text="#{label.item.quantity}">replyTo</label>
+        <input type="text" id="replyTo" name="replyTo" class="form-control" value="10" th:value="${mailInfo.replyTo}" readonly>
+    </div>
+    <div>
+        <label for="updateDate" th:text="#{label.item.quantity}">수량</label>
+        <input type="text" id="updateDate" name="updateDate" class="form-control" value="10" th:value="${mailInfo.updateDate}" readonly>
+    </div>
+    <div>
+        <label for="createDate" th:text="#{label.item.quantity}">수량</label>
+        <input type="text" id="createDate" name="createDate" class="form-control" value="10" th:value="${mailInfo.createDate}" readonly>
+    </div>
 
-        <div>
-            <label for="content" th:text="#{label.mailInfo.content}">메일 본문</label>
-            <textarea id="content" th:field="*{content}"
-                   th:errorclass="field-error"
-                   class="form-control">
-            <div class="field-error" th:errors="*{quantity}">
-                수량 오류
-            </div>
+    <hr class="my-4">
+
+    <div class="row">
+        <div class="col">
+            <button class="w-100 btn btn-primary btn-lg"
+                    onclick="location.href='editForm.html'"
+                    th:onclick="|location.href='@{/mailInfo/{mailInfoId}/edit(mailInfoId=${mailInfo.id})}'|"
+                    type="button" th:text="#{page.update}">수정</button>
         </div>
-
-        <hr class="my-4">
-
-        <div class="row">
-            <div class="col">
-                <button class="w-100 btn btn-primary btn-lg" type="submit" th:text="#{button.edit}">수정</button>
-            </div>
-            <div class="col">
-                <button class="w-100 btn btn-secondary btn-lg"
-                        onclick="location.href='items.html'"
-                        th:onclick="|location.href='@{/mailInfo/mailInfoList}'|"
-                        type="button" th:text="#{button.cancel}">취소</button>
-            </div>
+        <div class="col">
+            <button class="w-100 btn btn-secondary btn-lg"
+                    onclick="location.href='items.html'"
+                    th:onclick="|location.href='@{/mailInfo}'|"
+                    type="button" th:text="#{button.cancel}">목록으로</button>
         </div>
-
-    </form>
+    </div>
 
 </div> <!-- /container -->
 </body>
