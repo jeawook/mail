@@ -24,19 +24,19 @@ public class MailInfo extends BaseTimeEntity {
 
     @Embedded
     @NotNull
-    @AttributeOverride(name = "address", column = @Column(name = "mailFrom"))
+    @AttributeOverride(name = "email", column = @Column(name = "mailFrom"))
     @AttributeOverride(name = "name", column = @Column(name = "mailFromName"))
     private MailAddress mailFrom;
 
     @Embedded
     @NotNull
-    @AttributeOverride(name = "address", column = @Column(name = "mailTo"))
+    @AttributeOverride(name = "email", column = @Column(name = "mailTo"))
     @AttributeOverride(name = "name", column = @Column(name = "mailToName"))
     private MailAddress mailTo;
 
     @Embedded
     @NotNull
-    @AttributeOverride(name = "address", column = @Column(name = "replyTo"))
+    @AttributeOverride(name = "email", column = @Column(name = "replyTo"))
     @AttributeOverride(name = "name", column = @Column(name = "replyToName"))
     private MailAddress replyTo;
 
