@@ -1,6 +1,7 @@
 package com.system.mail.sendresult;
 
 import com.system.mail.common.MailAddress;
+import com.system.mail.sendinfo.Status;
 import lombok.Builder;
 import lombok.Getter;
 
@@ -17,18 +18,8 @@ public class SendResult {
     @Id @GeneratedValue
     @Column(name = "send_result_id")
     private Long id;
-
-    @NotNull
-    private MailAddress mailAddress;
-
     @NotNull
     private Status status;
-
-    @NotNull
-    private LocalDateTime sendDate;
-
-    @NotNull
-    private LocalDateTime completedDate;
 
     @NotNull
     @Min(1)
