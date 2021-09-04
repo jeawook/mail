@@ -9,6 +9,6 @@ public class MailAddressToString implements Converter<MailAddress, String> {
 
     @Override
     public String convert(MailAddress source) {
-        return source.getName()+","+source.getAddress();
+        return source.getName()+","+source.getEmail();
     }
 }

@@ -20,12 +20,26 @@ import java.util.Optional;
 public class MailInfoController {
 
     private final MailInfoService mailInfoService;
-    @GetMapping
+
+    /**
+     *  mailInfoList 조회 page 사용
+     * @param pageable
+     * @param model
+     * @return
+     */
+    @GetMapping("/mailInfoList")
     public String mailInfoList(@PageableDefault(size = 10, sort = "id") Pageable pageable, Model model) {
         Page<MailInfo> mailInfoList = mailInfoService.findMailInfoList(pageable);
         model.addAttribute("mailInfoList", mailInfoList);
         return "mailInfo/mailInfoList";
     }
+
+    /**
+     * mailInfo 조회 mailInfo 의 primary key 로 조회
+     * @param mailInfoId
+     * @param model
+     * @return
+     */
 
     @GetMapping("/{mailInfoId}")
     public String mailInfo(@PathVariable Long mailInfoId, Model model) {

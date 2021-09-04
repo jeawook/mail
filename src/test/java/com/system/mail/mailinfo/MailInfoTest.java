@@ -1,8 +1,6 @@
 package com.system.mail.mailinfo;
 
 import com.system.mail.common.MailAddress;
-import com.system.mail.mailgroup.MailGroup;
-import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
@@ -13,7 +11,7 @@ class MailInfoTest {
     @DisplayName("mailInfo생성테스트")
     @Test
     void createMailInfoTest() {
-        MailAddress mailAddress = MailAddress.builder().address("jwpark@infomail.co.kr").name("박재욱").build();
+        MailAddress mailAddress = MailAddress.builder().email("jwpark@infomail.co.kr").name("박재욱").build();
 
         HashMap<String, String> macro = new HashMap<>();
         macro.put("name", "박재욱");

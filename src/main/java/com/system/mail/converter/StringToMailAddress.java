@@ -11,6 +11,6 @@ public class StringToMailAddress implements Converter<String, MailAddress> {
     public MailAddress convert(String source) {
         log.info("mailAddress:{}",source);
         String[] tmp = source.split(",");
-        return MailAddress.builder().name(tmp[0]).address(tmp[1]).build();
+        return MailAddress.builder().name(tmp[0]).email(tmp[1]).build();
     }
 }
