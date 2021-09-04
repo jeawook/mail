@@ -7,6 +7,7 @@ import lombok.NoArgsConstructor;
 
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
+import java.time.LocalDateTime;
 
 @Data
 @NoArgsConstructor
@@ -20,6 +21,10 @@ public class MailInfoForm {
     private String contentType;
     @NotBlank
     private String content;
+
+    private LocalDateTime createdDate;
+
+    private LocalDateTime modifiedDate;
 
     @NotNull
     private MailAddress mailFrom;

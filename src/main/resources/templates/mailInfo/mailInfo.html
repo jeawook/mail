@@ -2,8 +2,7 @@
 <html xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="utf-8">
-    <link th:href="@{/css/bootstrap.min.css}"
-          href="../css/bootstrap.min.css" rel="stylesheet">
+    <link th:href="@{/css/bootstrap.min.css}" href="../css/bootstrap.min.css" rel="stylesheet">
     <style>
         .container {
             max-width: 560px;
@@ -41,12 +40,12 @@
         <input type="text" id="replyTo" name="replyTo" class="form-control" value="10" th:value="${mailInfo.replyTo}" readonly>
     </div>
     <div>
-        <label for="updateDate" th:text="#{label.item.quantity}">수량</label>
-        <input type="text" id="updateDate" name="updateDate" class="form-control" value="10" th:value="${mailInfo.updateDate}" readonly>
+        <label for="createDate" th:text="#{label.item.quantity}">생성일</label>
+        <input type="text" id="createDate" name="createdDate" class="form-control" value="10" th:value="${mailInfo.createdDate}" readonly>
     </div>
     <div>
-        <label for="createDate" th:text="#{label.item.quantity}">수량</label>
-        <input type="text" id="createDate" name="createDate" class="form-control" value="10" th:value="${mailInfo.createDate}" readonly>
+        <label for="lastModifiedDate" th:text="#{label.item.quantity}">최종 수정일</label>
+        <input type="text" id="lastModifiedDate" name="lastModifiedDate" class="form-control" value="10" th:value="${mailInfo.lastModifiedDate}" readonly>
     </div>
 
     <hr class="my-4">

@@ -33,6 +33,7 @@ public class MailInfoController {
         if (mailInfo.isEmpty()) {
             return "mailInfo/mailInfoList";
         }
+
         model.addAttribute("mailInfo", mailInfo.get());
         return "mailInfo/mailInfo";
     }
