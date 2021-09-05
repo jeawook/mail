@@ -5,6 +5,11 @@ import com.system.mail.common.MailAddress;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import javax.persistence.AttributeOverride;
+import javax.persistence.Embedded;
+import javax.persistence.EnumType;
+import javax.persistence.Enumerated;
+import javax.validation.constraints.Email;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
 import java.time.LocalDateTime;
@@ -15,24 +20,31 @@ public class MailInfoForm {
 
     @NotBlank
     private String mailInfoName;
+
     @NotBlank
     private String charset;
-    @NotBlank
-    private String contentType;
-    @NotBlank
+
+    @Enumerated(EnumType.STRING)
+    @NotNull
+    private ContentType contentType;
+
+    @NotBlank(message = "content가 입력 되어야 합니다.")
     private String content;
 
     private LocalDateTime createdDate;
 
     private LocalDateTime modifiedDate;
 
-    @NotNull
+    @Embedded
+    @NotNull(message = "mailFrom의 주소는 필수 로 입력 되어야 합니다.")
     private MailAddress mailFrom;
 
-    @NotNull
+    @Embedded
+    @NotNull(message = "mailTo의 주소는 필수 로 입력 되어야 합니다.")
     private MailAddress mailTo;
 
-    @NotNull
+    @Embedded
+    @NotNull(message = "replyTo의 주소는 필수 로 입력 되어야 합니다.")
     private MailAddress replyTo;
 
 }

@@ -11,7 +11,6 @@ class MailInfoTest {
     @DisplayName("mailInfo생성테스트")
     @Test
     void createMailInfoTest() {
-        MailAddress mailAddress = MailAddress.builder().email("jwpark@infomail.co.kr").name("박재욱").build();
 
         HashMap<String, String> macro = new HashMap<>();
         macro.put("name", "박재욱");

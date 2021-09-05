@@ -30,7 +30,7 @@
             <p class="field-error" th:each="err : ${#fields.globalErrors()}" th:text="${err}">전체 오류 메시지</p>
         </div>
         <div>
-            <label for="mailInfoName" th:text="#{label.mailInfo.name}">메일 발송 정보 명</label>
+            <label for="mailInfoName" th:text="#{label.mailInfo.mailInfoName}">메일 발송 정보 명</label>
             <input type="text" id="mailInfoName" th:field="*{mailInfoName}"
                    th:errorclass="field-error"
                    class="form-control" placeholder="이름을 입력하세요">
@@ -49,12 +49,10 @@
         </div>
         <div>
             <label for="contentType" th:text="#{label.mailInfo.contentType}">contentType</label>
-            <input type="text" id="contentType" th:field="*{contentType}"
-                   th:errorclass="field-error"
-                   class="form-control" placeholder="contentType 입력 ex)text/html">
-            <div class="field-error" th:errors="*{contentType}">
-                contentType 오류
-            </div>
+            <select id="contentType" name="contentType" class="form-select">
+                <option th:each="contentTypeValue : ${T(com.system.mail.mailinfo.ContentType).values()}"
+                        th:value="${contentTypeValue}" th:text="${contentTypeValue.contentType}"></option>
+            </select>
         </div>
         <div>
             <label for="mailTo" th:text="#{label.mailInfo.mailTo}">mailTo</label>

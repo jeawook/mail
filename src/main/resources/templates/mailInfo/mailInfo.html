@@ -28,33 +28,32 @@
         <input type="text" id="mailInfoName" name="mailInfoName" class="form-control" value="설정명" th:value="${mailInfo.mailInfoName}" readonly>
     </div>
     <div>
+        <label for="charset" th:text="#{label.mailInfo.charset}">charset</label>
+        <input type="text" id="charset" name="charset" class="form-control" value="charset" th:value="${mailInfo.charset}" readonly>
+    </div>
+    <div>
+        <label for="contentType" th:text="#{label.mailInfo.contentType}">contentType</label>
+        <input type="text" id="contentType" name="contentType" class="form-control" value="contentType" th:value="${mailInfo.contentType.contentType}" readonly>
+    </div>
+    <div>
         <label for="mailFrom" th:text="#{label.mailInfo.mailFrom}">mailFrom</label>
-        <input type="text" id="mailFrom" name="mailFrom" class="form-control" value="10000" th:value="${mailInfo.mailFrom}" readonly>
+        <input type="text" id="mailFrom" name="mailFrom" class="form-control" value="10000" th:value="${{mailInfo.mailFrom}}" readonly>
     </div>
     <div>
         <label for="mailTo" th:text="#{label.mailInfo.mailTo}">mailTo</label>
-        <input type="text" id="mailTo" name="mailTo" class="form-control" value="10" th:value="${mailInfo.mailTo}" readonly>
+        <input type="text" id="mailTo" name="mailTo" class="form-control" value="10" th:value="${{mailInfo.mailTo}}" readonly>
     </div>
     <div>
         <label for="replyTo" th:text="#{label.mailInfo.replyTo}">replyTo</label>
-        <input type="text" id="replyTo" name="replyTo" class="form-control" value="10" th:value="${mailInfo.replyTo}" readonly>
+        <input type="text" id="replyTo" name="replyTo" class="form-control" value="10" th:value="${{mailInfo.replyTo}}" readonly>
     </div>
     <div>
-<<<<<<< HEAD
-        <label for="createDate" th:text="#{label.item.quantity}">생성일</label>
-        <input type="text" id="createDate" name="createdDate" class="form-control" value="10" th:value="${mailInfo.createdDate}" readonly>
-    </div>
-    <div>
-        <label for="lastModifiedDate" th:text="#{label.item.quantity}">최종 수정일</label>
-        <input type="text" id="lastModifiedDate" name="lastModifiedDate" class="form-control" value="10" th:value="${mailInfo.lastModifiedDate}" readonly>
-=======
-        <label for="lastModifiedDate" th:text="#{label.lastModifiedDate}">마지막 수정일</label>
+        <label for="lastModifiedDate" th:text="#{label.lastModifiedDate}">최종 수정일</label>
         <input type="text" id="lastModifiedDate" name="lastModifiedDate" class="form-control" value="10" th:value="${mailInfo.lastModifiedDate}" readonly>
     </div>
     <div>
         <label for="createdDate" th:text="#{label.createdDate}">생성일</label>
         <input type="text" id="createdDate" name="createdDate" class="form-control" value="10" th:value="${mailInfo.createdDate}" readonly>
->>>>>>> 59f120cce8a73a613f727fc4d9f624609e783beb
     </div>
 
     <hr class="my-4">
@@ -69,7 +68,7 @@
         <div class="col">
             <button class="w-100 btn btn-secondary btn-lg"
                     onclick="location.href='items.html'"
-                    th:onclick="|location.href='@{/mailInfo}'|"
+                    th:onclick="|location.href='@{/mailInfo/mailInfoList}'|"
                     type="button" th:text="#{button.list}">목록으로</button>
         </div>
     </div>

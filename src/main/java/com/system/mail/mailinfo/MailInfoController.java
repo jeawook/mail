@@ -64,9 +64,11 @@ public class MailInfoController {
 
     @PostMapping("/{mailInfoId}/edit")
     public String edit(@PathVariable Long mailInfoId,
-                       @ModelAttribute(name = "mailInfo") MailInfoForm mailInfoForm,
+                       @Validated @ModelAttribute(name = "mailInfo") MailInfoForm mailInfoForm,
                        BindingResult bindingResult) {
+
         if (bindingResult.hasErrors()) {
+            System.out.println("mailInfoId = " + mailInfoId);
             return "mailInfo/editMailInfo";
         }
         Optional<MailInfo> mailInfoById = mailInfoService.findMailInfoById(mailInfoId);
@@ -76,7 +78,7 @@ public class MailInfoController {
 
         mailInfoService.updateMailInfo(mailInfoId, mailInfoForm);
 
-        return "redirect:/mailInfo/{mailInfoId}/edit";
+        return "redirect:/mailInfo/{mailInfoId}";
 
     }
 

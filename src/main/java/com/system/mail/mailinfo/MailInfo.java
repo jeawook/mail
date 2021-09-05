@@ -49,8 +49,9 @@ public class MailInfo extends BaseTimeEntity {
     private String charset;
 
     // 메일 본문의 타입 ex) text/html or text/plain ....
-    @NotBlank
-    private String contentType;
+    @Enumerated(EnumType.STRING)
+    @NotNull
+    private ContentType contentType;
 
     public static MailInfoBuilder builder(MailInfoForm mailInfoForm) {
         return MailInfoBuilder()

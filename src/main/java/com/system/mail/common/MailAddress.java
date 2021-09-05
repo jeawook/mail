@@ -10,17 +10,21 @@ import javax.validation.constraints.Email;
 @EqualsAndHashCode
 @AllArgsConstructor
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
-@Builder
+@Builder(builderMethodName = "MailAddressBuilder")
 @Getter
 public class MailAddress {
 
-    @Email
-    private String email;
-
     private String name;
 
-    @Override
+    private String email;
+
+    public static MailAddressBuilder builder(String name, String email) {
+        return MailAddressBuilder().name(name).email(email);
+    }
+
+
+    /*@Override
     public String toString() {
         return "\""+name+"\"<"+ email +">";
-    }
+    }*/
 }
