@@ -1,0 +1,49 @@
+<!DOCTYPE HTML>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="utf-8">
+    <link th:href="@{/css/bootstrap.min.css}"
+          href="../css/bootstrap.min.css" rel="stylesheet">
+</head>
+<body>
+
+<div class="container" style="max-width: 600px">
+    <div class="py-5 text-center">
+        <h2 th:text="#{page.mailGroup.list}">메일 설정 정보 목록</h2>
+    </div>
+
+    <div class="row">
+        <div class="col">
+            <button class="btn btn-primary float-end"
+                    onclick="location.href='createMailGroup.html'"
+                    th:onclick="|location.href='@{/mailGroup/add}'|"
+                    type="button" th:text="#{button.add}">등록</button>
+        </div>
+    </div>
+
+    <hr class="my-4">
+    <div>
+        <table class="table">
+            <thead>
+            <tr>
+                <th th:text="#{label.id}">ID</th>
+                <th th:text="#{label.mailInfo.name}">메일 발송 정보</th>
+                <th th:text="#{label.createdDate}">등록일</th>
+                <th th:text="#{label.lastModifiedDate}">수정일</th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr th:each="mailGroup : ${mailGroupList}">
+                <td><a href="mailGroup.html" th:href="@{/mailGroup/{mailGroupId}(mailGroupId=${mailGroup.id})}" th:text="${mailGroup.id}">메일 그룹 정보 id</a></td>
+                <td><a href="mailGroup.html" th:href="@{/mailGroup/{mailGroupId}(mailGroupId=${mailGroup.id})}" th:text="${mailGroup.mailGroupName}">메일 그룹 정보</a></td>
+                <td th:text="${mailInfo.createdDate}">10000</td>
+                <td th:text="${mailInfo.lastModifiedDate}">10</td>
+            </tr>
+            </tbody>
+        </table>
+    </div>
+
+</div> <!-- /container -->
+
+</body>
+</html>
