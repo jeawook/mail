@@ -22,7 +22,7 @@ public class MailGroup extends BaseTimeEntity {
 
     private String macroKey;
 
-    @OneToMany(mappedBy = "mailGroup")
+    @OneToMany(mappedBy = "mailGroup", cascade = CascadeType.ALL)
     private List<MailList> mailLists = new ArrayList<>();
 
 }

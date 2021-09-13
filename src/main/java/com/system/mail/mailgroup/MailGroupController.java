@@ -28,16 +28,6 @@ public class MailGroupController {
         model.addAttribute("mailGroupList", list);
         return "mailGroup/mailGroupList";
     }
-    @GetMapping("/{mailGroupId}")
-    public String mailGroup(@PathVariable Long id, Model model) {
-        Optional<MailGroup> mailGroupById = mailGroupService.findMailGroupById(id);
-        if (mailGroupById.isEmpty()) {
-            return "mailGroup/MailGroupList";
-        }
-        model.addAttribute("mailGroup", mailGroupById.get());
-
-        return "mailGroup/mailGroup";
-    }
     @PostMapping
     public String createMailGroup(@Validated @ModelAttribute("mailGroup") MailGroupForm mailGroupForm,
                                   BindingResult bindingResult, RedirectAttributes redirectAttributes) {
@@ -49,6 +39,40 @@ public class MailGroupController {
 
         redirectAttributes.addAttribute("mailGroupId", saveMailGroup.getId());
         return "redirect:/MailGroup/{mailGroupId}";
+    }
+
+    @GetMapping("/{mailGroupId}")
+    public String mailGroup(@PathVariable Long mailGroupId, Model model) {
+        Optional<MailGroup> mailGroupById = mailGroupService.findMailGroupById(mailGroupId);
+        if (mailGroupById.isEmpty()) {
+            return "mailGroup/mailGroupList";
+        }
+        model.addAttribute("mailGroup", mailGroupById.get());
+
+        return "mailGroup/mailGroup";
+    }
+
+    @GetMapping("/{mailGroupId}/edit")
+    public String editMailGroup(@PathVariable Long mailGroupId, Model model) {
+        Optional<MailGroup> mailGroupById = mailGroupService.findMailGroupById(mailGroupId);
+        if (mailGroupById.isEmpty()) {
+            return "mailGroup/mailGroupList";
+        }
+        model.addAttribute("mailGroup", mailGroupById.get());
+        return "mailGroup/editMailGroup";
+    }
+
+    @PostMapping("/{mailGroupId}/edit")
+    public String edit(@PathVariable Long mailGroupId, @Validated @ModelAttribute("mailGroup") MailGroupForm mailGroupForm,
+                       BindingResult bindingResult) {
+        if (bindingResult.hasErrors()) {
+            return "mailGroup/editMailGroup";
+        }
+
+        
+
+
+        return "redirect:/mailGroup/{mailGroupId}";
     }
 
 

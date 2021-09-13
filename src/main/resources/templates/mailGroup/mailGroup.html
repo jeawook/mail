@@ -1,0 +1,80 @@
+<!DOCTYPE HTML>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="utf-8">
+    <link th:href="@{/css/bootstrap.min.css}" href="../css/bootstrap.min.css" rel="stylesheet">
+    <style>
+        .container {
+            max-width: 560px;
+        }
+    </style>
+</head>
+<body>
+
+<div class="container">
+
+    <div class="py-5 text-center">
+        <h2 th:text="#{page.mailInfo}">메일 설정 정보</h2>
+    </div>
+
+    <!-- 추가 -->
+    <h2 th:if="${param.status}" th:text="'저장 완료'"></h2>
+    <div>
+        <label for="mailGroupId" th:text="#{label.id}">ID</label>
+        <input type="text" id="mailGroupId" name="itemId" class="form-control" value="1" th:value="${mailGroup.id}" readonly>
+    </div>
+    <div>
+        <label for="mailGroupName" th:text="#{label.mailGroup.mailGroupName}">설정명</label>
+        <input type="text" id="mailGroupName" name="mailGroupName" class="form-control" value="설정명" th:value="${mailGroup.mailGroupName}" readonly>
+    </div>
+    <div>
+        <label for="macroKey" th:text="#{label.mailGroup.macroKey}">macroKey</label>
+        <input type="text" id="macroKey" name="macroKey" class="form-control" value="macroKey" th:value="${mailGroup.macroKey}" readonly>
+    </div>
+    <div>
+        <label for="lastModifiedDate" th:text="#{label.lastModifiedDate}">최종 수정일</label>
+        <input type="text" id="lastModifiedDate" name="lastModifiedDate" class="form-control" value="10" th:value="${mailInfo.lastModifiedDate}" readonly>
+    </div>
+    <div>
+        <label for="createdDate" th:text="#{label.createdDate}">생성일</label>
+        <input type="text" id="createdDate" name="createdDate" class="form-control" value="10" th:value="${mailInfo.createdDate}" readonly>
+    </div>
+    <div>
+        <table class="table">
+            <thead>
+            <tr>
+                <th th:text="#{label.id}">ID</th>
+                <th th:text="#{label.mailList.id}">id</th>
+                <th th:text="#{label.mailList.mailAddress}">email</th>
+                <th th:text="#{label.mailList.macroValue}">메크로 정보</th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr th:each="mailList : ${mailGroup.mailList}">
+                <td th:text="${mailList.id}">id</td>
+                <td th:text="${mailList.mailAddress}">id</td>
+                <td th:text="${mailList.macroValue}">10000</td>
+            </tr>
+            </tbody>
+        </table>
+    </div>
+    <hr class="my-4">
+
+    <div class="row">
+        <div class="col">
+            <button class="w-100 btn btn-primary btn-lg"
+                    onclick="location.href='editForm.html'"
+                    th:onclick="|location.href='@{/mailInfo/{mailInfoId}/edit(mailInfoId=${mailInfo.id})}'|"
+                    type="button" th:text="#{button.update}">수정</button>
+        </div>
+        <div class="col">
+            <button class="w-100 btn btn-secondary btn-lg"
+                    onclick="location.href='items.html'"
+                    th:onclick="|location.href='@{/mailInfo/mailInfoList}'|"
+                    type="button" th:text="#{button.list}">목록으로</button>
+        </div>
+    </div>
+
+</div> <!-- /container -->
+</body>
+</html>
