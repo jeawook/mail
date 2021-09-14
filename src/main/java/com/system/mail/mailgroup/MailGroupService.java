@@ -12,7 +12,7 @@ import java.util.Optional;
 @RequiredArgsConstructor
 public class MailGroupService {
 
-    private MailGroupRepository mailGroupRepository;
+    private final MailGroupRepository mailGroupRepository;
 
     public MailGroup saveMailGroup(MailGroup mailGroup) {
         return mailGroupRepository.save(mailGroup);
@@ -22,7 +22,7 @@ public class MailGroupService {
         return mailGroupRepository.findById(id);
     }
 
-    public Page<MailGroup> findList(Pageable pageable) {
+    public Page<MailGroup> findMailGroupList(Pageable pageable) {
         return mailGroupRepository.findAll(pageable);
     }
 

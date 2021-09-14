@@ -12,19 +12,20 @@ import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
+import java.util.ArrayList;
 import java.util.Optional;
 
 @Controller
-@RequestMapping("/MailGroup")
+@RequestMapping("/mailGroup")
 @RequiredArgsConstructor
 public class MailGroupController {
 
     private final ModelMapper modelMapper;
     private final MailGroupService mailGroupService;
 
-    @GetMapping("/MailGroupList")
+    @GetMapping("/mailGroupList")
     public String mailGroupList(@PageableDefault(size = 10, sort = "id")Pageable pageable, Model model) {
-        Page<MailGroup> list = mailGroupService.findList(pageable);
+        Page<MailGroup> list = mailGroupService.findMailGroupList(pageable);
         model.addAttribute("mailGroupList", list);
         return "mailGroup/mailGroupList";
     }
@@ -69,10 +70,13 @@ public class MailGroupController {
             return "mailGroup/editMailGroup";
         }
 
-        
-
-
         return "redirect:/mailGroup/{mailGroupId}";
+    }
+
+    @GetMapping("/add")
+    public String createMailGroup(@ModelAttribute("mailGroup") MailGroupForm mailGroupForm,
+                                  @ModelAttribute("mailLists") ArrayList<MailListForm> mailListForms) {
+        return "mailGroup/createMailGroup";
     }
 
 

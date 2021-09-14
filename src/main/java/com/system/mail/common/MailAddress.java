@@ -21,10 +21,4 @@ public class MailAddress {
     public static MailAddressBuilder builder(String name, String email) {
         return MailAddressBuilder().name(name).email(email);
     }
-
-
-    /*@Override
-    public String toString() {
-        return "\""+name+"\"<"+ email +">";
-    }*/
 }

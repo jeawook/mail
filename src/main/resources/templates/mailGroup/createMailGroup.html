@@ -27,7 +27,7 @@
             <p class="field-error" th:each="err : ${#fields.globalErrors()}" th:text="${err}">전체 오류 메시지</p>
         </div>
         <div>
-            <label for="mailGroupName" th:text="#{label.mailGroup.mailGroupName}">그룹명</label>
+            <label for="mailGroupName" th:text="#{label.mailGroup.name}">그룹명</label>
             <input type="text" id="mailGroupName" th:field="*{mailGroupName}"
                    th:errorclass="field-error"
                    class="form-control" placeholder="이름을 입력하세요">
@@ -48,17 +48,18 @@
             <table class="table">
                 <thead>
                 <tr>
-                    <th th:text="#{label.id}">ID</th>
-                    <th th:text="#{label.mailList.id}">id</th>
-                    <th th:text="#{label.mailList.mailAddress}">email</th>
-                    <th th:text="#{label.mailList.macroValue}">메크로 정보</th>
+                    <th th:text="#{label.mailGroup.mailAddress}">emailAddress</th>
+                    <th th:text="#{label.mailGroup.macroValue}">메크로 정보</th>
                 </tr>
                 </thead>
                 <tbody>
-                <tr th:each="mailList : *{mailLists}">
-                    <td th:text="${mailList.id}">id</td>
-                    <td th:text="${mailList.mailAddress}">id</td>
-                    <td th:text="${mailList.macroValue}">10000</td>
+                <tr th:if="${mailLists.size} == '0'">
+                    <td><input type="text" class="form-control" name="mailLists.mailAddress"></td>
+                    <td><input type="text" class="form-control" name="mailLists.macroValue"></td>
+                </tr>
+                <tr th:unless="${mailLists.size} != '0'" th:each="mailList : ${mailLists}">
+                    <td><input type="text" th:field="*{mailLists.mailAddress}" th:text="${mailList.mailAddress}" class="form-control"></td>
+                    <td><input type="text" th:field="*{mailLists.macroValue}" th:text="${mailList.macroValue}" class="form-control"></td>
                 </tr>
                 </tbody>
             </table>
