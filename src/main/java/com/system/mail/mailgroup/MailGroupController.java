@@ -1,5 +1,6 @@
 package com.system.mail.mailgroup;
 
+import com.system.mail.common.MailAddress;
 import lombok.RequiredArgsConstructor;
 import org.modelmapper.ModelMapper;
 import org.springframework.data.domain.Page;
@@ -28,18 +29,6 @@ public class MailGroupController {
         Page<MailGroup> list = mailGroupService.findMailGroupList(pageable);
         model.addAttribute("mailGroupList", list);
         return "mailGroup/mailGroupList";
-    }
-    @PostMapping
-    public String createMailGroup(@Validated @ModelAttribute("mailGroup") MailGroupForm mailGroupForm,
-                                  BindingResult bindingResult, RedirectAttributes redirectAttributes) {
-        if (bindingResult.hasErrors()) {
-            return "/MailGroup/createMailGroup";
-        }
-        MailGroup mailGroup = modelMapper.map(mailGroupForm, MailGroup.class);
-        MailGroup saveMailGroup = mailGroupService.saveMailGroup(mailGroup);
-
-        redirectAttributes.addAttribute("mailGroupId", saveMailGroup.getId());
-        return "redirect:/MailGroup/{mailGroupId}";
     }
 
     @GetMapping("/{mailGroupId}")
@@ -74,9 +63,22 @@ public class MailGroupController {
     }
 
     @GetMapping("/add")
-    public String createMailGroup(@ModelAttribute("mailGroup") MailGroupForm mailGroupForm,
-                                  @ModelAttribute("mailLists") ArrayList<MailListForm> mailListForms) {
+    public String createMailGroup(@ModelAttribute("mailGroup") MailGroupForm mailGroupForm) {
+        mailGroupForm.getMailListForms().add(new MailListForm());
         return "mailGroup/createMailGroup";
+    }
+
+    @PostMapping("/add")
+    public String createMailGroup(@Validated @ModelAttribute("mailGroup") MailGroupForm mailGroupForm,
+                                  BindingResult bindingResult, RedirectAttributes redirectAttributes) {
+        if (bindingResult.hasErrors()) {
+            return "/MailGroup/createMailGroup";
+        }
+        MailGroup mailGroup = modelMapper.map(mailGroupForm, MailGroup.class);
+        MailGroup saveMailGroup = mailGroupService.saveMailGroup(mailGroup);
+
+        redirectAttributes.addAttribute("mailGroupId", saveMailGroup.getId());
+        return "redirect:/MailGroup/{mailGroupId}";
     }
 
 

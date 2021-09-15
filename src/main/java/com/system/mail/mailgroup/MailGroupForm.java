@@ -13,4 +13,6 @@ public class MailGroupForm {
     private String mailGroupName;
 
     private String macroKey;
+
+    ArrayList<MailListForm> mailListForms = new ArrayList<>();
 }

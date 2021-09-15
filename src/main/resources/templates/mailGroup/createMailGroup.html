@@ -50,16 +50,14 @@
                 <tr>
                     <th th:text="#{label.mailGroup.mailAddress}">emailAddress</th>
                     <th th:text="#{label.mailGroup.macroValue}">메크로 정보</th>
+                    <th></th>
                 </tr>
                 </thead>
                 <tbody>
-                <tr th:if="${mailLists.size} == '0'">
-                    <td><input type="text" class="form-control" name="mailLists.mailAddress"></td>
-                    <td><input type="text" class="form-control" name="mailLists.macroValue"></td>
-                </tr>
-                <tr th:unless="${mailLists.size} != '0'" th:each="mailList : ${mailLists}">
-                    <td><input type="text" th:field="*{mailLists.mailAddress}" th:text="${mailList.mailAddress}" class="form-control"></td>
-                    <td><input type="text" th:field="*{mailLists.macroValue}" th:text="${mailList.macroValue}" class="form-control"></td>
+                <tr th:each="mailList, stat : ${mailGroup.mailListForms}">
+                    <td><input type="text" th:name="${mailGroup.mailListForms[__${stat.index}__].mailAddress}"  th:value="${{mailList.mailAddress}}"  class="form-control"></td>
+                    <td><input type="text"  th:value="${mailList.macroValue}" class="form-control"></td>
+                    <input type="hidden" th:field="${mailGroup.mailListForms[__${stat.index}__]}">
                 </tr>
                 </tbody>
             </table>

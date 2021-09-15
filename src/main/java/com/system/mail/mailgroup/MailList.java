@@ -2,10 +2,12 @@ package com.system.mail.mailgroup;
 
 import com.system.mail.common.MailAddress;
 import lombok.Builder;
+import lombok.Getter;
 
 import javax.persistence.*;
 
 @Entity
+@Getter
 @Builder
 public class MailList {
 
