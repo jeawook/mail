@@ -1,14 +1,15 @@
 package com.system.mail.mailgroup;
 
 import com.system.mail.common.MailAddress;
-import lombok.Builder;
-import lombok.Getter;
+import lombok.*;
 
 import javax.persistence.*;
 
 @Entity
 @Getter
 @Builder
+@NoArgsConstructor(access = AccessLevel.PROTECTED)
+@AllArgsConstructor
 public class MailList {
 
     @Id @GeneratedValue

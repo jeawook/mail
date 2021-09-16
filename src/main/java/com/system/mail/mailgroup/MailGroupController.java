@@ -14,7 +14,9 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import java.util.ArrayList;
+import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 @Controller
 @RequestMapping("/mailGroup")
@@ -64,7 +66,6 @@ public class MailGroupController {
 
     @GetMapping("/add")
     public String createMailGroup(@ModelAttribute("mailGroup") MailGroupForm mailGroupForm) {
-        mailGroupForm.getMailListForms().add(new MailListForm());
         return "mailGroup/createMailGroup";
     }
 
@@ -75,10 +76,15 @@ public class MailGroupController {
             return "/MailGroup/createMailGroup";
         }
         MailGroup mailGroup = modelMapper.map(mailGroupForm, MailGroup.class);
+        mailListFormToMailList(mailGroupForm.getMailListForms(), mailGroup.getMailLists());
         MailGroup saveMailGroup = mailGroupService.saveMailGroup(mailGroup);
 
         redirectAttributes.addAttribute("mailGroupId", saveMailGroup.getId());
         return "redirect:/MailGroup/{mailGroupId}";
+    }
+
+    private void  mailListFormToMailList(ArrayList<MailListForm> mailListForms, List<MailList> mailLists) {
+        mailListForms.stream().map(mailListForm -> mailLists.add(modelMapper.map(mailListForm, MailList.class)));
     }
 
 

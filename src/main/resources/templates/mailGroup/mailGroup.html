@@ -11,7 +11,7 @@
 </head>
 <body>
 
-<div class="container">
+<div class="container" th:object="${mailGroup}">
 
     <div class="py-5 text-center">
         <h2 th:text="#{page.mailInfo}">메일 설정 정보</h2>
@@ -21,23 +21,23 @@
 <!--    <h2 th:if="${param.status}" th:text="'저장 완료'"></h2>-->
     <div>
         <label for="mailGroupId" th:text="#{label.id}">ID</label>
-        <input type="text" id="mailGroupId" name="itemId" class="form-control" value="1" th:value="${mailGroup.id}" readonly>
+        <input type="text" id="mailGroupId" th:field="*{mailGroupId}" class="form-control" value="1" th:value="*{mailGroupId}" readonly>
     </div>
     <div>
         <label for="mailGroupName" th:text="#{label.mailGroup.mailGroupName}">설정명</label>
-        <input type="text" id="mailGroupName" name="mailGroupName" class="form-control" value="설정명" th:value="${mailGroup.mailGroupName}" readonly>
+        <input type="text" id="mailGroupName" th:field="*{mailGroupName}" class="form-control" value="설정명" th:value="*{mailGroupName}" readonly>
     </div>
     <div>
         <label for="macroKey" th:text="#{label.mailGroup.macroKey}">macroKey</label>
-        <input type="text" id="macroKey" name="macroKey" class="form-control" value="macroKey" th:value="${mailGroup.macroKey}" readonly>
-    </div>
-    <div>
-        <label for="lastModifiedDate" th:text="#{label.lastModifiedDate}">최종 수정일</label>
-        <input type="text" id="lastModifiedDate" name="lastModifiedDate" class="form-control" value="10" th:value="${mailInfo.lastModifiedDate}" readonly>
+        <input type="text" id="macroKey" th:field="*{mailGroupName}" class="form-control" value="macroKey" th:value="*{macroKey}" readonly>
     </div>
     <div>
         <label for="createdDate" th:text="#{label.createdDate}">생성일</label>
-        <input type="text" id="createdDate" name="createdDate" class="form-control" value="10" th:value="${mailInfo.createdDate}" readonly>
+        <input type="text" id="createdDate" th:field="*{createdDate}" class="form-control" value="10" th:value="*{createdDate}" readonly>
+    </div>
+    <div>
+        <label for="lastModifiedDate" th:text="#{label.lastModifiedDate}">생성일</label>
+        <input type="text" id="lastModifiedDate" th:field="*{lastModifiedDate}" class="form-control" value="10" th:value="*{lastModifiedDate}" readonly>
     </div>
     <div>
         <table class="table">
@@ -50,10 +50,10 @@
             </tr>
             </thead>
             <tbody>
-            <tr th:each="mailList : ${mailGroup.mailList}">
-                <td th:text="${mailList.id}">id</td>
-                <td th:text="${mailList.mailAddress}">id</td>
-                <td th:text="${mailList.macroValue}">10000</td>
+            <tr th:each="mailList, stat : *{mailListForms}">
+                <td th:field="*{mailList[__${stat.index}__].id}" th:text="${mailList.id}">id</td>
+                <td th:field="*{mailList[__${stat.index}__].mailAddress}" th:text="${mailList.mailAddress}">id</td>
+                <td th:field="*{mailList[__${stat.index}__].macroValue}" th:text="${mailList.macroValue}">10000</td>
             </tr>
             </tbody>
         </table>
@@ -63,8 +63,8 @@
     <div class="row">
         <div class="col">
             <button class="w-100 btn btn-primary btn-lg"
-                    onclick="location.href='editForm.html'"
-                    th:onclick="|location.href='@{/mailInfo/{mailInfoId}/edit(mailInfoId=${mailInfo.id})}'|"
+                    onclick="location.href='editMailGroup.html'"
+                    th:onclick="|location.href='@{/mailGroup/{mailGroupId}/edit(mailGroupId=${mailGroup.id})}'|"
                     type="button" th:text="#{button.update}">수정</button>
         </div>
         <div class="col">

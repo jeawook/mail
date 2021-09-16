@@ -25,4 +25,7 @@ public class MailGroup extends BaseTimeEntity {
     @OneToMany(mappedBy = "mailGroup", cascade = CascadeType.ALL)
     private List<MailList> mailLists = new ArrayList<>();
 
+    public void setMailLists(List<MailList> mailLists) {
+        this.mailLists = mailLists;
+    }
 }

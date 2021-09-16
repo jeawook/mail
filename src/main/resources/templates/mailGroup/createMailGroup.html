@@ -32,7 +32,7 @@
                    th:errorclass="field-error"
                    class="form-control" placeholder="이름을 입력하세요">
             <div class="field-error" th:errors="*{mailGroupName}">
-                상품명 오류
+                그룹명 오류
             </div>
         </div>
         <div>
@@ -41,7 +41,7 @@
                    th:errorclass="field-error"
                    class="form-control" placeholder="key 정보 입력">
             <div class="field-error" th:errors="*{macroKey}">
-                가격 오류
+                macroKey 오류
             </div>
         </div>
         <div>
@@ -54,10 +54,23 @@
                 </tr>
                 </thead>
                 <tbody>
-                <tr th:each="mailList, stat : ${mailGroup.mailListForms}">
-                    <td><input type="text" th:name="${mailGroup.mailListForms[__${stat.index}__].mailAddress}"  th:value="${{mailList.mailAddress}}"  class="form-control"></td>
-                    <td><input type="text"  th:value="${mailList.macroValue}" class="form-control"></td>
-                    <input type="hidden" th:field="${mailGroup.mailListForms[__${stat.index}__]}">
+                <tr th:each="mailList, stat : *{mailListForms}">
+                    <td>
+                        <input type="text"  th:field="*{mailListForms[__${stat.index}__].mailAddress}" th:value="${{mailList.mailAddress}}"  class="form-control">
+                        <div class="field-error" th:errors="*{mailListForms[__${stat.index}__].mailAddress}">
+                            mailAddress 오류
+                        </div>
+                    </td>
+                    <td>
+                        <input type="text"  th:field="*{mailListForms[__${stat.index}__].macroValue}" th:value="${mailList.macroValue}" class="form-control">
+                        <div class="field-error" th:errors="*{mailListForms[__${stat.index}__].macroValue}">
+                            macroValue 오류
+                        </div>
+                    </td>
+                </tr>
+                <tr th:if="*{mailListForms.size < 1}">
+                    <td><input type="text"  th:field="*{mailListForms[0].mailAddress}" class="form-control"></td>
+                    <td><input type="text"  th:field="*{mailListForms[0].macroValue}" class="form-control"></td>
                 </tr>
                 </tbody>
             </table>
