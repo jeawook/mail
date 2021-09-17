@@ -14,14 +14,14 @@
 <div class="container" th:object="${mailGroup}">
 
     <div class="py-5 text-center">
-        <h2 th:text="#{page.mailInfo}">메일 설정 정보</h2>
+        <h2 th:text="#{page.mailGroup}">그룹 정보</h2>
     </div>
 
     <!-- 추가 -->
 <!--    <h2 th:if="${param.status}" th:text="'저장 완료'"></h2>-->
     <div>
-        <label for="mailGroupId" th:text="#{label.id}">ID</label>
-        <input type="text" id="mailGroupId" th:field="*{mailGroupId}" class="form-control" value="1" th:value="*{mailGroupId}" readonly>
+        <label for="id" th:text="#{label.id}">ID</label>
+        <input type="text" id="id" th:field="*{id}" class="form-control" value="1" th:value="*{id}" readonly>
     </div>
     <div>
         <label for="mailGroupName" th:text="#{label.mailGroup.mailGroupName}">설정명</label>
@@ -29,7 +29,7 @@
     </div>
     <div>
         <label for="macroKey" th:text="#{label.mailGroup.macroKey}">macroKey</label>
-        <input type="text" id="macroKey" th:field="*{mailGroupName}" class="form-control" value="macroKey" th:value="*{macroKey}" readonly>
+        <input type="text" id="macroKey" th:field="*{macroKey}" class="form-control" value="macroKey" th:value="*{macroKey}" readonly>
     </div>
     <div>
         <label for="createdDate" th:text="#{label.createdDate}">생성일</label>
@@ -44,16 +44,15 @@
             <thead>
             <tr>
                 <th th:text="#{label.id}">ID</th>
-                <th th:text="#{label.mailList.id}">id</th>
-                <th th:text="#{label.mailList.mailAddress}">email</th>
-                <th th:text="#{label.mailList.macroValue}">메크로 정보</th>
+                <th th:text="#{label.user.mailAddress}">email</th>
+                <th th:text="#{label.user.macroValue}">메크로 정보</th>
             </tr>
             </thead>
             <tbody>
-            <tr th:each="mailList, stat : *{mailListForms}">
-                <td th:field="*{mailList[__${stat.index}__].id}" th:text="${mailList.id}">id</td>
-                <td th:field="*{mailList[__${stat.index}__].mailAddress}" th:text="${mailList.mailAddress}">id</td>
-                <td th:field="*{mailList[__${stat.index}__].macroValue}" th:text="${mailList.macroValue}">10000</td>
+            <tr th:each="user, stat : *{users}">
+                <td th:field="*{users[__${stat.index}__].id}" th:text="${user.id}">id</td>
+                <td th:field="*{users[__${stat.index}__].mailAddress}" th:text="${{user.mailAddress}}">id</td>
+                <td th:field="*{users[__${stat.index}__].macroValue}" th:text="${user.macroValue}">10000</td>
             </tr>
             </tbody>
         </table>
@@ -69,8 +68,8 @@
         </div>
         <div class="col">
             <button class="w-100 btn btn-secondary btn-lg"
-                    onclick="location.href='items.html'"
-                    th:onclick="|location.href='@{/mailInfo/mailInfoList}'|"
+                    onclick="location.href='mailGroupList.html'"
+                    th:onclick="|location.href='@{/mailGroup/mailGroupList}'|"
                     type="button" th:text="#{button.list}">목록으로</button>
         </div>
     </div>

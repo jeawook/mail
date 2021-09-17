@@ -10,7 +10,7 @@ import javax.persistence.*;
 @Builder
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @AllArgsConstructor
-public class MailList {
+public class User {
 
     @Id @GeneratedValue
     private Long id;
@@ -23,4 +23,16 @@ public class MailList {
     @ManyToOne
     @JoinColumn(name = "mail_group_id")
     private MailGroup mailGroup;
+
+    public void setMailGroup(MailGroup mailGroup) {
+        this.mailGroup = mailGroup;
+    }
+
+    public void setMailAddress(MailAddress mailAddress) {
+        this.mailAddress = mailAddress;
+    }
+
+    public void setMacroValue(String macroValue) {
+        this.macroValue = macroValue;
+    }
 }

@@ -54,23 +54,23 @@
                 </tr>
                 </thead>
                 <tbody>
-                <tr th:each="mailList, stat : *{mailListForms}">
+                <tr th:each="user, stat : *{userForms}">
                     <td>
-                        <input type="text"  th:field="*{mailListForms[__${stat.index}__].mailAddress}" th:value="${{mailList.mailAddress}}"  class="form-control">
-                        <div class="field-error" th:errors="*{mailListForms[__${stat.index}__].mailAddress}">
+                        <input type="text"  th:field="*{userForms[__${stat.index}__].mailAddress}" th:value="${{user.mailAddress}}"  class="form-control">
+                        <div class="field-error" th:errors="*{userForms[__${stat.index}__].mailAddress}">
                             mailAddress 오류
                         </div>
                     </td>
                     <td>
-                        <input type="text"  th:field="*{mailListForms[__${stat.index}__].macroValue}" th:value="${mailList.macroValue}" class="form-control">
-                        <div class="field-error" th:errors="*{mailListForms[__${stat.index}__].macroValue}">
+                        <input type="text"  th:field="*{userForms[__${stat.index}__].macroValue}" th:value="${user.macroValue}" class="form-control">
+                        <div class="field-error" th:errors="*{userForms[__${stat.index}__].macroValue}">
                             macroValue 오류
                         </div>
                     </td>
                 </tr>
-                <tr th:if="*{mailListForms.size < 1}">
-                    <td><input type="text"  th:field="*{mailListForms[0].mailAddress}" class="form-control"></td>
-                    <td><input type="text"  th:field="*{mailListForms[0].macroValue}" class="form-control"></td>
+                <tr th:if="*{userForms == null}">
+                    <td><input type="text"  th:field="*{userForms[0].mailAddress}" class="form-control"></td>
+                    <td><input type="text"  th:field="*{userForms[0].macroValue}" class="form-control"></td>
                 </tr>
                 </tbody>
             </table>

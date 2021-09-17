@@ -49,16 +49,16 @@
                 <thead>
                 <tr>
                     <th th:text="#{label.id}">ID</th>
-                    <th th:text="#{label.mailList.id}">id</th>
-                    <th th:text="#{label.mailList.mailAddress}">email</th>
-                    <th th:text="#{label.mailList.macroValue}">메크로 정보</th>
+                    <th th:text="#{label.user.id}">id</th>
+                    <th th:text="#{label.user.mailAddress}">email</th>
+                    <th th:text="#{label.user.macroValue}">메크로 정보</th>
                 </tr>
                 </thead>
                 <tbody>
-                <tr th:each="mailList : *{mailLists}">
-                    <td th:text="${mailList.id}">id</td>
-                    <td th:text="${mailList.mailAddress}">id</td>
-                    <td th:text="${mailList.macroValue}">10000</td>
+                <tr th:each="user : *{users}">
+                    <td th:text="${user.id}">id</td>
+                    <td th:text="${user.mailAddress}">id</td>
+                    <td th:text="${user.macroValue}">10000</td>
                 </tr>
                 </tbody>
             </table>

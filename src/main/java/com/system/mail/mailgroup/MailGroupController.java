@@ -1,6 +1,5 @@
 package com.system.mail.mailgroup;
 
-import com.system.mail.common.MailAddress;
 import lombok.RequiredArgsConstructor;
 import org.modelmapper.ModelMapper;
 import org.springframework.data.domain.Page;
@@ -76,15 +75,15 @@ public class MailGroupController {
             return "/MailGroup/createMailGroup";
         }
         MailGroup mailGroup = modelMapper.map(mailGroupForm, MailGroup.class);
-        mailListFormToMailList(mailGroupForm.getMailListForms(), mailGroup.getMailLists());
+        mailGroup.setUsers(userFormListToUserList(mailGroupForm.getUserForms(), mailGroup));
         MailGroup saveMailGroup = mailGroupService.saveMailGroup(mailGroup);
 
         redirectAttributes.addAttribute("mailGroupId", saveMailGroup.getId());
-        return "redirect:/MailGroup/{mailGroupId}";
+        return "redirect:/mailGroup/{mailGroupId}";
     }
 
-    private void  mailListFormToMailList(ArrayList<MailListForm> mailListForms, List<MailList> mailLists) {
-        mailListForms.stream().map(mailListForm -> mailLists.add(modelMapper.map(mailListForm, MailList.class)));
+    private ArrayList<User> userFormListToUserList(ArrayList<UserForm> userFormList, MailGroup mailGroup) {
+        return new ArrayList<>(userFormList.stream().map(userForm -> modelMapper.map(userForm, User.class)).collect(Collectors.toList()));
     }
 
 
