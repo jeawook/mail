@@ -26,4 +26,7 @@ public class MailGroupService {
         return mailGroupRepository.findAll(pageable);
     }
 
+    public List<MailGroup> findMailGroupAll() {
+        return mailGroupRepository.findAll();
+    }
 }

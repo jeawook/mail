@@ -7,6 +7,8 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.PostMapping;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Optional;
 
 @Service
@@ -27,6 +29,9 @@ public class MailInfoService {
         return mailInfoRepository.findAll(pageable);
     }
 
+    public List<MailInfo> findMailInfoAll() {
+        return mailInfoRepository.findAll();
+    }
     @Transactional
     public void updateMailInfo(Long mailInfoId, MailInfoForm mailInfoForm) {
         Optional<MailInfo> mailInfoOptional = mailInfoRepository.findById(mailInfoId);
