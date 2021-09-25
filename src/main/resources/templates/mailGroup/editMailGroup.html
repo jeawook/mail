@@ -19,7 +19,7 @@
 <div class="container">
 
     <div class="py-5 text-center">
-        <h2 th:text="#{page.mailGroup.update}">그룹 수정</h2>
+        <h2 th:text="#{page.mailGroup.edit}">그룹 수정</h2>
     </div>
 
     <form action="mailGroup.html" th:action th:object="${mailGroup}" method="post">
@@ -48,17 +48,28 @@
             <table class="table">
                 <thead>
                 <tr>
-                    <th th:text="#{label.id}">ID</th>
-                    <th th:text="#{label.user.id}">id</th>
-                    <th th:text="#{label.user.mailAddress}">email</th>
-                    <th th:text="#{label.user.macroValue}">메크로 정보</th>
+                    <th th:text="#{label.mailGroup.mailAddress}">email</th>
+                    <th th:text="#{label.mailGroup.macroValue}">메크로 정보</th>
                 </tr>
                 </thead>
                 <tbody>
-                <tr th:each="user : *{users}">
-                    <td th:text="${user.id}">id</td>
-                    <td th:text="${user.mailAddress}">id</td>
-                    <td th:text="${user.macroValue}">10000</td>
+                <tr th:each="user, stat : *{users}">
+                    <td>
+                        <input type="text"  th:field="*{users[__${stat.index}__].mailAddress}" th:value="${{user.mailAddress}}"  class="form-control">
+                        <div class="field-error" th:errors="*{users[__${stat.index}__].mailAddress}">
+                            mailAddress 오류
+                        </div>
+                    </td>
+                    <td>
+                        <input type="text"  th:field="*{users[__${stat.index}__].macroValue}" th:value="${user.macroValue}" class="form-control">
+                        <div class="field-error" th:errors="*{users[__${stat.index}__].macroValue}">
+                            macroValue 오류
+                        </div>
+                    </td>
+                </tr>
+                <tr th:if="*{users == null}">
+                    <td><input type="text"  th:field="*{users[0].mailAddress}" placeholder="홍길동,email@email.com" class="form-control"></td>
+                    <td><input type="text"  th:field="*{users[0].macroValue}" placeholder="이름,test" class="form-control"></td>
                 </tr>
                 </tbody>
             </table>

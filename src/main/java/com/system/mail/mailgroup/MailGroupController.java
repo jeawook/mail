@@ -25,6 +25,8 @@ public class MailGroupController {
     private final ModelMapper modelMapper;
     private final MailGroupService mailGroupService;
 
+    static char MACRO_POINT_COMMA = ',';
+
     @GetMapping("/mailGroupList")
     public String mailGroupList(@PageableDefault(size = 10, sort = "id")Pageable pageable, Model model) {
         Page<MailGroup> list = mailGroupService.findMailGroupList(pageable);
@@ -71,9 +73,13 @@ public class MailGroupController {
     @PostMapping("/add")
     public String createMailGroup(@Validated @ModelAttribute("mailGroup") MailGroupForm mailGroupForm,
                                   BindingResult bindingResult, RedirectAttributes redirectAttributes) {
+
+        checkMacroValidation(mailGroupForm, bindingResult);
+
         if (bindingResult.hasErrors()) {
             return "/MailGroup/createMailGroup";
         }
+
         MailGroup mailGroup = modelMapper.map(mailGroupForm, MailGroup.class);
         mailGroup.setUsers(userFormListToUserList(mailGroupForm.getUserForms(), mailGroup));
         MailGroup saveMailGroup = mailGroupService.saveMailGroup(mailGroup);
@@ -82,9 +88,26 @@ public class MailGroupController {
         return "redirect:/mailGroup/{mailGroupId}";
     }
 
+    private void checkMacroValidation(MailGroupForm mailGroupForm, BindingResult bindingResult) {
+
+        String macroKey = mailGroupForm.getMacroKey();
+        int macroKeyCnt = countComma(macroKey);
+
+        ArrayList<UserForm> userForms = mailGroupForm.getUserForms();
+        for (UserForm tmp : userForms) {
+            int userMacroCnt = countComma(tmp.getMacroValue());
+            if (macroKeyCnt != userMacroCnt) {
+                bindingResult.reject("macroError", "macroKey 와 macroValue 의 개수는 동일 하게 입력 되어야 합니다.");
+                return ;
+            }
+        }
+    }
+
+    private int countComma(String macro) {
+        return (int) macro.chars().filter(c -> c == MACRO_POINT_COMMA).count();
+    }
+
     private ArrayList<User> userFormListToUserList(ArrayList<UserForm> userFormList, MailGroup mailGroup) {
         return new ArrayList<>(userFormList.stream().map(userForm -> modelMapper.map(userForm, User.class)).collect(Collectors.toList()));
     }
-
-
 }

@@ -27,7 +27,7 @@
             <p class="field-error" th:each="err : ${#fields.globalErrors()}" th:text="${err}">전체 오류 메시지</p>
         </div>
         <div>
-            <label for="mailGroupName" th:text="#{label.mailGroup.name}">그룹명</label>
+            <label for="mailGroupName" th:text="#{label.mailGroup.mailGroupName}">그룹명</label>
             <input type="text" id="mailGroupName" th:field="*{mailGroupName}"
                    th:errorclass="field-error"
                    class="form-control" placeholder="이름을 입력하세요">
@@ -69,8 +69,8 @@
                     </td>
                 </tr>
                 <tr th:if="*{userForms == null}">
-                    <td><input type="text"  th:field="*{userForms[0].mailAddress}" class="form-control"></td>
-                    <td><input type="text"  th:field="*{userForms[0].macroValue}" class="form-control"></td>
+                    <td><input type="text"  th:field="*{userForms[0].mailAddress}" placeholder="홍길동,email@email.com" class="form-control"></td>
+                    <td><input type="text"  th:field="*{userForms[0].macroValue}" placeholder="이름,test" class="form-control"></td>
                 </tr>
                 </tbody>
             </table>

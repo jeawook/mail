@@ -16,6 +16,7 @@ public class MailAddress {
 
     private String name;
 
+    @Email
     private String email;
 
     public static MailAddressBuilder builder(String name, String email) {

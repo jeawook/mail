@@ -27,7 +27,7 @@
             <thead>
             <tr>
                 <th th:text="#{label.id}">ID</th>
-                <th th:text="#{label.mailGroup.name}">메일 발송 정보</th>
+                <th th:text="#{label.mailGroup.mailGroupName}">메일 그룹 정보</th>
                 <th th:text="#{label.createdDate}">등록일</th>
                 <th th:text="#{label.lastModifiedDate}">수정일</th>
             </tr>
@@ -36,8 +36,8 @@
             <tr th:each="mailGroup : ${mailGroupList}">
                 <td><a href="mailGroup.html" th:href="@{/mailGroup/{mailGroupId}(mailGroupId=${mailGroup.id})}" th:text="${mailGroup.id}">메일 그룹 정보 id</a></td>
                 <td><a href="mailGroup.html" th:href="@{/mailGroup/{mailGroupId}(mailGroupId=${mailGroup.id})}" th:text="${mailGroup.mailGroupName}">메일 그룹 정보</a></td>
-                <td th:text="${mailInfo.createdDate}">10000</td>
-                <td th:text="${mailInfo.lastModifiedDate}">10</td>
+                <td th:text="${mailGroup.createdDate}">10000</td>
+                <td th:text="${mailGroup.lastModifiedDate}">10</td>
             </tr>
             </tbody>
         </table>
