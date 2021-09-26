@@ -19,7 +19,7 @@
 <div class="container">
 
     <div class="py-5 text-center">
-        <h2 th:text="#{page.mailGroup}">그룹 등록</h2>
+        <h2 th:text="#{page.sendInfo}">메일 등록</h2>
     </div>
 
     <form action="sendInfo.html" th:action th:object="${sendInfo}" method="post">
@@ -27,51 +27,25 @@
             <p class="field-error" th:each="err : ${#fields.globalErrors()}" th:text="${err}">전체 오류 메시지</p>
         </div>
         <div>
-            <label for="mailInfo" th:text="#{label.mailInfo.mailInfoName}">그룹명</label>
-            <select id="mailInfo" class="form-select">
-                <option th:each="mailInfo : ${mailInfoList}" th:value="*{mailInfo.key}" th:text="*{mailInfo.value}">
-                </option>
+            <label for="mailInfo" th:text="#{label.mailInfo.mailInfoName}">메일 설정</label>
+            <select id="mailInfo" th:field="*{mailInfoId}" class="form-select">
+                <option th:each="mailInfo : ${mailInfoList}" th:value="${mailInfo.key}" th:text="${mailInfo.value}" th:selected="${mailInfo.key}== ${sendInfo.mailInfoId}" >
             </select>
         </div>
         <div>
-            <label for="macroKey" th:text="#{label.mailGroup.macroKey}"></label>
-            <input type="text" id="macroKey" th:field="*{macroKey}"
-                   th:errorclass="field-error"
-                   class="form-control" placeholder="key 정보 입력">
-            <div class="field-error" th:errors="*{macroKey}">
-                macroKey 오류
-            </div>
+            <label for="mailGroup" th:text="#{label.mailGroup.mailGroupName}">발송 그룹</label>
+            <select id="mailGroup" th:field="*{mailGroupId}" class="form-select">
+                <option th:each="mailGroup : ${mailGroupList}" th:value="${mailGroup.key}"  th:text="${mailGroup.value}" th:selected="${mailGroup.key}== ${sendInfo.mailGroupId}" >
+            </select>
         </div>
         <div>
-            <table class="table">
-                <thead>
-                <tr>
-                    <th th:text="#{label.mailGroup.mailAddress}">emailAddress</th>
-                    <th th:text="#{label.mailGroup.macroValue}">메크로 정보</th>
-                    <th></th>
-                </tr>
-                </thead>
-                <tbody>
-                <tr th:each="user, stat : *{userForms}">
-                    <td>
-                        <input type="text"  th:field="*{userForms[__${stat.index}__].mailAddress}" th:value="${{user.mailAddress}}"  class="form-control">
-                        <div class="field-error" th:errors="*{userForms[__${stat.index}__].mailAddress}">
-                            mailAddress 오류
-                        </div>
-                    </td>
-                    <td>
-                        <input type="text"  th:field="*{userForms[__${stat.index}__].macroValue}" th:value="${user.macroValue}" class="form-control">
-                        <div class="field-error" th:errors="*{userForms[__${stat.index}__].macroValue}">
-                            macroValue 오류
-                        </div>
-                    </td>
-                </tr>
-                <tr th:if="*{userForms == null}">
-                    <td><input type="text"  th:field="*{userForms[0].mailAddress}" placeholder="홍길동,email@email.com" class="form-control"></td>
-                    <td><input type="text"  th:field="*{userForms[0].macroValue}" placeholder="이름,test" class="form-control"></td>
-                </tr>
-                </tbody>
-            </table>
+            <label for="sendDate" th:text="#{label.sendInfo.sendDate}">발송시간</label>
+            <input type="text" id="sendDate" th:field="*{sendDate}"
+                   th:errorclass="field-error"
+                   class="form-control" th:placeholder="${#calendars.format(#calendars.createNow(), 'yyyyddMMHHmm')}">
+            <div class="field-error" th:errors="*{sendDate}">
+                발송일 오류
+            </div>
         </div>
 
         <hr class="my-4">
@@ -83,7 +57,7 @@
             <div class="col">
                 <button class="w-100 btn btn-secondary btn-lg"
                         onclick="location.href='mailGroupList.html'"
-                        th:onclick="|location.href='@{/mailGroup/mailGroupList}'|"
+                        th:onclick="|location.href='@{/sendInfo/sendInfoList}'|"
                         type="button" th:text="#{button.cancel}">취소</button>
             </div>
         </div>

@@ -1,0 +1,77 @@
+<!DOCTYPE HTML>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="utf-8">
+    <link th:href="@{/css/bootstrap.min.css}" href="../css/bootstrap.min.css" rel="stylesheet">
+    <style>
+        .container {
+            max-width: 560px;
+        }
+    </style>
+</head>
+<body>
+
+<div class="container">
+
+    <div class="py-5 text-center">
+        <h2 th:text="#{page.sendInfo}">메일 설정 정보</h2>
+    </div>
+
+    <!-- 추가 -->
+    <h2 th:if="${param.status}" th:text="'저장 완료'"></h2>
+    <div>
+        <label for="sendInfoId" th:text="#{label.id}">ID</label>
+        <input type="text" id="sendInfoId" th:field="${sendInfo.id}" class="form-control" value="1" th:value="${sendInfo.id}" readonly>
+    </div>
+    <div>
+        <label for="mailInfoName" th:text="#{label.sendInfo.mailInfo.mailInfoName}">제목</label>
+        <input type="text" id="mailInfoName" th:field="${sendInfo.mailInfo.mailInfoName" class="form-control" value="제목" th:value="${sendInfo.mailInfo.mailInfoName}" readonly>
+    </div>
+    <div>
+        <label for="sendDate" th:text="#{label.sendInfo.sendDate}">발송 예정 시간</label>
+        <input type="text" id="sendDate" th:field="${sendInfo.sendDate}" class="form-control" value="sendDate" th:value="${sendInfo.sendDate}" readonly>
+    </div>
+    <div>
+        <label for="completedDate" th:text="#{label.sendInfo.completedDate}">발송 완료 시간</label>
+        <input type="text" id="completedDate" th:field="${sendInfo.completedDate}" class="form-control" value="completedDate" th:value="${sendInfo.completedDate}" readonly>
+    </div>
+    <div>
+        <label for="mailGroupName" th:text="#{label.sendInfo.mailGroup}">그룹</label>
+        <input type="text" id="mailGroupName" th:field="${sendInfo.mailGroup.mailGroupName" class="form-control" value="10000" th:value="${sendInfo.mailGroup.mailGroupName}" readonly>
+    </div>
+    <div>
+        <label for="status" th:text="#{label.sendInfo.status}">발송 상태</label>
+        <input type="text" id="status" th:field="${sendInfo.status}" class="form-control" value="등록" th:value="${{sendInfo.mailTo}}" readonly>
+    </div>
+    <div>
+        <label for="content" th:text="#{label.mailInfo.content}">메일 본문</label>
+        <textarea id="content" th:field="${sendInfo.mailInfo.content}"
+                  th:errorclass="field-error"
+                  class="form-control"
+                  rows="10">
+            </textarea>
+        <div class="field-error" th:errors="*{content}">
+            본문 오류
+        </div>
+    </div>
+
+    <hr class="my-4">
+
+    <div class="row">
+        <div class="col">
+            <button class="w-100 btn btn-primary btn-lg"
+                    onclick="location.href='editForm.html'"
+                    th:onclick="|location.href='@{/sendInfo/{sendInfoId}/edit(sendInfoId=${sendInfo.id})}'|"
+                    type="button" th:text="#{button.update}">수정</button>
+        </div>
+        <div class="col">
+            <button class="w-100 btn btn-secondary btn-lg"
+                    onclick="location.href='items.html'"
+                    th:onclick="|location.href='@{/sendInfo/sendInfoList}'|"
+                    type="button" th:text="#{button.list}">목록으로</button>
+        </div>
+    </div>
+
+</div> <!-- /container -->
+</body>
+</html>

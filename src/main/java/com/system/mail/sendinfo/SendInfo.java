@@ -39,4 +39,16 @@ public class SendInfo extends BaseTimeEntity {
     @JoinColumn(name = "mail_group_id")
     private MailGroup mailGroup;
 
+    private void updateStatus(Status status) {
+        this.status = status;
+    }
+    private void setMailInfo(MailInfo mailInfo) {
+        this.mailInfo = mailInfo;
+    }
+    private void setMailGroup(MailGroup mailGroup) {
+        this.mailGroup = mailGroup;
+    }
+    private void setCompletedDate() {
+        completedDate = LocalDateTime.now();
+    }
 }

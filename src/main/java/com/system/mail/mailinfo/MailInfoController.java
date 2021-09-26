@@ -27,7 +27,7 @@ public class MailInfoController {
      * @param model
      * @return
      */
-    @GetMapping("/mailInfoList")
+    @GetMapping("/list")
     public String mailInfoList(@PageableDefault(size = 10, sort = "id") Pageable pageable, Model model) {
         Page<MailInfo> mailInfoList = mailInfoService.findMailInfoList(pageable);
         model.addAttribute("mailInfoList", mailInfoList);

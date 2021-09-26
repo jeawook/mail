@@ -27,7 +27,7 @@ public class MailGroupController {
 
     static char MACRO_POINT_COMMA = ',';
 
-    @GetMapping("/mailGroupList")
+    @GetMapping("/list")
     public String mailGroupList(@PageableDefault(size = 10, sort = "id")Pageable pageable, Model model) {
         Page<MailGroup> list = mailGroupService.findMailGroupList(pageable);
         model.addAttribute("mailGroupList", list);

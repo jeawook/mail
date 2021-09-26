@@ -36,6 +36,7 @@ public class SendInfoController {
         mailInfoAll.forEach(mailInfo -> mailInfoMap.put(mailInfo.getId(), mailInfo.getMailInfoName()));
         return mailInfoMap;
     }
+
     @ModelAttribute(name = "mailGroupList")
     public Map<Long, String> mailGroupList() {
         Map<Long, String> mailGroupMap = new HashMap<>();
@@ -43,7 +44,8 @@ public class SendInfoController {
         mailGroupAll.forEach(mailGroup -> mailGroupMap.put(mailGroup.getId(), mailGroup.getMailGroupName()));
         return mailGroupMap;
     }
-    @GetMapping("/SendInfoList")
+
+    @GetMapping("/list")
     public String sendInfoList(@PageableDefault(size = 10)Pageable pageable, Model model) {
 
         Page<SendInfo> sendInfoList = sendInfoService.findSendInfoList(pageable);

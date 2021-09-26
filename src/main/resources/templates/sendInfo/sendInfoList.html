@@ -7,7 +7,7 @@
 </head>
 <body>
 
-<div class="container" style="max-width: 600px">
+<div class="container" style="max-width: 1000px">
     <div class="py-5 text-center">
         <h2 th:text="#{page.sendInfo.list}">메일 설정 정보 목록</h2>
     </div>
@@ -27,18 +27,18 @@
             <thead>
             <tr>
                 <th th:text="#{label.id}">ID</th>
-                <th th:text="#{label.sendInfo.subject}">메일 제목</th>
+                <th th:text="#{label.sendInfo.subject}">발송 정보</th>
                 <th th:text="#{label.sendTime}">발송 시간</th>
-                <th th:text="#{label.status">발송 상태</th>
+                <th th:text="#{label.status}">발송 상태</th>
                 <th th:text="#{label.createdDate}">등록일</th>
             </tr>
             </thead>
             <tbody>
-            <tr th:each="mailGroup : ${mailGroupList}">
-                <td><a href="mailGroup.html" th:href="@{/mailGroup/{mailGroupId}(mailGroupId=${mailGroup.id})}" th:text="${mailGroup.id}">메일 그룹 정보 id</a></td>
-                <td><a href="mailGroup.html" th:href="@{/mailGroup/{mailGroupId}(mailGroupId=${mailGroup.id})}" th:text="${mailGroup.mailGroupName}">메일 그룹 정보</a></td>
-                <td th:text="${mailGroup.createdDate}">10000</td>
-                <td th:text="${mailGroup.lastModifiedDate}">10</td>
+            <tr th:each="sendInfo : ${sendInfoList}">
+                <td><a href="sendInfo.html" th:href="@{/sendInfo/{sendInfoId}(sendInfoId=${sendInfo.id})}" th:text="${sendInfo.id}">메일 그룹 정보 id</a></td>
+                <td><a href="sendInfo.html" th:href="@{/sendInfo/{sendInfoId}(sendInfoId=${sendInfo.id})}" th:text="${sendInfo.sendInfoName}">메일 그룹 정보</a></td>
+                <td th:text="${sendInfo.createdDate}">10000</td>
+                <td th:text="${sendInfo.lastModifiedDate}">10</td>
             </tr>
             </tbody>
         </table>
