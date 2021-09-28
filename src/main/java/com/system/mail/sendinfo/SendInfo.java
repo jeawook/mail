@@ -28,6 +28,10 @@ public class SendInfo extends BaseTimeEntity {
 
     private LocalDateTime completedDate;
 
+    private String subject;
+
+    private String content;
+
     @NotNull
     private Status status;
 

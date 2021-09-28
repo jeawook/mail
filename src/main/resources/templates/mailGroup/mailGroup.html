@@ -1,5 +1,6 @@
 <!DOCTYPE HTML>
-<html xmlns:th="http://www.thymeleaf.org">
+<html xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorator="layout/layout">
 <head>
     <meta charset="utf-8">
     <link th:href="@{/css/bootstrap.min.css}" href="../css/bootstrap.min.css" rel="stylesheet">
@@ -11,7 +12,7 @@
 </head>
 <body>
 
-<div class="container" th:object="${mailGroup}">
+<div class="container-fluid px-4" layout:fragment="content" th:object="${mailGroup}" >
 
     <div class="py-5 text-center">
         <h2 th:text="#{page.mailGroup}">그룹 정보</h2>

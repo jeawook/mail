@@ -1,9 +1,7 @@
 <!DOCTYPE HTML>
-<html xmlns:th="http://www.thymeleaf.org">
+<html xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorator="layout/layout">
 <head>
-    <meta charset="utf-8">
-    <link th:href="@{/css/bootstrap.min.css}"
-          href="../css/bootstrap.min.css" rel="stylesheet">
     <style>
         .container {
             max-width: 560px;
@@ -19,7 +17,7 @@
 </head>
 <body>
 
-<div class="container">
+<div class="container" layout:fragment="content">
 
     <div class="py-5 text-center">
         <h2 th:text="#{page.mailInfo}">메일 발송 정보 등록</h2>
@@ -80,18 +78,6 @@
                    class="form-control" placeholder="회신 주소 ex) no-reply,no-reply@test.com">
             <div class="field-error" th:errors="*{{replyTo}}">
                 replyTo 오류
-            </div>
-        </div>
-
-        <div>
-            <label for="content" th:text="#{label.mailInfo.content}">메일 본문</label>
-            <textarea id="content" th:field="*{content}"
-                   th:errorclass="field-error"
-                   class="form-control"
-                    rows="10">
-            </textarea>
-            <div class="field-error" th:errors="*{content}">
-                본문 오류
             </div>
         </div>
 

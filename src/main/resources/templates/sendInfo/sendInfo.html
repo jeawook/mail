@@ -1,17 +1,9 @@
 <!DOCTYPE HTML>
-<html xmlns:th="http://www.thymeleaf.org">
-<head>
-    <meta charset="utf-8">
-    <link th:href="@{/css/bootstrap.min.css}" href="../css/bootstrap.min.css" rel="stylesheet">
-    <style>
-        .container {
-            max-width: 560px;
-        }
-    </style>
-</head>
+<html xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorator="layout/layout">
 <body>
 
-<div class="container">
+<div class="container-fluid px-4" layout:fragment="content">
 
     <div class="py-5 text-center">
         <h2 th:text="#{page.sendInfo}">메일 설정 정보</h2>
@@ -22,10 +14,6 @@
     <div>
         <label for="sendInfoId" th:text="#{label.id}">ID</label>
         <input type="text" id="sendInfoId" th:field="${sendInfo.id}" class="form-control" value="1" th:value="${sendInfo.id}" readonly>
-    </div>
-    <div>
-        <label for="mailInfoName" th:text="#{label.sendInfo.mailInfo.mailInfoName}">제목</label>
-        <input type="text" id="mailInfoName" th:field="${sendInfo.mailInfo.mailInfoName" class="form-control" value="제목" th:value="${sendInfo.mailInfo.mailInfoName}" readonly>
     </div>
     <div>
         <label for="sendDate" th:text="#{label.sendInfo.sendDate}">발송 예정 시간</label>
@@ -43,16 +31,18 @@
         <label for="status" th:text="#{label.sendInfo.status}">발송 상태</label>
         <input type="text" id="status" th:field="${sendInfo.status}" class="form-control" value="등록" th:value="${{sendInfo.mailTo}}" readonly>
     </div>
+
+    <div>
+        <label for="subject" th:text="#{label.sendInfo.subject}">제목</label>
+        <input type="text" id="subject" th:field="${sendInfo.subject}" class="form-control" th:value="${sendInfo.subject}" readonly>
+    </div>
     <div>
         <label for="content" th:text="#{label.mailInfo.content}">메일 본문</label>
         <textarea id="content" th:field="${sendInfo.mailInfo.content}"
                   th:errorclass="field-error"
                   class="form-control"
-                  rows="10">
-            </textarea>
-        <div class="field-error" th:errors="*{content}">
-            본문 오류
-        </div>
+                  rows="10" readonly>
+        </textarea>
     </div>
 
     <hr class="my-4">

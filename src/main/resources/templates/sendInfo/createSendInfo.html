@@ -47,6 +47,24 @@
                 발송일 오류
             </div>
         </div>
+        <div>
+            <label for="subject" th:text="#{label.sendInfo.subject}">제목</label>
+            <input type="text" id="subject" th:field="${sendInfo.subject}" class="form-control" th:value="${sendInfo.subject}" readonly>
+            <div class="field-error" th:errors="${sendInfo.subject}">
+                replyTo 오류
+            </div>
+        </div>
+        <div>
+            <label for="content" th:text="#{label.sendInfo.content}">메일 본문</label>
+            <textarea id="content" th:field="${sendInfo.content}"
+                      th:errorclass="field-error"
+                      class="form-control"
+                      rows="10" readonly>
+            </textarea>
+            <div class="field-error" th:errors="${sendInfo.content}">
+                replyTo 오류
+            </div>
+        </div>
 
         <hr class="my-4">
 

@@ -1,17 +1,9 @@
 <!DOCTYPE HTML>
-<html xmlns:th="http://www.thymeleaf.org">
-<head>
-    <meta charset="utf-8">
-    <link th:href="@{/css/bootstrap.min.css}" href="../css/bootstrap.min.css" rel="stylesheet">
-    <style>
-        .container {
-            max-width: 560px;
-        }
-    </style>
-</head>
+<html xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorator="layout/layout">
 <body>
 
-<div class="container">
+<div class="container" layout:fragment="content">
 
     <div class="py-5 text-center">
         <h2 th:text="#{page.mailInfo}">메일 설정 정보</h2>
@@ -55,17 +47,6 @@
         <label for="createdDate" th:text="#{label.createdDate}">생성일</label>
         <input type="text" id="createdDate" name="createdDate" class="form-control" value="10" th:value="${mailInfo.createdDate}" readonly>
     </div>
-    <div>
-        <label for="content" th:text="#{label.mailInfo.content}">메일 본문</label>
-        <textarea id="content" th:field="${mailInfo.content}"
-                  th:errorclass="field-error"
-                  class="form-control"
-                  rows="10">
-            </textarea>
-        <div class="field-error" th:errors="${mailInfo.content}">
-            본문 오류
-        </div>
-    </div>
 
     <hr class="my-4">
 
@@ -79,7 +60,7 @@
         <div class="col">
             <button class="w-100 btn btn-secondary btn-lg"
                     onclick="location.href='items.html'"
-                    th:onclick="|location.href='@{/mailInfo/mailInfoList}'|"
+                    th:onclick="|location.href='@{/mailInfo/list}'|"
                     type="button" th:text="#{button.list}">목록으로</button>
         </div>
     </div>

@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html lang="ko" xmlns:th="http://www.thymeleaf.org">
+    <div th:fragment="sidebar" id="layoutSidenav_nav">
+        <nav class="sb-sidenav accordion sb-sidenav-dark" id="sidenavAccordion">
+            <div class="sb-sidenav-menu">
+                <div class="nav">
+                    <a class="nav-link" href="charts.html">
+                        <div class="sb-nav-link-icon"><i class="fas fa-chart-area"></i></div>
+                        Charts
+                    </a>
+                    <a class="nav-link" href="tables.html">
+                        <div class="sb-nav-link-icon"><i class="fas fa-table"></i></div>
+                        Tables
+                    </a>
+                    <a class="nav-link" th:href="@{/sendInfo/list}" href="sendInfo/sendInfoList.html">
+                        발송 관리
+                    </a>
+                    <a class="nav-link" th:href="@{/mailGroup/list}" href="mailGroup/mailGroupList.html">
+                        그룹 설정
+                    </a>
+                    <a class="nav-link" th:href="@{/mailInfo/list}" href="mailInfo/mailInfoList.html">
+                        메일 환경 설정
+                    </a>
+                </div>
+            </div>
+            <div class="sb-sidenav-footer">
+                <div class="small">Logged in as:</div>
+                Start Bootstrap
+            </div>
+        </nav>
+    </div>
+</html>

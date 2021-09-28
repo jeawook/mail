@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html lang="ko" xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout">
+<head>
+    <meta charset="utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
+    <meta name="description" content="" />
+    <meta name="author" content="" />
+    <title>Dashboard - SB Admin</title>
+    <th:block th:include="common/include_link"></th:block>
+</head>
+<body class="sb-nav-fixed">
+<nav th:replace="fragment/header :: header"></nav>
+<div id="layoutSidenav">
+    <nav th:replace="fragment/sidebar :: sidebar"></nav>
+    <div id="layoutSidenav_content">
+        <main layout:fragment="content"></main>
+        <footer th:replace="fragment/footer :: footer"></footer>
+    </div>
+</div>
+<th:block th:include="common/include_script"></th:block>
+</body>
+</html>

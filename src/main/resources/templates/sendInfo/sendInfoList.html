@@ -1,13 +1,9 @@
 <!DOCTYPE HTML>
-<html xmlns:th="http://www.thymeleaf.org">
-<head>
-    <meta charset="utf-8">
-    <link th:href="@{/css/bootstrap.min.css}"
-          href="../css/bootstrap.min.css" rel="stylesheet">
-</head>
+<html xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorator="layout/layout">
 <body>
 
-<div class="container" style="max-width: 1000px">
+<div class="container" style="max-width: 1000px" layout:fragment="content">
     <div class="py-5 text-center">
         <h2 th:text="#{page.sendInfo.list}">메일 설정 정보 목록</h2>
     </div>

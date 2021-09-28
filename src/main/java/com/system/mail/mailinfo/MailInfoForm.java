@@ -28,9 +28,6 @@ public class MailInfoForm {
     @NotNull
     private ContentType contentType;
 
-    @NotBlank(message = "content가 입력 되어야 합니다.")
-    private String content;
-
     private LocalDateTime createdDate;
 
     private LocalDateTime modifiedDate;

@@ -40,8 +40,6 @@ public class MailInfoService {
         mailInfo.setMailInfoName(mailInfoForm.getMailInfoName());
         mailInfo.setCharset(mailInfoForm.getCharset());
         mailInfo.setContentType(mailInfoForm.getContentType());
-        mailInfo.setContent(mailInfoForm.getContent());
-
     }
 
 }

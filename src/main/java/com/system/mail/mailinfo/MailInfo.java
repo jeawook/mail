@@ -40,11 +40,6 @@ public class MailInfo extends BaseTimeEntity {
     @AttributeOverride(name = "name", column = @Column(name = "replyToName"))
     private MailAddress replyTo;
 
-    //메일 제목
-    private String subject;
-    // 메일 본문
-    @NotBlank
-    private String content;
 
     // 메일의 charset ex) utf-8
     @NotBlank
@@ -62,7 +57,6 @@ public class MailInfo extends BaseTimeEntity {
                 .mailTo(mailInfoForm.getMailTo())
                 .replyTo(mailInfoForm.getReplyTo())
                 .charset(mailInfoForm.getCharset())
-                .contentType(mailInfoForm.getContentType())
-                .content(mailInfoForm.getContent());
+                .contentType(mailInfoForm.getContentType());
     }
 }
