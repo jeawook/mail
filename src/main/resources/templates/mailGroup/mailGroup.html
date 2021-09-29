@@ -1,20 +1,11 @@
 <!DOCTYPE HTML>
 <html xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
       layout:decorator="layout/layout">
-<head>
-    <meta charset="utf-8">
-    <link th:href="@{/css/bootstrap.min.css}" href="../css/bootstrap.min.css" rel="stylesheet">
-    <style>
-        .container {
-            max-width: 560px;
-        }
-    </style>
-</head>
 <body>
 
 <div class="container-fluid px-4" layout:fragment="content" th:object="${mailGroup}" >
 
-    <div class="py-5 text-center">
+    <div class="mt-4">
         <h2 th:text="#{page.mailGroup}">그룹 정보</h2>
     </div>
 
