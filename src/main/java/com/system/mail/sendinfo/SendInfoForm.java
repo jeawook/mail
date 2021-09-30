@@ -27,4 +27,6 @@ public class SendInfoForm {
     private Status status;
 
     private String subject;
+
+    private String content;
 }
