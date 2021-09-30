@@ -5,13 +5,24 @@
             <div class="sb-sidenav-menu">
                 <div class="nav">
                     <a class="nav-link" th:href="@{/sendInfo/list}" href="sendInfo/sendInfoList.html">
+                        <div class="sb-nav-link-icon"><i class="far fa-envelope"></i></div>
                         발송 관리
                     </a>
                     <a class="nav-link" th:href="@{/mailGroup/list}" href="mailGroup/mailGroupList.html">
+                        <div class="sb-nav-link-icon"><i class="fas fa-users"></i></div>
                         그룹 설정
                     </a>
                     <a class="nav-link" th:href="@{/mailInfo/list}" href="mailInfo/mailInfoList.html">
-                        메일 환경 설정
+                        <div class="sb-nav-link-icon"><i class="fas fa-cog"></i></div>
+                        메일 설정
+                    </a>
+                    <a class="nav-link" th:href="@{/template/list}" href="#!">
+                        <div class="sb-nav-link-icon"><i class="far fa-file"></i></div>
+                        Template 관리
+                    </a>
+                    <a class="nav-link" th:href="@{/api/list}" href="#!">
+                        <div class="sb-nav-link-icon"><i class="fas fa-cog"></i></div>
+                        Api 관리
                     </a>
                     <a class="nav-link" href="#">
                         api

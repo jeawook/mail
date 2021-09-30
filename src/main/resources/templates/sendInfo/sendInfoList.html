@@ -1,10 +1,15 @@
 <!DOCTYPE HTML>
 <html xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
-      layout:decorator="layout/layout">
+      layout:decorator="~{layout/layout}">
 <body>
 
+<<<<<<< Updated upstream
 <div class="container-fluid px-4"  layout:fragment="content">
     <div class="mt-4">
+=======
+<div class="container-fluid px-4" layout:fragment="content">
+    <div class="py-2">
+>>>>>>> Stashed changes
         <h2 th:text="#{page.sendInfo.list}">메일 설정 정보 목록</h2>
     </div>
 
@@ -24,8 +29,8 @@
             <tr>
                 <th th:text="#{label.id}">ID</th>
                 <th th:text="#{label.sendInfo.subject}">발송 정보</th>
-                <th th:text="#{label.sendTime}">발송 시간</th>
-                <th th:text="#{label.status}">발송 상태</th>
+                <th th:text="#{label.sendInfo.sendDate}">발송 시간</th>
+                <th th:text="#{label.sendInfo.status}">발송 상태</th>
                 <th th:text="#{label.createdDate}">등록일</th>
             </tr>
             </thead>

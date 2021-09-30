@@ -1,10 +1,20 @@
 <!DOCTYPE HTML>
+<<<<<<< Updated upstream
 <html xmlns:th="http://www.thymeleaf.org">
 <body>
 
 <div class="container-fluid px-4">
 
     <div class="mt-4">
+=======
+<html xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorator="~{layout/layout}">
+<body>
+
+<div class="container-fluid px-4" layout:fragment="content">
+
+    <div class="py-2">
+>>>>>>> Stashed changes
         <h2 th:text="#{page.sendInfo}">메일 등록</h2>
     </div>
 
@@ -35,7 +45,7 @@
         </div>
         <div>
             <label for="subject" th:text="#{label.sendInfo.subject}">제목</label>
-            <input type="text" id="subject" th:field="${sendInfo.subject}" class="form-control" th:value="${sendInfo.subject}" readonly>
+            <input type="text" id="subject" th:field="${sendInfo.subject}" class="form-control" th:value="${sendInfo.subject}" >
             <div class="field-error" th:errors="${sendInfo.subject}">
                 replyTo 오류
             </div>
@@ -45,7 +55,7 @@
             <textarea id="content" th:field="${sendInfo.content}"
                       th:errorclass="field-error"
                       class="form-control"
-                      rows="10" readonly>
+                      rows="10">
             </textarea>
             <div class="field-error" th:errors="${sendInfo.content}">
                 replyTo 오류

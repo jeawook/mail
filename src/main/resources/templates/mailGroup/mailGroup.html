@@ -1,11 +1,28 @@
 <!DOCTYPE HTML>
 <html xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+<<<<<<< Updated upstream
       layout:decorator="layout/layout">
+=======
+      layout:decorator="~{layout/layout}">
+<head>
+    <meta charset="utf-8">
+    <link th:href="@{/css/bootstrap.min.css}" href="../css/bootstrap.min.css" rel="stylesheet">
+    <style>
+        .container {
+            max-width: 560px;
+        }
+    </style>
+</head>
+>>>>>>> Stashed changes
 <body>
 
 <div class="container-fluid px-4" layout:fragment="content" th:object="${mailGroup}" >
 
+<<<<<<< Updated upstream
     <div class="mt-4">
+=======
+    <div class="py-2">
+>>>>>>> Stashed changes
         <h2 th:text="#{page.mailGroup}">그룹 정보</h2>
     </div>
 
@@ -61,7 +78,7 @@
         <div class="col">
             <button class="w-100 btn btn-secondary btn-lg"
                     onclick="location.href='mailGroupList.html'"
-                    th:onclick="|location.href='@{/mailGroup/mailGroupList}'|"
+                    th:onclick="|location.href='@{/mailGroup/list}'|"
                     type="button" th:text="#{button.list}">목록으로</button>
         </div>
     </div>
