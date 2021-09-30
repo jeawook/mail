@@ -13,7 +13,6 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import java.util.ArrayList;
-import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
 
@@ -38,7 +37,7 @@ public class MailGroupController {
     public String mailGroup(@PathVariable Long mailGroupId, Model model) {
         Optional<MailGroup> mailGroupById = mailGroupService.findMailGroupById(mailGroupId);
         if (mailGroupById.isEmpty()) {
-            return "mailGroup/mailGroupList";
+            return "redirect:mailGroup/mailGroupList";
         }
         model.addAttribute("mailGroup", mailGroupById.get());
 
@@ -92,13 +91,16 @@ public class MailGroupController {
 
         String macroKey = mailGroupForm.getMacroKey();
         int macroKeyCnt = countComma(macroKey);
+        checkComma(bindingResult, macroKeyCnt, mailGroupForm.getUserForms());
 
-        ArrayList<UserForm> userForms = mailGroupForm.getUserForms();
+    }
+
+    private void checkComma(BindingResult bindingResult, int macroKeyCnt, ArrayList<UserForm> userForms) {
         for (UserForm tmp : userForms) {
             int userMacroCnt = countComma(tmp.getMacroValue());
             if (macroKeyCnt != userMacroCnt) {
                 bindingResult.reject("macroError", "macroKey 와 macroValue 의 개수는 동일 하게 입력 되어야 합니다.");
-                return ;
+                return;
             }
         }
     }
