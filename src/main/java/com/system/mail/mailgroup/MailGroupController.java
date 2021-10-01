@@ -35,22 +35,22 @@ public class MailGroupController {
 
     @GetMapping("/{mailGroupId}")
     public String mailGroup(@PathVariable Long mailGroupId, Model model) {
-        Optional<MailGroup> mailGroupById = mailGroupService.findMailGroupById(mailGroupId);
-        if (mailGroupById.isEmpty()) {
+        MailGroup mailGroupById = mailGroupService.findMailGroupById(mailGroupId);
+        if (mailGroupById.getId() == null) {
             return "redirect:mailGroup/mailGroupList";
         }
-        model.addAttribute("mailGroup", mailGroupById.get());
+        model.addAttribute("mailGroup", mailGroupById);
 
         return "mailGroup/mailGroup";
     }
 
     @GetMapping("/{mailGroupId}/edit")
     public String editMailGroup(@PathVariable Long mailGroupId, Model model) {
-        Optional<MailGroup> mailGroupById = mailGroupService.findMailGroupById(mailGroupId);
-        if (mailGroupById.isEmpty()) {
+        MailGroup mailGroupById = mailGroupService.findMailGroupById(mailGroupId);
+        if (mailGroupById.getId() == null) {
             return "mailGroup/mailGroupList";
         }
-        model.addAttribute("mailGroup", mailGroupById.get());
+        model.addAttribute("mailGroup", mailGroupById);
         return "mailGroup/editMailGroup";
     }
 

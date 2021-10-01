@@ -24,6 +24,7 @@ public class SendInfoForm {
 
     private LocalDateTime createdDate;
 
+    @NotNull
     private Status status;
 
     private String subject;

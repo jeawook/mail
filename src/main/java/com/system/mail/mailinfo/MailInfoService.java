@@ -21,11 +21,11 @@ public class MailInfoService {
         return mailInfoRepository.save(mailInfo);
     }
 
-    public Optional<MailInfo> findMailInfoById(Long mailInfoId) {
-        return mailInfoRepository.findById(mailInfoId);
+    public MailInfo findMailInfoById(Long mailInfoId) {
+        return mailInfoRepository.findById(mailInfoId).orElseGet(MailInfo::new);
     }
 
-    public Page<MailInfo> findMailInfoList(Pageable pageable) {
+    public Page<MailInfo> findMailInfoListByPage(Pageable pageable) {
         return mailInfoRepository.findAll(pageable);
     }
 

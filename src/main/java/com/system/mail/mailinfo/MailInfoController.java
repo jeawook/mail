@@ -43,22 +43,22 @@ public class MailInfoController {
 
     @GetMapping("/{mailInfoId}")
     public String mailInfo(@PathVariable Long mailInfoId, Model model) {
-        Optional<MailInfo> mailInfo = mailInfoService.findMailInfoById(mailInfoId);
-        if (mailInfo.isEmpty()) {
+        MailInfo mailInfo = mailInfoService.findMailInfoById(mailInfoId);
+        if (mailInfo == null) {
             return "mailInfo/mailInfoList";
         }
 
-        model.addAttribute("mailInfo", mailInfo.get());
+        model.addAttribute("mailInfo", mailInfo);
         return "mailInfo/mailInfo";
     }
 
     @GetMapping("/{mailInfoId}/edit")
     public String editForm(@PathVariable Long mailInfoId, Model model) {
-        Optional<MailInfo> mailInfo = mailInfoService.findMailInfoById(mailInfoId);
-        if (mailInfo.isEmpty()) {
+        MailInfo mailInfo = mailInfoService.findMailInfoById(mailInfoId);
+        if (mailInfo.getId() == null) {
             return "mailInfo/mailInfoList";
         }
-        model.addAttribute("mailInfo", mailInfo.get());
+        model.addAttribute("mailInfo", mailInfo);
         return "mailInfo/editMailInfo";
     }
 
@@ -71,8 +71,8 @@ public class MailInfoController {
             System.out.println("mailInfoId = " + mailInfoId);
             return "mailInfo/editMailInfo";
         }
-        Optional<MailInfo> mailInfoById = mailInfoService.findMailInfoById(mailInfoId);
-        if (mailInfoById.isEmpty()) {
+        MailInfo mailInfoById = mailInfoService.findMailInfoById(mailInfoId);
+        if (mailInfoById == null) {
             return "mailInfo/mailInfoList";
         }
 

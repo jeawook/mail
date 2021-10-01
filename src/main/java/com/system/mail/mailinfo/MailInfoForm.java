@@ -33,7 +33,7 @@ public class MailInfoForm {
     private LocalDateTime modifiedDate;
 
     @Embedded
-    @NotNull(message = "mailFrom의 주소는 필수 로 입력 되어야 합니다.")
+    @NotNull(message = "mailFrom의 주소는 필수입니다.")
     private MailAddress mailFrom;
 
     @Embedded

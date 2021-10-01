@@ -10,15 +10,18 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.web.PageableDefault;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.validation.BindingResult;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Optional;
 
 @Controller
 @AllArgsConstructor
@@ -61,8 +64,32 @@ public class SendInfoController {
     }
 
     @PostMapping("/add")
-    public String create(@Validated @ModelAttribute(name = "sendInfo") SendInfoForm sendInfoForm) {
-        return "senInfo/sendInfo";
+    public String create(@Validated @ModelAttribute(name = "sendInfo") SendInfoForm sendInfoForm,
+                         BindingResult bindingResult, RedirectAttributes redirectAttributes) {
+        MailInfo mailInfo = mailInfoService.findMailInfoById(sendInfoForm.getMailInfoId());
+        MailGroup mailGroup = mailGroupService.findMailGroupById(sendInfoForm.getMailGroupId());
+
+        checkMailInfoNMailGroup(bindingResult, mailInfo, mailGroup);
+
+        if (bindingResult.hasErrors()) {
+            return "sendInfo/createSendInfo";
+        }
+
+        SendInfo sendInfo = SendInfo.SendInfo(sendInfoForm, mailInfo, mailGroup).build();
+        Long sendInfoId = sendInfoService.saveSendInfo(sendInfo).getId();
+
+        redirectAttributes.addAttribute("sendInfoId", sendInfoId);
+
+        return "redirect:/senInfo/{sendInfoId}";
+    }
+
+    private void checkMailInfoNMailGroup(BindingResult bindingResult, MailInfo mailInfoById, MailGroup mailGroupById) {
+        if (mailInfoById.getId() == null ) {
+            bindingResult.reject("field-error", "메일 그룹이 잘못 되었습니다.");
+        }
+        if (mailGroupById.getId() == null) {
+            bindingResult.reject("field-error", "메일 그룹이 잘못 되었습니다.");
+        }
     }
 
 }

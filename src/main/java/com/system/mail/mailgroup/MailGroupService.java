@@ -18,8 +18,8 @@ public class MailGroupService {
         return mailGroupRepository.save(mailGroup);
     }
 
-    public Optional<MailGroup> findMailGroupById(Long id) {
-        return mailGroupRepository.findById(id);
+    public MailGroup findMailGroupById(Long id) {
+        return mailGroupRepository.findById(id).orElseGet(MailGroup::new);
     }
 
     public Page<MailGroup> findMailGroupList(Pageable pageable) {

@@ -3,10 +3,7 @@ package com.system.mail.sendinfo;
 import com.system.mail.common.BaseTimeEntity;
 import com.system.mail.mailgroup.MailGroup;
 import com.system.mail.mailinfo.MailInfo;
-import lombok.AccessLevel;
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.NoArgsConstructor;
+import lombok.*;
 import org.springframework.web.bind.annotation.GetMapping;
 
 import javax.persistence.*;
@@ -16,7 +13,8 @@ import java.time.LocalDateTime;
 @Entity
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @AllArgsConstructor
-@Builder
+@Builder(builderMethodName = "SendInfoBuilder")
+@Getter
 public class SendInfo extends BaseTimeEntity {
 
     @Id @GeneratedValue
@@ -43,9 +41,7 @@ public class SendInfo extends BaseTimeEntity {
     @JoinColumn(name = "mail_group_id")
     private MailGroup mailGroup;
 
-    private void updateStatus(Status status) {
-        this.status = status;
-    }
+
     private void setMailInfo(MailInfo mailInfo) {
         this.mailInfo = mailInfo;
     }
@@ -54,5 +50,24 @@ public class SendInfo extends BaseTimeEntity {
     }
     private void setCompletedDate() {
         completedDate = LocalDateTime.now();
+    }
+
+    private void mailSending() {
+        this.status = Status.SENDING;
+    }
+    private void mailEnd() {
+        this.status = Status.COMPLETE;
+    }
+    private void mailWait() {
+        this.status = Status.WAIT;
+    }
+
+    public static SendInfoBuilder SendInfo(SendInfoForm sendInfoForm, MailInfo mailInfo, MailGroup mailGroup) {
+        return SendInfoBuilder().mailInfo(mailInfo)
+                .mailGroup(mailGroup)
+                .sendDate(sendInfoForm.getSendDate())
+                .subject(sendInfoForm.getSubject())
+                .content(sendInfoForm.getContent())
+                .status(Status.REGISTER);
     }
 }
