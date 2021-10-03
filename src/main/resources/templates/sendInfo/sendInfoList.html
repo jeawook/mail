@@ -38,6 +38,25 @@
             </tr>
             </tbody>
         </table>
+        <div>
+            <nav class="dataTable-pagination" aria-label="Page navigation" style="text-align:center;">
+                <ul class="dataTable-pagination-list" th:with="start=${T(Math).floor(sendInfoList.number/10)*10 + 1},
+                        last=(${(sendInfoList.totalPages == 0) ? 1 : (start + (maxPage - 1) < sendInfoList.totalPages ? start + (maxPage - 1) : sendInfoList.totalPages)})">
+                    <li><a aria-label="Previous" href="/sendInfo/list?page=1">&laquo;</a></li>
+                    <li th:style="${sendInfoList.first} ? 'display:none'">
+                        <a th:href="@{/sendInfo/list(page=${sendInfoList.number})}">&lsaquo;</a>
+                    </li>
+                    <li th:each="page: ${#numbers.sequence(start, last)}"
+                        th:class="${page == sendInfoList.number + 1} ? 'active'">
+                        <a th:text="${page}" th:href="@{/sendInfo/list(page=${page})}"></a>
+                    </li>
+                    <li th:style="${sendInfoList.last} ? 'display:none'">
+                        <a th:href="@{/sendInfo/list(page=${sendInfoList.number}+2)}">&rsaquo;</a>
+                    </li>
+                    <li><a aria-label="Next" class="pager" th:href="@{/sendInfo/list(page=${sendInfoList.totalPages})}">&raquo;</a></li>
+                </ul>
+            </nav>
+        </div>
     </div>
 
 </div> <!-- /container -->

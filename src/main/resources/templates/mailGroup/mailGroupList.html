@@ -3,11 +3,7 @@
       layout:decorator="~{layout/layout}">
 
 <div  class="container-fluid px-4" layout:fragment="content">
-<<<<<<< Updated upstream
-    <div class="mt-4">
-=======
     <div class="py-2">
->>>>>>> Stashed changes
         <h2 th:text="#{page.mailGroup.list}">메일 설정 정보 목록</h2>
     </div>
 
@@ -40,8 +36,24 @@
             </tr>
             </tbody>
         </table>
+        <nav class="dataTable-pagination" aria-label="Page navigation" style="text-align:center;">
+            <ul class="dataTable-pagination-list" th:with="start=${T(Math).floor(mailGroupList.number/10)*10 + 1},
+                    last=(${(mailGroupList.totalPages == 0) ? 1 : (start + (maxPage - 1) < mailGroupList.totalPages ? start + (maxPage - 1) : mailGroupList.totalPages)})">
+                <li><a aria-label="Previous" href="/mailGroup/list?page=1">&laquo;</a></li>
+                <li th:style="${mailGroupList.first} ? 'display:none'">
+                    <a th:href="@{/mailGroup/list(page=${mailGroupList.number})}">&lsaquo;</a>
+                </li>
+                <li th:each="page: ${#numbers.sequence(start, last)}"
+                    th:class="${page == mailGroupList.number + 1} ? 'active'">
+                    <a th:text="${page}" th:href="@{/mailGroup/list(page=${page})}"></a>
+                </li>
+                <li th:style="${mailGroupList.last} ? 'display:none'">
+                    <a th:href="@{/mailGroup/list(page=${mailGroupList.number}+2)}">&rsaquo;</a>
+                </li>
+                <li><a aria-label="Next" class="pager" th:href="@{/mailGroup/list(page=${mailGroupList.totalPages})}">&raquo;</a></li>
+            </ul>
+        </nav>
     </div>
-
 </div> <!-- /container -->
 
 </body>
