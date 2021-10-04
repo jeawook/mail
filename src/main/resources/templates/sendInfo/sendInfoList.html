@@ -39,21 +39,22 @@
             </tbody>
         </table>
         <div>
-            <nav class="dataTable-pagination" aria-label="Page navigation" style="text-align:center;">
-                <ul class="dataTable-pagination-list" th:with="start=${T(Math).floor(sendInfoList.number/10)*10 + 1},
-                        last=(${(sendInfoList.totalPages == 0) ? 1 : (start + (maxPage - 1) < sendInfoList.totalPages ? start + (maxPage - 1) : sendInfoList.totalPages)})">
-                    <li><a aria-label="Previous" href="/sendInfo/list?page=1">&laquo;</a></li>
+            <nav class="dataTable-pagination" aria-label="Page navigation">
+                <ul class="dataTable-pagination-list justify-content-center" th:with="start=${T(Math).floor(sendInfoList.number/10)*10 + 1},
+                    maxPage=${sendInfoList.totalPages},
+                    last=(${maxPage == 0 ? 1 : (start + (maxPage - 1) < maxPage ? start + (maxPage - 1) : maxPage)})">
+                    <li><a aria-label="Previous" href="/sendInfo/list?page=0">&laquo;</a></li>
                     <li th:style="${sendInfoList.first} ? 'display:none'">
-                        <a th:href="@{/sendInfo/list(page=${sendInfoList.number})}">&lsaquo;</a>
+                        <a th:href="@{/sendInfo/list(page=${sendInfoList.number - 1})}">&lsaquo;</a>
                     </li>
                     <li th:each="page: ${#numbers.sequence(start, last)}"
-                        th:class="${page == sendInfoList.number + 1} ? 'active'">
-                        <a th:text="${page}" th:href="@{/sendInfo/list(page=${page})}"></a>
+                        th:class="${page - 1 == sendInfoList.number} ? 'active'">
+                        <a th:text="${page}" th:href="@{/sendInfo/list(page=${page - 1})}"></a>
                     </li>
                     <li th:style="${sendInfoList.last} ? 'display:none'">
-                        <a th:href="@{/sendInfo/list(page=${sendInfoList.number}+2)}">&rsaquo;</a>
+                        <a th:href="@{/sendInfo/list(page=${sendInfoList.number}+1)}">&rsaquo;</a>
                     </li>
-                    <li><a aria-label="Next" class="pager" th:href="@{/sendInfo/list(page=${sendInfoList.totalPages})}">&raquo;</a></li>
+                    <li><a aria-label="Next" class="pager" th:href="@{/sendInfo/list(page=${maxPage - 1})}">&raquo;</a></li>
                 </ul>
             </nav>
         </div>

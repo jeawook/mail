@@ -29,26 +29,26 @@
             <label for="sendDate" th:text="#{label.sendInfo.sendDate}">발송시간</label>
             <input type="text" id="sendDate" th:field="*{sendDate}"
                    th:errorclass="field-error"
-                   class="form-control" th:placeholder="${#calendars.format(#calendars.createNow(), 'yyyyddMMHHmm')}">
+                   class="form-control" th:value="${#calendars.format(#calendars.createNow(), 'yyyyMMddHHmm')}">
             <div class="field-error" th:errors="*{sendDate}">
                 발송일 오류
             </div>
         </div>
         <div>
             <label for="subject" th:text="#{label.sendInfo.subject}">제목</label>
-            <input type="text" id="subject" th:field="${sendInfo.subject}" class="form-control" th:value="${sendInfo.subject}" >
-            <div class="field-error" th:errors="${sendInfo.subject}">
+            <input type="text" id="subject" th:field="*{subject}" class="form-control" th:value="*{subject}" >
+            <div class="field-error" th:errors="*{subject}">
                 replyTo 오류
             </div>
         </div>
         <div>
             <label for="content" th:text="#{label.sendInfo.content}">메일 본문</label>
-            <textarea id="content" th:field="${sendInfo.content}"
+            <textarea id="content" th:field="*{content}"
                       th:errorclass="field-error"
                       class="form-control"
                       rows="10">
             </textarea>
-            <div class="field-error" th:errors="${sendInfo.content}">
+            <div class="field-error" th:errors="*{content}">
                 replyTo 오류
             </div>
         </div>

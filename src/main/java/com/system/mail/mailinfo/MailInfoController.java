@@ -29,6 +29,7 @@ public class MailInfoController {
      */
     @GetMapping("/list")
     public String mailInfoList(@PageableDefault(size = 10, sort = "id") Pageable pageable, Model model) {
+
         Page<MailInfo> mailInfoList = mailInfoService.findMailInfoListByPage(pageable);
         model.addAttribute("mailInfoList", mailInfoList);
         return "mailInfo/mailInfoList";
@@ -100,4 +101,5 @@ public class MailInfoController {
 
         return "redirect:/mailInfo/{mailInfoId}";
     }
+
 }

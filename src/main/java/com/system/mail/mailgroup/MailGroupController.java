@@ -12,6 +12,7 @@ import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
+import javax.annotation.PostConstruct;
 import java.util.ArrayList;
 import java.util.Optional;
 import java.util.stream.Collectors;
@@ -111,5 +112,51 @@ public class MailGroupController {
 
     private ArrayList<User> userFormListToUserList(ArrayList<UserForm> userFormList, MailGroup mailGroup) {
         return new ArrayList<>(userFormList.stream().map(userForm -> modelMapper.map(userForm, User.class)).collect(Collectors.toList()));
+    }
+
+    /**
+     * paging 처리 확인을 위한 데이터
+     */
+    @PostConstruct
+    public void init() {
+        mailGroupService.saveMailGroup(MailGroup.builder().mailGroupName("테스트1").build());
+        mailGroupService.saveMailGroup(MailGroup.builder().mailGroupName("테스트2").build());
+        mailGroupService.saveMailGroup(MailGroup.builder().mailGroupName("테스트3").build());
+        mailGroupService.saveMailGroup(MailGroup.builder().mailGroupName("테스트4").build());
+        mailGroupService.saveMailGroup(MailGroup.builder().mailGroupName("테스트5").build());
+        mailGroupService.saveMailGroup(MailGroup.builder().mailGroupName("테스트6").build());
+        mailGroupService.saveMailGroup(MailGroup.builder().mailGroupName("테스트7").build());
+        mailGroupService.saveMailGroup(MailGroup.builder().mailGroupName("테스트8").build());
+        mailGroupService.saveMailGroup(MailGroup.builder().mailGroupName("테스트9").build());
+        mailGroupService.saveMailGroup(MailGroup.builder().mailGroupName("테스트10").build());
+        mailGroupService.saveMailGroup(MailGroup.builder().mailGroupName("테스트11").build());
+        mailGroupService.saveMailGroup(MailGroup.builder().mailGroupName("테스트12").build());
+        mailGroupService.saveMailGroup(MailGroup.builder().mailGroupName("테스트13").build());
+        mailGroupService.saveMailGroup(MailGroup.builder().mailGroupName("테스트1").build());
+        mailGroupService.saveMailGroup(MailGroup.builder().mailGroupName("테스트2").build());
+        mailGroupService.saveMailGroup(MailGroup.builder().mailGroupName("테스트3").build());
+        mailGroupService.saveMailGroup(MailGroup.builder().mailGroupName("테스트4").build());
+        mailGroupService.saveMailGroup(MailGroup.builder().mailGroupName("테스트5").build());
+        mailGroupService.saveMailGroup(MailGroup.builder().mailGroupName("테스트6").build());
+        mailGroupService.saveMailGroup(MailGroup.builder().mailGroupName("테스트7").build());
+        mailGroupService.saveMailGroup(MailGroup.builder().mailGroupName("테스트8").build());
+        mailGroupService.saveMailGroup(MailGroup.builder().mailGroupName("테스트9").build());
+        mailGroupService.saveMailGroup(MailGroup.builder().mailGroupName("테스트10").build());
+        mailGroupService.saveMailGroup(MailGroup.builder().mailGroupName("테스트11").build());
+        mailGroupService.saveMailGroup(MailGroup.builder().mailGroupName("테스트12").build());
+        mailGroupService.saveMailGroup(MailGroup.builder().mailGroupName("테스트13").build());
+        mailGroupService.saveMailGroup(MailGroup.builder().mailGroupName("테스트1").build());
+        mailGroupService.saveMailGroup(MailGroup.builder().mailGroupName("테스트2").build());
+        mailGroupService.saveMailGroup(MailGroup.builder().mailGroupName("테스트3").build());
+        mailGroupService.saveMailGroup(MailGroup.builder().mailGroupName("테스트4").build());
+        mailGroupService.saveMailGroup(MailGroup.builder().mailGroupName("테스트5").build());
+        mailGroupService.saveMailGroup(MailGroup.builder().mailGroupName("테스트6").build());
+        mailGroupService.saveMailGroup(MailGroup.builder().mailGroupName("테스트7").build());
+        mailGroupService.saveMailGroup(MailGroup.builder().mailGroupName("테스트8").build());
+        mailGroupService.saveMailGroup(MailGroup.builder().mailGroupName("테스트9").build());
+        mailGroupService.saveMailGroup(MailGroup.builder().mailGroupName("테스트10").build());
+        mailGroupService.saveMailGroup(MailGroup.builder().mailGroupName("테스트11").build());
+        mailGroupService.saveMailGroup(MailGroup.builder().mailGroupName("테스트12").build());
+        mailGroupService.saveMailGroup(MailGroup.builder().mailGroupName("테스트13").build());
     }
 }

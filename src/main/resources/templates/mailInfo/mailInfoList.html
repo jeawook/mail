@@ -37,21 +37,22 @@
             </tr>
             </tbody>
         </table>
-        <nav class="dataTable-pagination" aria-label="Page navigation" style="text-align:center;">
-            <ul class="dataTable-pagination-list" th:with="start=${T(Math).floor(mailInfoList.number/10)*10 + 1},
-                    last=(${(mailInfoList.totalPages == 0) ? 1 : (start + (maxPage - 1) < mailInfoList.totalPages ? start + (maxPage - 1) : mailInfoList.totalPages)})">
-                <li><a aria-label="Previous" href="/mailInfo/list?page=1">&laquo;</a></li>
+        <nav class="dataTable-pagination" aria-label="Page navigation">
+            <ul class="dataTable-pagination-list justify-content-center" th:with="start=${T(Math).floor(mailInfoList.number/10)*10 + 1},
+                    maxPage=${mailInfoList.totalPages},
+                    last=(${maxPage == 0 ? 1 : (start + (maxPage - 1) < maxPage ? start + (maxPage - 1) : maxPage)})">
+                <li><a aria-label="Previous" href="/mailInfo/list?page=0">&laquo;</a></li>
                 <li th:style="${mailInfoList.first} ? 'display:none'">
-                    <a th:href="@{/mailInfo/list(page=${mailInfoList.number})}">&lsaquo;</a>
+                    <a th:href="@{/mailInfo/list(page=${mailInfoList.number - 1})}">&lsaquo;</a>
                 </li>
                 <li th:each="page: ${#numbers.sequence(start, last)}"
-                    th:class="${page == mailInfoList.number + 1} ? 'active'">
-                    <a th:text="${page}" th:href="@{/mailInfo/list(page=${page})}"></a>
+                    th:class="${page - 1 == mailInfoList.number} ? 'active'">
+                    <a th:text="${page}" th:href="@{/mailInfo/list(page=${page - 1})}"></a>
                 </li>
                 <li th:style="${mailInfoList.last} ? 'display:none'">
-                    <a th:href="@{/mailInfo/list(page=${mailInfoList.number}+2)}">&rsaquo;</a>
+                    <a th:href="@{/mailInfo/list(page=${mailInfoList.number}+1)}">&rsaquo;</a>
                 </li>
-                <li><a aria-label="Next" class="pager" th:href="@{/mailInfo/list(page=${mailInfoList.totalPages})}">&raquo;</a></li>
+                <li><a aria-label="Next" class="pager" th:href="@{/mailInfo/list(page=${maxPage - 1})}">&raquo;</a></li>
             </ul>
         </nav>
     </div>

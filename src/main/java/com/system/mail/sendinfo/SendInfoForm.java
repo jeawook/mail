@@ -1,6 +1,7 @@
 package com.system.mail.sendinfo;
 
 import lombok.Data;
+import org.springframework.format.annotation.DateTimeFormat;
 
 import javax.validation.constraints.NotNull;
 import java.time.LocalDateTime;
@@ -18,6 +19,7 @@ public class SendInfoForm {
     private Long mailInfoId;
 
     @NotNull
+    @DateTimeFormat(pattern = "yyyyMMddHHmm")
     private LocalDateTime sendDate;
 
     private LocalDateTime completedDate;

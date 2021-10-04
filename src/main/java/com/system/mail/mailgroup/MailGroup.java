@@ -8,6 +8,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 @Entity
+@AllArgsConstructor
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @Getter @Setter
 public class MailGroup extends BaseTimeEntity {
@@ -31,4 +32,11 @@ public class MailGroup extends BaseTimeEntity {
     public void setUsers(ArrayList<User> users) {
         users.forEach(this::addUser);
     }
+
+    @Builder
+    public MailGroup(String mailGroupName) {
+        this.mailGroupName = mailGroupName;
+    }
 }
+
+
