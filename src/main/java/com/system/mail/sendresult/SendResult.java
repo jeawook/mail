@@ -9,6 +9,7 @@ import javax.persistence.*;
 import javax.validation.constraints.Min;
 import javax.validation.constraints.NotNull;
 import java.time.LocalDateTime;
+import java.util.ArrayList;
 
 @Entity
 @Builder
@@ -28,5 +29,7 @@ public class SendResult {
     @NotNull
     @Min(0)
     private Long completedCnt;
+
+    private ArrayList<SendResultDetail> sendResultDetails = new ArrayList<>();
 
 }

@@ -24,4 +24,6 @@ public class SendResultDetail {
 
     private String completedDate;
 
+    private SendResult sendResult;
+
 }

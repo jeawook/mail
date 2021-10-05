@@ -43,13 +43,6 @@ public class DNSLookup
             // get the DNS records for inetAddress
 
             Attributes attributes = iDirC.getAttributes("dns:\\"+inetAddress.getHostName(), new String[] {record});
-            // get an enumeration of the attributes and print them out
-            //NamingEnumeration<?> attributeEnumeration = attributes.getAll();
-/*          while (attributeEnumeration.hasMore())
-            {
-                System.out.println("" + attributeEnumeration.next());
-            }
-            attributeEnumeration.close();*/
             Attribute mxRecord = attributes.get(record);
             for (int i=0; i<mxRecord.size();i++) {
                 System.out.println(mxRecord.get(i));
