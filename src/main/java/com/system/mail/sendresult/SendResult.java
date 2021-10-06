@@ -10,9 +10,9 @@ import javax.validation.constraints.Min;
 import javax.validation.constraints.NotNull;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
+import java.util.List;
 
 @Entity
-@Builder
 @Getter
 public class SendResult {
 
@@ -30,6 +30,7 @@ public class SendResult {
     @Min(0)
     private Long completedCnt;
 
-    private ArrayList<SendResultDetail> sendResultDetails = new ArrayList<>();
+    @OneToMany(mappedBy = "sendResult")
+    private List<SendResultDetail> sendResultDetails = new ArrayList<>();
 
 }

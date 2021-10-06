@@ -1,6 +1,8 @@
 package com.system.mail.mailprocessor;
 
+import com.system.mail.sendinfo.SendInfo;
 import lombok.AllArgsConstructor;
+import lombok.RequiredArgsConstructor;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Component;
@@ -12,7 +14,7 @@ import java.io.PrintStream;
 import java.net.Socket;
 
 @Component
-@AllArgsConstructor
+@RequiredArgsConstructor
 public class SocketMailSender {
 
     private Socket smtp;
@@ -26,10 +28,14 @@ public class SocketMailSender {
 
     private final DNSLookup dnsLookup;
 
-    private boolean isConnect(String domain) throws IOException, SMTPException {
-        String lookup = dnsLookup.lookup(domain);
+    public void send(SendInfo sendInfo) {
 
-        setSocket(lookup);
+
+    }
+
+    private boolean isConnect(String domain) throws IOException, SMTPException {
+
+        setSocket(dnsLookup.lookup(domain));
 
         String code = getCode(getMessage());
         if (!code.equals(SmtpCode.GREETING)) {
@@ -38,8 +44,13 @@ public class SocketMailSender {
         return true;
     }
 
-    private void setSocket(String lookup) throws IOException {
-        smtp = new Socket(lookup, PORT);
+    /**
+     * socket 연결
+     * @param mxAddress
+     * @throws IOException
+     */
+    private void setSocket(String mxAddress) throws IOException {
+        smtp = new Socket(mxAddress, PORT);
         smtp.setSoTimeout(SOCKET_TIME_OUT);
         input = new BufferedReader(new InputStreamReader(smtp.getInputStream()));
     }
