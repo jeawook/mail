@@ -22,4 +22,9 @@ public class MailAddress {
     public static MailAddressBuilder builder(String name, String email) {
         return MailAddressBuilder().name(name).email(email);
     }
+
+    public String getDomain() {
+        int index = email.indexOf("@");
+        return email.substring(index+1, email.length());
+    }
 }

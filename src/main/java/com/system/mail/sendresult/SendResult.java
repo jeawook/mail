@@ -19,14 +19,12 @@ public class SendResult {
     @Id @GeneratedValue
     @Column(name = "send_result_id")
     private Long id;
-    @NotNull
+
     private Status status;
 
-    @NotNull
     @Min(1)
     private Long totalCnt;
 
-    @NotNull
     @Min(0)
     private Long completedCnt;
 

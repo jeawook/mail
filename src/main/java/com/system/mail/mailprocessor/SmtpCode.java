@@ -1,18 +1,16 @@
 package com.system.mail.mailprocessor;
 
+public enum SMTPCode {
+    GREETING("220"), SERVER_CLOSE("221"), SUCCESS("250"), PROCESS("354"), MAIL_BOX_ERROR("450"),
+    MAIL_BOX_FULL("550"), NO_SUCH_USER("550"), SERVER_ERROR("530");
 
-public class SmtpCode {
+    private String value;
 
-    public static final String GREETING = "220";
-    public static final String SERVER_CLOSE = "221";
-    public static final String SUCCESS = "250";
+    SMTPCode(String value) {
+        this.value = value;
+    }
 
-    public static final String PROCESS = "354";
-
-    public static final String MAIL_BOX_ERROR = "450";
-
-    public static final String MAIL_BOX_FULL = "552";
-    public static final String NO_SUCH_USER = "550";
-
-    public static final String SERVER_ERROR = "530";
+    public String getValue() {
+        return value;
+    }
 }
