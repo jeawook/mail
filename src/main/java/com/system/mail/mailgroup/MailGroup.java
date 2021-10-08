@@ -29,6 +29,10 @@ public class MailGroup extends BaseTimeEntity {
         user.setMailGroup(this);
     }
 
+    public int getUserCnt() {
+        return users.size();
+    }
+
     public void setUsers(ArrayList<User> users) {
         users.forEach(this::addUser);
     }

@@ -17,8 +17,8 @@ public class SendInfoService {
         return sendInfoRepository.save(sendInfo);
     }
 
-    public Optional<SendInfo> findSendInfoById(Long id) {
-        return sendInfoRepository.findById(id);
+    public SendInfo findSendInfoById(Long id) {
+        return sendInfoRepository.findById(id).orElseGet(SendInfo::new);
     }
 
     public Page<SendInfo> findSendInfoList(Pageable pageable) {

@@ -3,6 +3,7 @@ package com.system.mail.sendinfo;
 import com.system.mail.common.BaseTimeEntity;
 import com.system.mail.mailgroup.MailGroup;
 import com.system.mail.mailinfo.MailInfo;
+import com.system.mail.sendresult.SendResult;
 import lombok.*;
 import org.springframework.web.bind.annotation.GetMapping;
 
@@ -41,6 +42,10 @@ public class SendInfo extends BaseTimeEntity {
     @JoinColumn(name = "mail_group_id")
     private MailGroup mailGroup;
 
+    @OneToOne(cascade = CascadeType.ALL)
+    @JoinColumn(name = "send_result_id")
+    private SendResult sendResult;
+
 
     private void setMailInfo(MailInfo mailInfo) {
         this.mailInfo = mailInfo;
@@ -48,18 +53,22 @@ public class SendInfo extends BaseTimeEntity {
     private void setMailGroup(MailGroup mailGroup) {
         this.mailGroup = mailGroup;
     }
-    private void setCompletedDate() {
+    private void setComplete() {
         completedDate = LocalDateTime.now();
     }
 
-    private void mailSending() {
+    public void mailStatusSending() {
         this.status = Status.SENDING;
     }
-    private void mailEnd() {
+    public void mailStatusEnd() {
         this.status = Status.COMPLETE;
     }
-    private void mailWait() {
+    public void mailStatusWait() {
         this.status = Status.WAIT;
+    }
+
+    public void setSendResult(SendResult sendResult) {
+        this.sendResult = sendResult;
     }
 
     public static SendInfoBuilder SendInfo(SendInfoForm sendInfoForm, MailInfo mailInfo, MailGroup mailGroup) {

@@ -25,6 +25,10 @@ public class MailAddress {
 
     public String getDomain() {
         int index = email.indexOf("@");
-        return email.substring(index+1, email.length());
+        return email.substring(index+1);
+    }
+
+    public String getHeaderAddress() {
+        return "\"" + name + '\"'+email ;
     }
 }

@@ -1,9 +1,12 @@
 package com.system.mail.mailprocessor;
 
+import com.system.mail.sendresultdetail.SendResultDetail;
+import com.system.mail.sendresultdetail.SendResultDetailService;
 import lombok.RequiredArgsConstructor;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Component;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -25,23 +28,35 @@ public class SocketMailSender {
     private Logger logger = LoggerFactory.getLogger(this.getClass());
 
     private final DNSLookup dnsLookup;
+    private final SendResultDetailService sendResultDetailService;
 
+    @Transactional
     public void send(MailDTO mailDTO) {
+        SendResultDetail sendResultDetail = sendResultDetailService.findById(mailDTO.getResultDetailId());
+        String result = "";
         try {
             if (isConnect(mailDTO.getDomain())) {
-                sendMessage(createMessage(SMTP.HELO, mailDTO.getHelo()), SMTPCode.SUCCESS);
+                sendMessage(createMessage(SMTP.HELO, SERVER_DOMAIN), SMTPCode.SUCCESS);
                 sendMessage(createMessage(SMTP.MAILFROM, mailDTO.getMailFrom()), SMTPCode.SUCCESS);
                 sendMessage(createMessage(SMTP.RECPTO, mailDTO.getRcpTo()), SMTPCode.SUCCESS);
                 sendMessage(SMTP.DATA.getValue(), SMTPCode.PROCESS);
                 sendMessage(mailDTO.getData());
-                String result = sendMessage(SMTP.DOT.getValue(), SMTPCode.SUCCESS);
+                result = sendMessage(SMTP.DOT.getValue(), SMTPCode.SUCCESS);
                 sendMessage(SMTP.QUIT.getValue(), SMTPCode.SERVER_CLOSE);
+            } else {
+                sendResultDetail.setResult(SMTPCode.SERVER_ERROR.getValue(), SMTPCode.SERVER_ERROR.name());
+                return;
             }
         } catch (SMTPException e) {
-
+            sendResultDetail.setResult(e.getCode(), e.getMessage());
+            return;
         } catch (IOException e) {
-
+            sendResultDetail.setResult(SMTPCode.SERVER_ERROR.getValue(), SMTPCode.SERVER_ERROR.name());
+            return;
+        } finally {
+            quit();
         }
+        sendResultDetail.setResult(SMTPCode.SUCCESS.getValue(), result);
     }
     private boolean isConnect(String domain) throws IOException, SMTPException {
 
@@ -92,5 +107,16 @@ public class SocketMailSender {
             throw new SMTPException("Smtp protocol Exception ", message);
         }
         return message.substring(0, 3);
+    }
+
+    private void quit(){
+        try{
+            input.close();
+            output.flush();
+            output.close();
+            smtp.close();
+        }catch(Exception e){
+            logger.trace("connection close Error :  " + e.getMessage());
+        }
     }
 }

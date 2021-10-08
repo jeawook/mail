@@ -9,6 +9,9 @@ public class SendResultService {
 
     private final SendResultRepository sendResultRepository;
 
+    public SendResult saveSendResult(SendResult sendResult) {
+        return sendResultRepository.save(sendResult);
+    }
     public SendResult findSendResultById(Long id) {
         return sendResultRepository.findById(id).orElseGet(null);
     }
