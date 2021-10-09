@@ -11,13 +11,17 @@ import static java.util.Base64.Encoder;
 @Component
 public class MailHeaderEncoder {
 
+    public String encode(String header, String value, String charset) {
+        return encodeHeader(create(header, value), charset);
+    }
     private String create(String key, String value) {
         return String.format("%s: %s%s", key, value, "\r\n");
     }
 
-    public String encode(String header, String value, String charset) {
-        return encodeHeader(create(header, value), charset);
+    public String encodeNameHeader(String key, String value, String charset) {
+        return encodeNameHeader(create(key, value), charset);
     }
+
     private String encodeNameHeader(String value, String charset) {
         Encoder encoder = Base64.getEncoder();
         String encoded;

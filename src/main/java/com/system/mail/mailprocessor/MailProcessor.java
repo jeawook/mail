@@ -17,14 +17,17 @@ import org.springframework.transaction.annotation.Transactional;
 import java.time.LocalDateTime;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Set;
 import java.util.stream.Collectors;
 
 @Component
 @RequiredArgsConstructor
 public class MailProcessor {
 
-    private static HashMap<String, Integer> connectionInfo = new HashMap<>();
+    private static HashMap<String, Integer> connectionCnt = new HashMap<>();
 
+    private final HashMap<String, Integer> connectionInfo;
+    private final MailProperties mailProperties;
     private final MailHeaderEncoder mailHeaderEncoder;
     private final SendInfoService sendInfoService;
     private final SendResultService sendResultService;
@@ -43,22 +46,38 @@ public class MailProcessor {
         sendInfo.mailStatusEnd();
     }
 
-    private void makeHeader(SendInfo sendInfo) {
+    private String makeHeader(SendInfo sendInfo) {
         StringBuffer sb = new StringBuffer();
-        String charset = sendInfo.getMailInfo().getCharset();
         MailInfo mailInfo = sendInfo.getMailInfo();
+        String charset = getCharset(mailInfo);
 
         sb.append(encodeHeader(MailHeader.SUBJECT, sendInfo.getSubject(), charset));
-        sb.append(encodeHeader(MailHeader.FROM, mailInfo.getHeaderFrom(), charset));
-        sb.append(encodeHeader(MailHeader.REPLY_TO, mailInfo.getHeaderReply(), charset));
         sb.append(encodeHeader(MailHeader.DATE, LocalDateTime.now().toString(), charset));
-        
+        sb.append(encodeNameHeader(MailHeader.FROM, mailInfo.getHeaderFrom(), charset));
+        sb.append(encodeNameHeader(MailHeader.REPLY_TO, mailInfo.getHeaderReply(), charset));
+        sb.append(encodeNameHeader(MailHeader.TO, mailInfo.getHeaderTo(), charset));
+        createHeaderProperties(sb, charset);
 
+        return sb.toString();
+    }
 
+    private void createHeaderProperties(StringBuffer sb, String charset) {
+        Set<String> properties = mailProperties.getProperties();
+        properties.forEach(propertyKey -> sb.append(mailHeaderEncoder.encode(propertyKey, mailProperties.getProperty(propertyKey), charset)));
+    }
 
+    private String getCharset(MailInfo mailInfo) {
+        String charset = mailInfo.getCharset();
+        if (charset == null || charset.equals("")) {
+            return mailProperties.getProperty(MailHeader.CHARSET.getValue());
+        }
+        return charset;
     }
     private String encodeHeader(MailHeader mailHeader, String value, String charset ) {
         return mailHeaderEncoder.encode(mailHeader.getValue(), value, charset);
+    }
+    private String encodeNameHeader(MailHeader mailHeader, String value, String charset ) {
+        return mailHeaderEncoder.encodeNameHeader(mailHeader.getValue(), value, charset);
     }
 
     private SendResult getSendResult(MailGroup mailGroup) {

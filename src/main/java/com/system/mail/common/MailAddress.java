@@ -29,6 +29,10 @@ public class MailAddress {
     }
 
     public String getHeaderAddress() {
-        return "\"" + name + '\"'+email ;
+        return "\"" + name + "\""+getAddress() ;
+    }
+
+    public String getAddress() {
+        return "<"+email+">";
     }
 }

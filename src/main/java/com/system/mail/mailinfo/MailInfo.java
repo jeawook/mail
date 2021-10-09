@@ -56,9 +56,10 @@ public class MailInfo extends BaseTimeEntity {
     public String getHeaderReply() {
         return replyTo.getHeaderAddress();
     }
-    public String getHeaderMailTo() {
+    public String getHeaderTo() {
         return mailTo.getHeaderAddress();
     }
+
     public static MailInfoBuilder builder(MailInfoForm mailInfoForm) {
         return MailInfoBuilder()
                 .mailInfoName(mailInfoForm.getMailInfoName())

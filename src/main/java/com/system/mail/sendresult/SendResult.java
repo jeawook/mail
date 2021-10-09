@@ -30,6 +30,9 @@ public class SendResult {
     @OneToMany(mappedBy = "sendResult", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     private List<SendResultDetail> sendResultDetails = new ArrayList<>();
 
+    private void addCompleteCnt() {
+        this.completedCnt++;
+    }
 
     public void addSendResultDetail(SendResultDetail sendResultDetail) {
         this.sendResultDetails.add(sendResultDetail);
