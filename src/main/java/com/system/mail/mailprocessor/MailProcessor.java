@@ -46,10 +46,14 @@ public class MailProcessor {
     private void makeHeader(SendInfo sendInfo) {
         StringBuffer sb = new StringBuffer();
         String charset = sendInfo.getMailInfo().getCharset();
-        String subject = encodeHeader(MailHeader.SUBJECT, sendInfo.getSubject(), charset);
-        String mailFrom = encodeHeader(MailHeader.FROM, sendInfo.getMailInfo().getHeaderFrom(), charset);
-        String replyTo = encodeHeader(MailHeader.REPLY_TO, sendInfo.getMailInfo().getHeaderReply(), charset);
-        encodeHeader(MailHeader.DATE, LocalDateTime.now().toString(), charset);
+        MailInfo mailInfo = sendInfo.getMailInfo();
+
+        sb.append(encodeHeader(MailHeader.SUBJECT, sendInfo.getSubject(), charset));
+        sb.append(encodeHeader(MailHeader.FROM, mailInfo.getHeaderFrom(), charset));
+        sb.append(encodeHeader(MailHeader.REPLY_TO, mailInfo.getHeaderReply(), charset));
+        sb.append(encodeHeader(MailHeader.DATE, LocalDateTime.now().toString(), charset));
+        
+
 
 
     }
