@@ -1,5 +1,7 @@
 package com.system.mail.sendresult;
 
+import com.system.mail.mailgroup.MailGroup;
+import com.system.mail.mailgroup.User;
 import com.system.mail.sendinfo.SendInfo;
 import com.system.mail.sendinfo.Status;
 import com.system.mail.sendresultdetail.SendResultDetail;
@@ -21,6 +23,10 @@ public class SendResult {
     @Column(name = "send_result_id")
     private Long id;
 
+    @OneToOne
+    @JoinColumn(name = "mail_group_id")
+    private MailGroup mailGroup;
+
     @Min(1)
     private int totalCnt;
 
@@ -39,13 +45,13 @@ public class SendResult {
         sendResultDetail.setSendResult(this);
     }
 
-    public void addSendResultDetails(List<SendResultDetail> sendResultDetails) {
-        sendResultDetails.forEach(this::addSendResultDetail);
+    public void createSendResultDetails(List<User> users) {
+        users.forEach(user -> addSendResultDetail(SendResultDetail.SendResultDetail(user).build()));
     }
 
 
-    public static SendResultBuilder SendResult(int totalCnt) {
-        return SendResultBuilder().totalCnt(totalCnt).completedCnt(0);
+    public static SendResultBuilder SendResult(MailGroup mailGroup) {
+        return SendResultBuilder().mailGroup(mailGroup).totalCnt(mailGroup.getUserCnt()).completedCnt(0);
     }
 
 

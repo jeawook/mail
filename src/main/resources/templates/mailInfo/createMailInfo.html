@@ -25,9 +25,19 @@
             <label for="charset" th:text="#{label.mailInfo.charset}">charset</label>
             <input type="text" id="charset" th:field="*{charset}"
                    th:errorclass="field-error"
-                   class="form-control" placeholder="charset 입력 ex)utf-8">
+                   class="form-control" placeholder="utf-8">
             <div class="field-error" th:errors="*{charset}">
                 charset 오류
+            </div>
+        </div>
+        <div>
+            <label for="encoding" th:text="#{label.mailInfo.encoding}">encoding</label>
+            <select id="encoding" name="encoding" class="form-select">
+                <option th:each="encodingValue : ${T(com.system.mail.mailprocessor.ContentEncoding.values()}"
+                        th:value="${encodingValue}" th:text="${encodingValue.contentType}" th:selected="${encodingValue} == 'DEFAULT"></option>
+            </select>
+            <div class="field-error" th:errors="*{encoding}">
+                encoding 오류
             </div>
         </div>
         <div>
@@ -41,7 +51,7 @@
             <label for="mailTo" th:text="#{label.mailInfo.mailTo}">mailTo</label>
             <input type="text" id="mailTo" th:field="*{mailTo}"
                    th:errorclass="field-error"
-                   class="form-control" placeholder="수신자 정보 ex)[$name$],[$email$]">
+                   class="form-control" placeholder="[$name$],[$email$]">
             <div class="field-error" th:errors="*{mailTo}">
                 mailTo 오류
             </div>
@@ -50,7 +60,7 @@
             <label for="mailFrom" th:text="#{label.mailInfo.mailFrom}">mailFrom</label>
             <input type="text" id="mailFrom" th:field="*{mailFrom}"
                    th:errorclass="field-error"
-                   class="form-control" placeholder="발송자 정보 ex)관리자,no-reply@test.com">
+                   class="form-control" placeholder="관리자,no-reply@test.com">
             <div class="field-error" th:errors="*{mailFrom}">
                 mailFrom 오류
             </div>
@@ -59,7 +69,7 @@
             <label for="replyTo" th:text="#{label.mailInfo.replyTo}">replyTo</label>
             <input type="text" id="replyTo" th:field="*{replyTo}"
                    th:errorclass="field-error"
-                   class="form-control" placeholder="회신 주소 ex) no-reply,no-reply@test.com">
+                   class="form-control" placeholder="no-reply,no-reply@test.com">
             <div class="field-error" th:errors="*{replyTo}">
                 replyTo 오류
             </div>

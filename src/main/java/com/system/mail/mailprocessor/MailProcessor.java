@@ -1,24 +1,22 @@
 package com.system.mail.mailprocessor;
 
+import com.system.mail.common.MailAddress;
 import com.system.mail.mailgroup.MailGroup;
 import com.system.mail.mailgroup.User;
 import com.system.mail.mailinfo.MailInfo;
-import com.system.mail.mailinfo.MailInfoService;
 import com.system.mail.sendinfo.SendInfo;
 import com.system.mail.sendinfo.SendInfoService;
 import com.system.mail.sendresult.SendResult;
 import com.system.mail.sendresult.SendResultService;
-import com.system.mail.sendresultdetail.SendResultDetail;
-import com.system.mail.sendresultdetail.SendResultDetailService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDateTime;
+import java.util.Base64;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Set;
-import java.util.stream.Collectors;
 
 @Component
 @RequiredArgsConstructor
@@ -38,12 +36,28 @@ public class MailProcessor {
         SendInfo sendInfo = sendInfoService.findSendInfoById(sendInfoId);
         MailGroup mailGroup = sendInfo.getMailGroup();
 
-        SendResult sendResult = getSendResult(mailGroup);
+        SendResult sendResult = createResult(mailGroup);
         sendInfo.setSendResult(sendResult);
 
-        makeHeader(sendInfo);
+        
+
+        String data = makeMailData(sendInfo);
+        MailAddress mailFrom = sendInfo.getMailInfo().getMailFrom();
 
         sendInfo.mailStatusEnd();
+    }
+
+
+    private String makeMailData(SendInfo sendInfo) {
+        StringBuffer sb = new StringBuffer();
+        sb.append(makeHeader(sendInfo));
+        String encoding = sendInfo.getMailInfo().getEncoding();
+        String content = sendInfo.getContent();
+        if (encoding.equals(ContentEncoding.BASE64.getValue())) {
+            content = Base64.getMimeEncoder().encode(content.getBytes()).toString();
+        }
+        sb.append(content);
+        return sb.toString();
     }
 
     private String makeHeader(SendInfo sendInfo) {
@@ -56,7 +70,10 @@ public class MailProcessor {
         sb.append(encodeNameHeader(MailHeader.FROM, mailInfo.getHeaderFrom(), charset));
         sb.append(encodeNameHeader(MailHeader.REPLY_TO, mailInfo.getHeaderReply(), charset));
         sb.append(encodeNameHeader(MailHeader.TO, mailInfo.getHeaderTo(), charset));
+        sb.append(createHeader(MailHeader.CONTENT_TYPE, mailInfo.getHeaderContentType()));
+        sb.append(createHeader(MailHeader.CONTENT_TRANSFER_ENCODING, mailInfo.getEncoding()));
         createHeaderProperties(sb, charset);
+        sb.append(MailHeader.CRLF);
 
         return sb.toString();
     }
@@ -79,16 +96,15 @@ public class MailProcessor {
     private String encodeNameHeader(MailHeader mailHeader, String value, String charset ) {
         return mailHeaderEncoder.encodeNameHeader(mailHeader.getValue(), value, charset);
     }
-
-    private SendResult getSendResult(MailGroup mailGroup) {
-        List<User> users = mailGroup.getUsers();
-        return createResult(users);
+    private String createHeader(MailHeader mailHeader, String value) {
+        return mailHeaderEncoder.create(mailHeader.getValue(), value);
     }
 
+
     @Transactional
-    private SendResult createResult(List<User> users) {
-        SendResult sendResult = SendResult.SendResult(users.size()).build();
-        users.forEach(user -> sendResult.addSendResultDetail(SendResultDetail.SendResultDetail(user.getMailAddress()).build()));
+    private SendResult createResult(MailGroup mailGroup) {
+        SendResult sendResult = SendResult.SendResult(mailGroup).build();
+        sendResult.createSendResultDetails(mailGroup.getUsers());
         sendResultService.saveSendResult(sendResult);
         return sendResult;
     }

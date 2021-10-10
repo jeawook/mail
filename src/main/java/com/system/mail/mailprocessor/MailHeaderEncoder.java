@@ -14,7 +14,7 @@ public class MailHeaderEncoder {
     public String encode(String header, String value, String charset) {
         return encodeHeader(create(header, value), charset);
     }
-    private String create(String key, String value) {
+    public String create(String key, String value) {
         return String.format("%s: %s%s", key, value, "\r\n");
     }
 

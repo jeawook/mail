@@ -1,6 +1,7 @@
 package com.system.mail.sendresultdetail;
 
 import com.system.mail.common.MailAddress;
+import com.system.mail.mailgroup.User;
 import com.system.mail.sendresult.SendResult;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -20,7 +21,10 @@ public class SendResultDetail {
     @Column(name = "send_result_detail_id")
     private Long id;
 
-    @NotNull
+    @OneToOne
+    @JoinColumn(name = "user_id")
+    private User user;
+
     private MailAddress mailAddress;
 
     private String resultCode;
@@ -44,7 +48,7 @@ public class SendResultDetail {
         this.resultMessage = resultMessage;
         setCompleted();
     }
-    public static SendResultDetailBuilder SendResultDetail(MailAddress mailAddress) {
-        return SendResultDetailBuilder().mailAddress(mailAddress);
+    public static SendResultDetailBuilder SendResultDetail(User user) {
+        return SendResultDetailBuilder().user(user).mailAddress(user.getMailAddress());
     }
 }

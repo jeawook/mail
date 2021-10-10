@@ -31,6 +31,8 @@ public class MailInfoForm {
 
     private LocalDateTime modifiedDate;
 
+    private String encoding;
+
     @Embedded
     @NotNull(message = "mailFrom의 주소는 필수입니다.")
     private MailAddress mailFrom;

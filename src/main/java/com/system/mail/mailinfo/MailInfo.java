@@ -12,7 +12,7 @@ import javax.validation.constraints.NotNull;
 @AllArgsConstructor
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @Builder(builderMethodName = "MailInfoBuilder")
-@Getter @Setter
+@Getter
 public class MailInfo extends BaseTimeEntity {
 
     @Id @GeneratedValue
@@ -45,6 +45,8 @@ public class MailInfo extends BaseTimeEntity {
     @NotBlank
     private String charset;
 
+    private String encoding;
+
     // 메일 본문의 타입 ex) text/html or text/plain ....
     @Enumerated(EnumType.STRING)
     @NotNull
@@ -58,6 +60,10 @@ public class MailInfo extends BaseTimeEntity {
     }
     public String getHeaderTo() {
         return mailTo.getHeaderAddress();
+    }
+
+    public String getHeaderContentType() {
+        return contentType + "; "+charset;
     }
 
     public static MailInfoBuilder builder(MailInfoForm mailInfoForm) {
