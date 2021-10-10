@@ -11,24 +11,25 @@ public class MailDTO {
 
     private Long resultDetailId;
 
-    private String helo;
+    private MailAddress rcpTo;
 
-    private MailAddress mailAddress;
-
-    private String mailFrom;
-
-    private String rcpTo;
+    private MailAddress mailFrom;
 
     private String data;
 
-    public String getDomain() {
-        return mailAddress.getDomain();
+    public String getToDomain() {
+        return rcpTo.getDomain();
     }
-    public static MailDTOBuilder mailDto(Long resultDetailId, String helo, MailAddress mailAddress, String mailFrom, String rcpTo, String data) {
+    public String getRcpTo() {
+        return rcpTo.getAddress();
+    }
+    public String getMailFrom() {
+        return mailFrom.getAddress();
+    }
+    public static MailDTOBuilder mailDto(Long resultDetailId, String helo, MailAddress rcpTo, MailAddress mailFrom, String data) {
         return MailDTOBuilder().resultDetailId(resultDetailId)
-                .mailAddress(mailAddress)
-                .mailFrom(mailFrom)
                 .rcpTo(rcpTo)
+                .mailFrom(mailFrom)
                 .data(data);
     }
 }
