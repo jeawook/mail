@@ -2,51 +2,72 @@ package com.system.mail.mailprocessor;
 
 import com.system.mail.common.MailAddress;
 import com.system.mail.mailgroup.MailGroup;
-import com.system.mail.mailgroup.User;
 import com.system.mail.mailinfo.MailInfo;
 import com.system.mail.sendinfo.SendInfo;
 import com.system.mail.sendinfo.SendInfoService;
 import com.system.mail.sendresult.SendResult;
 import com.system.mail.sendresult.SendResultService;
+import com.system.mail.sendresultdetail.SendResultDetail;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDateTime;
-import java.util.Base64;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Set;
+import java.util.*;
 
 @Component
 @RequiredArgsConstructor
 public class MailProcessor {
 
     private static HashMap<String, Integer> connectionCnt = new HashMap<>();
-
+    private final MacroProcessor macroProcessor;
     private final HashMap<String, Integer> connectionInfo;
     private final MailProperties mailProperties;
     private final MailHeaderEncoder mailHeaderEncoder;
     private final SendInfoService sendInfoService;
     private final SendResultService sendResultService;
     private final SocketMailSender socketMailSender;
+    private static final String DEFAULT_CONNECTION = "default";
 
     @Transactional
     public void process(Long sendInfoId) {
         SendInfo sendInfo = sendInfoService.findSendInfoById(sendInfoId);
+        sendInfo.mailStatusSending();
+
         MailGroup mailGroup = sendInfo.getMailGroup();
-
         SendResult sendResult = createResult(mailGroup);
+
         sendInfo.setSendResult(sendResult);
+        LinkedList<SendResultDetail> resultDetails = (LinkedList<SendResultDetail>) sendResult.getSendResultDetails();
 
-        
+        while (!resultDetails.isEmpty()) {
+            SendResultDetail sendResultDetail = resultDetails.poll();
+            String domain = sendResultDetail.getDomain();
 
-        String data = makeMailData(sendInfo);
-        MailAddress mailFrom = sendInfo.getMailInfo().getMailFrom();
+            if (isDomainConnectionCheck(domain)) {
+                connectionCnt.put(domain, connectionCnt.get(domain)+1);
 
+                socketMailSender.send(makeMailDTO(sendInfo, sendResultDetail));
+
+                connectionCnt.put(domain, connectionCnt.get(domain)-1);
+                continue;
+            }
+            resultDetails.add(sendResultDetail);
+        }
         sendInfo.mailStatusEnd();
     }
+    private boolean isDomainConnectionCheck(String domain) {
+        connectionCnt.putIfAbsent(domain, 0);
+        return connectionInfo.getOrDefault(domain, connectionInfo.get(DEFAULT_CONNECTION)) > connectionCnt.get(domain);
+    }
 
+    private MailDTO makeMailDTO(SendInfo sendInfo, SendResultDetail sendResultDetail) {
+        String data = makeMailData(sendInfo);
+        MailAddress mailFrom = sendInfo.getMailFrom();
+        MailAddress rcpTo = sendResultDetail.getMailAddress();
+        Long resultId = sendResultDetail.getId();
+        return MailDTO.mailDto(resultId, rcpTo, mailFrom, data).build();
+    }
 
     private String makeMailData(SendInfo sendInfo) {
         StringBuffer sb = new StringBuffer();

@@ -1,6 +1,7 @@
 package com.system.mail.sendinfo;
 
 import com.system.mail.common.BaseTimeEntity;
+import com.system.mail.common.MailAddress;
 import com.system.mail.mailgroup.MailGroup;
 import com.system.mail.mailinfo.MailInfo;
 import com.system.mail.sendresult.SendResult;
@@ -67,6 +68,9 @@ public class SendInfo extends BaseTimeEntity {
         this.status = Status.WAIT;
     }
 
+    public MailAddress getMailFrom() {
+        return mailInfo.getMailFrom();
+    }
     public void setSendResult(SendResult sendResult) {
         this.sendResult = sendResult;
     }

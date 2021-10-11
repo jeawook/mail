@@ -37,6 +37,19 @@ public class SendResultDetail {
     @JoinColumn(name = "send_result_id")
     private SendResult sendResult;
 
+    public User getUser() {
+        return user;
+    }
+    public String getDomain() {
+        return user.getMailAddress().getDomain();
+    }
+    public Long getId() {
+        return id;
+    }
+    public MailAddress getMailAddress() {
+        return user.getMailAddress();
+    }
+
     public void setSendResult(SendResult sendResult) {
         this.sendResult = sendResult;
     }
