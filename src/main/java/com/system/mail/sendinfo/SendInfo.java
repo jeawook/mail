@@ -74,6 +74,9 @@ public class SendInfo extends BaseTimeEntity {
     public void setSendResult(SendResult sendResult) {
         this.sendResult = sendResult;
     }
+    public String getMacroKey() {
+        return mailGroup.getMacroKey();
+    }
 
     public static SendInfoBuilder SendInfo(SendInfoForm sendInfoForm, MailInfo mailInfo, MailGroup mailGroup) {
         return SendInfoBuilder().mailInfo(mailInfo)

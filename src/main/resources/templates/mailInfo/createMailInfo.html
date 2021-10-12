@@ -48,15 +48,6 @@
             </select>
         </div>
         <div>
-            <label for="mailTo" th:text="#{label.mailInfo.mailTo}">mailTo</label>
-            <input type="text" id="mailTo" th:field="*{mailTo}"
-                   th:errorclass="field-error"
-                   class="form-control" placeholder="[$name$],[$email$]">
-            <div class="field-error" th:errors="*{mailTo}">
-                mailTo 오류
-            </div>
-        </div>
-        <div>
             <label for="mailFrom" th:text="#{label.mailInfo.mailFrom}">mailFrom</label>
             <input type="text" id="mailFrom" th:field="*{mailFrom}"
                    th:errorclass="field-error"

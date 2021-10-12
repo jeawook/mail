@@ -53,6 +53,10 @@ public class SendResultDetail {
     public void setSendResult(SendResult sendResult) {
         this.sendResult = sendResult;
     }
+
+    public String getMacroValue() {
+        return user.getMacroValue();
+    }
     public void setCompleted() {
         completedDate = LocalDateTime.now();
     }

@@ -28,6 +28,7 @@ dependencies {
 	implementation group: 'org.modelmapper', name: 'modelmapper', version: '2.4.4'
 
 	implementation('nz.net.ultraq.thymeleaf:thymeleaf-layout-dialect')
+    implementation 'org.projectlombok:lombok:1.18.16'
 
 	compileOnly 'org.projectlombok:lombok'
 	runtimeOnly 'com.h2database:h2'

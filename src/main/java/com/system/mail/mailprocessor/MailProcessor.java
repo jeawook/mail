@@ -62,26 +62,30 @@ public class MailProcessor {
     }
 
     private MailDTO makeMailDTO(SendInfo sendInfo, SendResultDetail sendResultDetail) {
-        String data = makeMailData(sendInfo);
+        String data = makeMailData(sendInfo, sendResultDetail);
         MailAddress mailFrom = sendInfo.getMailFrom();
         MailAddress rcpTo = sendResultDetail.getMailAddress();
         Long resultId = sendResultDetail.getId();
         return MailDTO.mailDto(resultId, rcpTo, mailFrom, data).build();
     }
 
-    private String makeMailData(SendInfo sendInfo) {
+    private String makeMailData(SendInfo sendInfo, SendResultDetail sendResultDetail) {
         StringBuffer sb = new StringBuffer();
-        sb.append(makeHeader(sendInfo));
+        sb.append(makeHeader(sendInfo, sendResultDetail.getMailAddress()));
         String encoding = sendInfo.getMailInfo().getEncoding();
-        String content = sendInfo.getContent();
+        String content = makeMacroContent(sendInfo, sendResultDetail);
         if (encoding.equals(ContentEncoding.BASE64.getValue())) {
-            content = Base64.getMimeEncoder().encode(content.getBytes()).toString();
+            content = Arrays.toString(Base64.getMimeEncoder().encode(content.getBytes()));
         }
         sb.append(content);
         return sb.toString();
     }
 
-    private String makeHeader(SendInfo sendInfo) {
+    private String makeMacroContent(SendInfo sendInfo, SendResultDetail sendResultDetail) {
+        return macroProcessor.process(sendInfo.getMacroKey(), sendResultDetail.getMacroValue(), sendInfo.getContent());
+    }
+
+    private String makeHeader(SendInfo sendInfo, MailAddress mailTo) {
         StringBuffer sb = new StringBuffer();
         MailInfo mailInfo = sendInfo.getMailInfo();
         String charset = getCharset(mailInfo);
@@ -90,7 +94,7 @@ public class MailProcessor {
         sb.append(encodeHeader(MailHeader.DATE, LocalDateTime.now().toString(), charset));
         sb.append(encodeNameHeader(MailHeader.FROM, mailInfo.getHeaderFrom(), charset));
         sb.append(encodeNameHeader(MailHeader.REPLY_TO, mailInfo.getHeaderReply(), charset));
-        sb.append(encodeNameHeader(MailHeader.TO, mailInfo.getHeaderTo(), charset));
+        sb.append(encodeNameHeader(MailHeader.TO, mailTo.getHeaderAddress(), charset));
         sb.append(createHeader(MailHeader.CONTENT_TYPE, mailInfo.getHeaderContentType()));
         sb.append(createHeader(MailHeader.CONTENT_TRANSFER_ENCODING, mailInfo.getEncoding()));
         createHeaderProperties(sb, charset);

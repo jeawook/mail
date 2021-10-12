@@ -38,10 +38,6 @@ public class MailInfoForm {
     private MailAddress mailFrom;
 
     @Embedded
-    @NotNull(message = "mailTo의 주소는 필수 로 입력 되어야 합니다.")
-    private MailAddress mailTo;
-
-    @Embedded
     @NotNull(message = "replyTo의 주소는 필수 로 입력 되어야 합니다.")
     private MailAddress replyTo;
 

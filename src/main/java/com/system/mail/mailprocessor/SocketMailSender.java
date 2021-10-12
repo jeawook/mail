@@ -33,7 +33,8 @@ public class SocketMailSender {
     @Transactional
     public void send(MailDTO mailDTO) {
         SendResultDetail sendResultDetail = sendResultDetailService.findById(mailDTO.getResultDetailId());
-        String result = "";
+        String resultMessage = "";
+        String resultCode = "";
         try {
             if (isConnect(mailDTO.getToDomain())) {
                 sendMessage(createMessage(SMTP.HELO, SERVER_DOMAIN), SMTPCode.SUCCESS);
@@ -41,22 +42,26 @@ public class SocketMailSender {
                 sendMessage(createMessage(SMTP.RECPTO, mailDTO.getRcpTo()), SMTPCode.SUCCESS);
                 sendMessage(SMTP.DATA.getValue(), SMTPCode.PROCESS);
                 sendMessage(mailDTO.getData());
-                result = sendMessage(SMTP.DOT.getValue(), SMTPCode.SUCCESS);
+                resultMessage = sendMessage(SMTP.DOT.getValue(), SMTPCode.SUCCESS);
                 sendMessage(SMTP.QUIT.getValue(), SMTPCode.SERVER_CLOSE);
+                resultCode = SMTPCode.SUCCESS.getValue();
             } else {
                 sendResultDetail.setResult(SMTPCode.SERVER_ERROR.getValue(), SMTPCode.SERVER_ERROR.name());
                 return;
             }
         } catch (SMTPException e) {
-            sendResultDetail.setResult(e.getCode(), e.getMessage());
-            return;
+            resultMessage = e.getMessage();
+            resultCode = e.getCode();
         } catch (IOException e) {
-            sendResultDetail.setResult(SMTPCode.SERVER_ERROR.getValue(), SMTPCode.SERVER_ERROR.name());
-            return;
+            resultCode = SMTPCode.SYSTEM_ERROR.getValue();
+            resultMessage = SMTPCode.SERVER_ERROR.name();
+        } catch (Exception e) {
+            resultCode = SMTPCode.SYSTEM_ERROR.getValue();
+            resultMessage = SMTPCode.SYSTEM_ERROR.name();
         } finally {
             quit();
         }
-        sendResultDetail.setResult(SMTPCode.SUCCESS.getValue(), result);
+        sendResultDetail.setResult(resultCode, resultMessage);
     }
     private boolean isConnect(String domain) throws IOException, SMTPException {
 
@@ -104,7 +109,7 @@ public class SocketMailSender {
 
     private String getResultCode(String message) throws SMTPException{
         if(message.length() < 3) {
-            throw new SMTPException("Smtp protocol Exception ", message);
+            throw new SMTPException("Smtp protocol Exception : "+message, SMTPCode.SERVER_ERROR.getValue());
         }
         return message.substring(0, 3);
     }
