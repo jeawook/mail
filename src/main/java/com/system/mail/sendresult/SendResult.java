@@ -34,7 +34,7 @@ public class SendResult {
     private int completedCnt;
 
     @OneToMany(mappedBy = "sendResult", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
-    private List<SendResultDetail> sendResultDetails = new ArrayList<>();
+    private final List<SendResultDetail> sendResultDetails = new ArrayList<>();
 
     private void addCompleteCnt() {
         this.completedCnt++;

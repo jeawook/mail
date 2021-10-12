@@ -30,12 +30,6 @@ public class MailInfo extends BaseTimeEntity {
 
     @Embedded
     @NotNull
-    @AttributeOverride(name = "email", column = @Column(name = "mailTo"))
-    @AttributeOverride(name = "name", column = @Column(name = "mailToName"))
-    private MailAddress mailTo;
-
-    @Embedded
-    @NotNull
     @AttributeOverride(name = "email", column = @Column(name = "replyTo"))
     @AttributeOverride(name = "name", column = @Column(name = "replyToName"))
     private MailAddress replyTo;
@@ -58,10 +52,6 @@ public class MailInfo extends BaseTimeEntity {
     public String getHeaderReply() {
         return replyTo.getHeaderAddress();
     }
-    public String getHeaderTo() {
-        return mailTo.getHeaderAddress();
-    }
-
     public String getHeaderContentType() {
         return contentType + "; "+charset;
     }
@@ -70,9 +60,13 @@ public class MailInfo extends BaseTimeEntity {
         return MailInfoBuilder()
                 .mailInfoName(mailInfoForm.getMailInfoName())
                 .mailFrom(mailInfoForm.getMailFrom())
-                .mailTo(mailInfoForm.getMailTo())
                 .replyTo(mailInfoForm.getReplyTo())
                 .charset(mailInfoForm.getCharset())
                 .contentType(mailInfoForm.getContentType());
+    }
+    public void updateByMailInfoForm(MailInfoForm mailInfoForm) {
+        this.mailInfoName = mailInfoForm.getMailInfoName();
+        this.charset = mailInfoForm.getCharset();
+        this.contentType = mailInfoForm.getContentType();
     }
 }

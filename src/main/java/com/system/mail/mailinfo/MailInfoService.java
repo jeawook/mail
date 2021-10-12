@@ -40,9 +40,7 @@ public class MailInfoService {
         Optional<MailInfo> mailInfoOptional = mailInfoRepository.findById(mailInfoId);
 
         MailInfo mailInfo = mailInfoOptional.get();
-        mailInfo.setMailInfoName(mailInfoForm.getMailInfoName());
-        mailInfo.setCharset(mailInfoForm.getCharset());
-        mailInfo.setContentType(mailInfoForm.getContentType());
+        mailInfo.updateByMailInfoForm(mailInfoForm);
     }
 
 }
