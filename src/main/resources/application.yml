@@ -1,0 +1,35 @@
+spring:
+  datasource:
+    url: jdbc:mysql://127.0.0.1:3306/systemmail
+    username: DBtester
+    password: test123
+    driver-class-name: com.mysql.cj.jdbc.Driver
+  jpa:
+    hibernate:
+#      ddl-auto: create-drop
+    properties:
+      hibernate:
+        # show_sql: true
+        format_sql: true
+logging:
+  level:
+    root: info
+    org.hibernate.SQL: debug
+    org.hibernate.type: trace
+    com.SystemMail.mail: debug
+
+mail:
+  returnPath: jwpark@infomail.co.kr
+  X-Mailer: mailer
+  MIME-Version: 1.0
+  DKIM-Signature: test
+
+
+domain:
+  domainConnectionInfo:
+    naver.com: 10
+    nate.com: 10
+    daum.net: 6
+    default: 15
+  defaultDomainConn : 10;
+
