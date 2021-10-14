@@ -1,7 +1,7 @@
 package com.system.mail.mailprocessor;
 
 public enum SMTP {
-    HELO("helo "), MAILFROM("mail from:"), RECPTO("recp to:"), DATA("data"), DOT("."), QUIT("quit");
+    HELO("helo "), MAILFROM("mail from:"), RECPTO("rcpt to:"), DATA("data"), DOT("."), QUIT("quit");
 
     private String value;
 

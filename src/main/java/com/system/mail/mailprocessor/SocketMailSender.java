@@ -8,11 +8,13 @@ import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
 
+import javax.naming.NamingException;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.PrintStream;
 import java.net.Socket;
+import java.net.UnknownHostException;
 
 @Component
 @RequiredArgsConstructor
@@ -28,11 +30,8 @@ public class SocketMailSender {
     private Logger logger = LoggerFactory.getLogger(this.getClass());
 
     private final DNSLookup dnsLookup;
-    private final SendResultDetailService sendResultDetailService;
 
-    @Transactional
-    public void send(MailDTO mailDTO) {
-        SendResultDetail sendResultDetail = sendResultDetailService.findById(mailDTO.getResultDetailId());
+    public SMTPResult send(MailDTO mailDTO) {
         String resultMessage;
         String resultCode;
         try {
@@ -61,10 +60,10 @@ public class SocketMailSender {
         } finally {
             quit();
         }
-        sendResultDetail.setResult(resultCode, resultMessage);
+        return SMTPResult.builder(resultCode, resultMessage).build();
     }
-    private boolean isConnect(String domain) throws IOException, SMTPException {
-
+    private boolean isConnect(String domain) throws IOException, SMTPException, NamingException {
+        logger.info("lookup domain : "+ domain);
         setConnection(dnsLookup.lookup(domain));
         String code = getResultCode(getMessage());
         if (isCheckResult(code, SMTPCode.GREETING)) {
@@ -73,7 +72,7 @@ public class SocketMailSender {
         return true;
     }
     private boolean isCheckResult(String code, SMTPCode smtpCode) {
-        if (!code.equals(smtpCode.getValue())) {
+        if (code.equals(smtpCode.getValue())) {
             return false;
         }
         return true;
@@ -86,12 +85,13 @@ public class SocketMailSender {
         output = new PrintStream(smtp.getOutputStream());
     }
 
-    private String getMessage() throws IOException, SMTPException {
+    private String getMessage() throws IOException{
         return input.readLine();
     }
 
-    private void sendMessage(String message) throws IOException, SMTPException {
+    private void sendMessage(String message){
         output.print(message + LINE_FEED_CHAR);
+        logger.info("send message : "+message);
     }
 
     private String sendMessage(String message, SMTPCode smtpCode) throws IOException, SMTPException {
@@ -108,6 +108,7 @@ public class SocketMailSender {
     }
 
     private String getResultCode(String message) throws SMTPException{
+        logger.info("get message : "+message);
         if(message.length() < 3) {
             throw new SMTPException("Smtp protocol Exception : "+message, SMTPCode.SERVER_ERROR.getValue());
         }
@@ -123,5 +124,6 @@ public class SocketMailSender {
         }catch(Exception e){
             logger.trace("connection close Error :  " + e.getMessage());
         }
+        logger.info("quit connection");
     }
 }

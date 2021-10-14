@@ -16,46 +16,30 @@ public class DNSLookup
 {
     private InitialDirContext iDirC;
     private final static String record = "MX";
-    public DNSLookup()
+    public DNSLookup() throws NamingException
     {
         Hashtable<String, String> env = new Hashtable<String, String>();
         env.put(Context.INITIAL_CONTEXT_FACTORY,"com.sun.jndi.dns.DnsContextFactory");
-        try {
-            iDirC = new InitialDirContext(env);
-        } catch (NamingException e) {
-            // TODO Auto-generated catch block
-            e.printStackTrace();
-        }
+        iDirC = new InitialDirContext(env);
     }
     /**
      * 도메인으로 mx 주소 검색
      * @param host 도메인 정보
      * @return mx 주소를 반환
      */
-    public String lookup (String host)
+    public String lookup (String host) throws NamingException, UnknownHostException
     {
-        InetAddress inetAddress;
-        try {
-            inetAddress = InetAddress.getByName(host);
-            // show the Internet Address as name/address
-            System.out.println(inetAddress.getHostName() + " " + inetAddress.getHostAddress());
+        InetAddress inetAddress = InetAddress.getByName(host);
+        // show the Internet Address as name/address
+        System.out.println(inetAddress.getHostName() + " " + inetAddress.getHostAddress());
 
-            // get the DNS records for inetAddress
+        // get the DNS records for inetAddress
 
-            Attributes attributes = iDirC.getAttributes("dns:\\"+inetAddress.getHostName(), new String[] {record});
-            Attribute mxRecord = attributes.get(record);
-            for (int i=0; i<mxRecord.size();i++) {
-                System.out.println(mxRecord.get(i));
-            }
-            return mxRecord.get(0).toString().split(" ")[1];
-
-        } catch (UnknownHostException e) {
-            // TODO Auto-generated catch block
-            e.printStackTrace();
-        } catch (NamingException e) {
-            // TODO Auto-generated catch block
-            e.printStackTrace();
+        Attributes attributes = iDirC.getAttributes("dns:\\"+inetAddress.getHostName(), new String[] {record});
+        Attribute mxRecord = attributes.get(record);
+        for (int i=0; i<mxRecord.size();i++) {
+            System.out.println(mxRecord.get(i));
         }
-        return null;
+        return mxRecord.get(0).toString().split(" ")[1];
     }
 }

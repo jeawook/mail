@@ -38,21 +38,22 @@ public class MailProcessor {
         SendResult sendResult = createResult(mailGroup);
 
         sendInfo.setSendResult(sendResult);
-        LinkedList<SendResultDetail> resultDetails = (LinkedList<SendResultDetail>) sendResult.getSendResultDetails();
+        LinkedList<SendResultDetail> resultDetailLinkedList = (LinkedList<SendResultDetail>) sendResult.getSendResultDetails();
 
-        while (!resultDetails.isEmpty()) {
-            SendResultDetail sendResultDetail = resultDetails.poll();
+        while (!resultDetailLinkedList.isEmpty()) {
+            SendResultDetail sendResultDetail = resultDetailLinkedList.poll();
             String domain = sendResultDetail.getDomain();
 
             if (isDomainConnectionCheck(domain)) {
                 connectionCnt.put(domain, connectionCnt.get(domain)+1);
 
-                socketMailSender.send(makeMailDTO(sendInfo, sendResultDetail));
+                SMTPResult smtpResult = socketMailSender.send(makeMailDTO(sendInfo, sendResultDetail));
+                sendResultDetail.setResult(smtpResult);
 
                 connectionCnt.put(domain, connectionCnt.get(domain)-1);
                 continue;
             }
-            resultDetails.add(sendResultDetail);
+            resultDetailLinkedList.add(sendResultDetail);
         }
         sendInfo.mailStatusEnd();
     }
@@ -65,8 +66,7 @@ public class MailProcessor {
         String data = makeMailData(sendInfo, sendResultDetail);
         MailAddress mailFrom = sendInfo.getMailFrom();
         MailAddress rcpTo = sendResultDetail.getMailAddress();
-        Long resultId = sendResultDetail.getId();
-        return MailDTO.mailDto(resultId, rcpTo, mailFrom, data).build();
+        return MailDTO.mailDto(rcpTo, mailFrom, data).build();
     }
 
     private String makeMailData(SendInfo sendInfo, SendResultDetail sendResultDetail) {

@@ -43,7 +43,7 @@ public class SendInfo extends BaseTimeEntity {
     @JoinColumn(name = "mail_group_id")
     private MailGroup mailGroup;
 
-    @OneToOne(cascade = CascadeType.ALL)
+    @OneToOne
     @JoinColumn(name = "send_result_id")
     private SendResult sendResult;
 

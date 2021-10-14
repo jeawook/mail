@@ -2,6 +2,7 @@ package com.system.mail.sendresultdetail;
 
 import com.system.mail.common.MailAddress;
 import com.system.mail.mailgroup.User;
+import com.system.mail.mailprocessor.SMTPResult;
 import com.system.mail.sendresult.SendResult;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -60,9 +61,9 @@ public class SendResultDetail {
     public void setCompleted() {
         completedDate = LocalDateTime.now();
     }
-    public void setResult(String resultCode, String resultMessage) {
-        this.resultCode = resultCode;
-        this.resultMessage = resultMessage;
+    public void setResult(SMTPResult smtpResult) {
+        this.resultCode = smtpResult.getResultCode();
+        this.resultMessage = smtpResult.getResultMessage();
         setCompleted();
     }
     public static SendResultDetailBuilder SendResultDetail(User user) {

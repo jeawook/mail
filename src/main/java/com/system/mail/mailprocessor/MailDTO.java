@@ -12,9 +12,6 @@ import javax.validation.constraints.NotNull;
 public class MailDTO {
 
     @NotNull
-    private Long resultDetailId;
-
-    @NotNull
     private MailAddress rcpTo;
 
     @NotNull
@@ -32,8 +29,8 @@ public class MailDTO {
     public String getMailFrom() {
         return mailFrom.getAddress();
     }
-    public static MailDTOBuilder mailDto(Long resultDetailId, MailAddress rcpTo, MailAddress mailFrom, String data) {
-        return MailDTOBuilder().resultDetailId(resultDetailId)
+    public static MailDTOBuilder mailDto(MailAddress rcpTo, MailAddress mailFrom, String data) {
+        return MailDTOBuilder()
                 .rcpTo(rcpTo)
                 .mailFrom(mailFrom)
                 .data(data);
