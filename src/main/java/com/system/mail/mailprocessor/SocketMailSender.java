@@ -33,8 +33,8 @@ public class SocketMailSender {
     @Transactional
     public void send(MailDTO mailDTO) {
         SendResultDetail sendResultDetail = sendResultDetailService.findById(mailDTO.getResultDetailId());
-        String resultMessage = "";
-        String resultCode = "";
+        String resultMessage;
+        String resultCode;
         try {
             if (isConnect(mailDTO.getToDomain())) {
                 sendMessage(createMessage(SMTP.HELO, SERVER_DOMAIN), SMTPCode.SUCCESS);
@@ -46,8 +46,8 @@ public class SocketMailSender {
                 sendMessage(SMTP.QUIT.getValue(), SMTPCode.SERVER_CLOSE);
                 resultCode = SMTPCode.SUCCESS.getValue();
             } else {
-                sendResultDetail.setResult(SMTPCode.SERVER_ERROR.getValue(), SMTPCode.SERVER_ERROR.name());
-                return;
+                resultCode = SMTPCode.SERVER_ERROR.name();
+                resultMessage = SMTPCode.SERVER_ERROR.getValue();
             }
         } catch (SMTPException e) {
             resultMessage = e.getMessage();
