@@ -1,6 +1,7 @@
 package com.system.mail.mailgroup;
 
 import com.system.mail.common.MailAddress;
+import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -14,6 +15,7 @@ class MailGroupServiceTest {
     @Autowired
     private MailGroupService mailGroupService;
     @Test
+    @DisplayName("메일 그룹 생성 테스트")
     void mailGroupServiceSaveTest() {
         MailAddress mailAddress = MailAddress.MailAddressBuilder().name("고객").email("pdj13579@nate.com").build();
         MailGroup mailGroup = MailGroup.MailGroupBuilder().mailGroupName("테스트 그룹").macroKey("macro1,macro2").build();
