@@ -1,11 +1,11 @@
 package com.system.mail.mailprocessor;
 
-public enum SMTP {
+public enum SMTPCommand {
     HELO("helo "), MAILFROM("mail from:"), RECPTO("rcpt to:"), DATA("data"), DOT("."), QUIT("quit");
 
     private String value;
 
-    SMTP(String value) {
+    SMTPCommand(String value) {
         this.value = value;
     }
     public String getName() {

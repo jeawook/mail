@@ -1,12 +1,9 @@
 package com.system.mail.mailprocessor;
 
-import com.system.mail.sendresultdetail.SendResultDetail;
-import com.system.mail.sendresultdetail.SendResultDetailService;
 import lombok.RequiredArgsConstructor;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Component;
-import org.springframework.transaction.annotation.Transactional;
 
 import javax.naming.NamingException;
 import java.io.BufferedReader;
@@ -14,7 +11,6 @@ import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.PrintStream;
 import java.net.Socket;
-import java.net.UnknownHostException;
 
 @Component
 @RequiredArgsConstructor
@@ -36,13 +32,13 @@ public class SocketMailSender {
         String resultCode;
         try {
             if (isConnect(mailDTO.getToDomain())) {
-                sendMessage(createMessage(SMTP.HELO, SERVER_DOMAIN), SMTPCode.SUCCESS);
-                sendMessage(createMessage(SMTP.MAILFROM, mailDTO.getMailFrom()), SMTPCode.SUCCESS);
-                sendMessage(createMessage(SMTP.RECPTO, mailDTO.getRcpTo()), SMTPCode.SUCCESS);
-                sendMessage(SMTP.DATA.getValue(), SMTPCode.PROCESS);
+                sendMessage(createMessage(SMTPCommand.HELO, SERVER_DOMAIN), SMTPCode.SUCCESS);
+                sendMessage(createMessage(SMTPCommand.MAILFROM, mailDTO.getMailFrom()), SMTPCode.SUCCESS);
+                sendMessage(createMessage(SMTPCommand.RECPTO, mailDTO.getRcpTo()), SMTPCode.SUCCESS);
+                sendMessage(SMTPCommand.DATA.getValue(), SMTPCode.PROCESS);
                 sendMessage(mailDTO.getData());
-                resultMessage = sendMessage(SMTP.DOT.getValue(), SMTPCode.SUCCESS);
-                sendMessage(SMTP.QUIT.getValue(), SMTPCode.SERVER_CLOSE);
+                resultMessage = sendMessage(SMTPCommand.DOT.getValue(), SMTPCode.SUCCESS);
+                sendMessage(SMTPCommand.QUIT.getValue(), SMTPCode.SERVER_CLOSE);
                 resultCode = SMTPCode.SUCCESS.getValue();
             } else {
                 resultCode = SMTPCode.SERVER_ERROR.name();
@@ -103,7 +99,7 @@ public class SocketMailSender {
         return resultMessage;
     }
 
-    private String createMessage(SMTP command, String message) {
+    private String createMessage(SMTPCommand command, String message) {
         return command.getValue() + message;
     }
 
