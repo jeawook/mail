@@ -30,6 +30,7 @@ public class SendResultDetail {
 
     private String resultCode;
 
+    @Column(length = 2000)
     private String resultMessage;
 
     private LocalDateTime completedDate;
@@ -55,6 +56,12 @@ public class SendResultDetail {
         this.sendResult = sendResult;
     }
 
+    public String getResultCode() {
+        return this.resultCode;
+    }
+    public String getResultMessage() {
+        return  this.resultMessage;
+    }
     public String getMacroValue() {
         return user.getMacroValue();
     }

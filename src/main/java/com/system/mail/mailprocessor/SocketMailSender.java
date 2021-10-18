@@ -93,8 +93,9 @@ public class SocketMailSender {
     private String sendMessage(String message, SMTPCode smtpCode) throws IOException, SMTPException {
         sendMessage(message);
         String resultMessage = getMessage();
-        if (isCheckResult(getResultCode(resultMessage), smtpCode)) {
-            throw new SMTPException("Smtp protocol Exception ", resultMessage);
+        String resultCode = getResultCode(resultMessage);
+        if (isCheckResult(resultCode, smtpCode)) {
+            throw new SMTPException("Smtp protocol Exception " + resultMessage, resultCode );
         }
         return resultMessage;
     }

@@ -6,7 +6,7 @@ spring:
     driver-class-name: com.mysql.cj.jdbc.Driver
   jpa:
     hibernate:
-#      ddl-auto: create-drop
+      ddl-auto: create-drop
     properties:
       hibernate:
         # show_sql: true
@@ -31,5 +31,4 @@ domain:
     nate.com: 10
     daum.net: 6
     default: 15
-  defaultDomainConn : 10;
 

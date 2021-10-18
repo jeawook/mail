@@ -17,7 +17,7 @@ public class MacroProcessor {
             String value = macro.get(key);
             content = content.replaceAll(PRE + key + POST, value);
         }
-        return removeMacro(content);
+        return content;
     }
 
 

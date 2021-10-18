@@ -30,6 +30,7 @@ public class SendInfo extends BaseTimeEntity {
 
     private String subject;
 
+    @NotNull
     private String content;
 
     @NotNull

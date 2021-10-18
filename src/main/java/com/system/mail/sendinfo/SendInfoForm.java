@@ -31,5 +31,6 @@ public class SendInfoForm {
 
     private String subject;
 
+    @NotNull
     private String content;
 }

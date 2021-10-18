@@ -21,13 +21,13 @@ public class MailProcessor {
 
     private static HashMap<String, Integer> connectionCnt = new HashMap<>();
     private final MacroProcessor macroProcessor;
-    private final HashMap<String, Integer> connectionInfo;
+    private final DomainConnectionProperties domainConnectionProperties;
     private final MailProperties mailProperties;
     private final MailHeaderEncoder mailHeaderEncoder;
     private final SendInfoService sendInfoService;
     private final SendResultService sendResultService;
     private final SocketMailSender socketMailSender;
-    private static final String DEFAULT_CONNECTION = "default";
+
 
     @Transactional
     public void process(Long sendInfoId) {
@@ -38,7 +38,8 @@ public class MailProcessor {
         SendResult sendResult = createResult(mailGroup);
 
         sendInfo.setSendResult(sendResult);
-        LinkedList<SendResultDetail> resultDetailLinkedList = (LinkedList<SendResultDetail>) sendResult.getSendResultDetails();
+        LinkedList<SendResultDetail> resultDetailLinkedList = new LinkedList<>(sendResult.getSendResultDetails());
+
 
         while (!resultDetailLinkedList.isEmpty()) {
             SendResultDetail sendResultDetail = resultDetailLinkedList.poll();
@@ -56,10 +57,11 @@ public class MailProcessor {
             resultDetailLinkedList.add(sendResultDetail);
         }
         sendInfo.mailStatusEnd();
+        System.out.println("end");
     }
     private boolean isDomainConnectionCheck(String domain) {
         connectionCnt.putIfAbsent(domain, 0);
-        return connectionInfo.getOrDefault(domain, connectionInfo.get(DEFAULT_CONNECTION)) > connectionCnt.get(domain);
+        return  connectionCnt.get(domain) < domainConnectionProperties.getConnection(domain);
     }
 
     private MailDTO makeMailDTO(SendInfo sendInfo, SendResultDetail sendResultDetail) {
