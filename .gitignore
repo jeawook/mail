@@ -112,3 +112,4 @@ hs_err_pid*
 src/m
 ain/resources/application.properties
 *.properties
+.idea/compiler.xml
