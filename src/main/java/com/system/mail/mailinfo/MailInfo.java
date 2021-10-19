@@ -9,9 +9,7 @@ import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
 
 @Entity
-@AllArgsConstructor
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
-@Builder(builderMethodName = "MailInfoBuilder")
 @Getter
 public class MailInfo extends BaseTimeEntity {
 
@@ -53,7 +51,16 @@ public class MailInfo extends BaseTimeEntity {
         return replyTo.getHeaderAddress();
     }
     public String getHeaderContentType() {
-        return contentType + "; "+charset;
+        return contentType.getValue() + "; "+charset;
+    }
+    @Builder(builderMethodName = "MailInfoBuilder")
+    public MailInfo(@NotBlank @NonNull String mailInfoName, @NotNull @NonNull MailAddress mailFrom, @NotNull @NonNull MailAddress replyTo, @NotBlank @NonNull String charset, String encoding, @NotNull @NonNull ContentType contentType) {
+        this.mailInfoName = mailInfoName;
+        this.mailFrom = mailFrom;
+        this.replyTo = replyTo;
+        this.charset = charset;
+        this.encoding = encoding;
+        this.contentType = contentType;
     }
 
     public static MailInfoBuilder builder(MailInfoForm mailInfoForm) {
@@ -61,6 +68,7 @@ public class MailInfo extends BaseTimeEntity {
                 .mailInfoName(mailInfoForm.getMailInfoName())
                 .mailFrom(mailInfoForm.getMailFrom())
                 .replyTo(mailInfoForm.getReplyTo())
+                .encoding(mailInfoForm.getEncoding())
                 .charset(mailInfoForm.getCharset())
                 .contentType(mailInfoForm.getContentType());
     }

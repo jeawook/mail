@@ -5,12 +5,12 @@ import lombok.*;
 
 import javax.persistence.Embeddable;
 import javax.validation.constraints.Email;
+import javax.validation.constraints.NotNull;
 
 @Embeddable
 @EqualsAndHashCode
-@AllArgsConstructor
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
-@Builder(builderMethodName = "MailAddressBuilder")
+
 @Getter
 public class MailAddress {
 
@@ -18,6 +18,12 @@ public class MailAddress {
 
     @Email
     private String email;
+
+    @Builder(builderMethodName = "MailAddressBuilder")
+    public MailAddress(@NonNull String name,@NonNull @Email String email) {
+        this.name = name;
+        this.email = email;
+    }
 
     public static MailAddressBuilder builder(String name, String email) {
         return MailAddressBuilder().name(name).email(email);

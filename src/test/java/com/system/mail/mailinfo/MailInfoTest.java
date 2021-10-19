@@ -8,12 +8,10 @@ import java.util.HashMap;
 
 class MailInfoTest {
 
-    @DisplayName("mailInfo생성테스트")
+    @DisplayName("mailInfo 객체 생성테스트")
     @Test
     void createMailInfoTest() {
-
-        HashMap<String, String> macro = new HashMap<>();
-        macro.put("name", "박재욱");
+        MailInfo test = MailInfo.MailInfoBuilder().mailInfoName("test").build();
 
     }
 

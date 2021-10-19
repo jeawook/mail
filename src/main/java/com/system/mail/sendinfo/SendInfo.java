@@ -28,9 +28,11 @@ public class SendInfo extends BaseTimeEntity {
 
     private LocalDateTime completedDate;
 
+    @NotNull
     private String subject;
 
     @NotNull
+    @Column(length = 4000)
     private String content;
 
     @NotNull

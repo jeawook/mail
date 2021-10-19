@@ -77,7 +77,7 @@ public class MailProcessor {
         String encoding = sendInfo.getMailInfo().getEncoding();
         String content = makeMacroContent(sendInfo, sendResultDetail);
         if (encoding.equals(ContentEncoding.BASE64.getValue())) {
-            content = Arrays.toString(Base64.getMimeEncoder().encode(content.getBytes()));
+            content = Base64.getMimeEncoder().encodeToString(content.getBytes());
         }
         sb.append(content);
         return sb.toString();
@@ -93,21 +93,21 @@ public class MailProcessor {
         String charset = getCharset(mailInfo);
 
         sb.append(encodeHeader(MailHeader.SUBJECT, sendInfo.getSubject(), charset));
-        sb.append(encodeHeader(MailHeader.DATE, LocalDateTime.now().toString(), charset));
         sb.append(encodeNameHeader(MailHeader.FROM, mailInfo.getHeaderFrom(), charset));
         sb.append(encodeNameHeader(MailHeader.REPLY_TO, mailInfo.getHeaderReply(), charset));
         sb.append(encodeNameHeader(MailHeader.TO, mailTo.getHeaderAddress(), charset));
-        sb.append(createHeader(MailHeader.CONTENT_TYPE, mailInfo.getHeaderContentType()));
-        sb.append(createHeader(MailHeader.CONTENT_TRANSFER_ENCODING, mailInfo.getEncoding()));
-        createHeaderProperties(sb, charset);
-        sb.append(MailHeader.CRLF);
+        sb.append(createHeader(MailHeader.DATE.getValue(), LocalDateTime.now().toString()));
+        sb.append(createHeader(MailHeader.CONTENT_TYPE.getValue(), mailInfo.getHeaderContentType()));
+        sb.append(createHeader(MailHeader.CONTENT_TRANSFER_ENCODING.getValue(), mailInfo.getEncoding()));
+        createHeaderProperties(sb);
+        sb.append(MailHeader.CRLF.getValue());
 
         return sb.toString();
     }
 
-    private void createHeaderProperties(StringBuffer sb, String charset) {
+    private void createHeaderProperties(StringBuffer sb) {
         Set<String> properties = mailProperties.getProperties();
-        properties.forEach(propertyKey -> sb.append(mailHeaderEncoder.encode(propertyKey, mailProperties.getProperty(propertyKey), charset)));
+        properties.forEach(propertyKey -> sb.append(createHeader(propertyKey, mailProperties.getProperty(propertyKey))));
     }
 
     private String getCharset(MailInfo mailInfo) {
@@ -123,8 +123,8 @@ public class MailProcessor {
     private String encodeNameHeader(MailHeader mailHeader, String value, String charset ) {
         return mailHeaderEncoder.encodeNameHeader(mailHeader.getValue(), value, charset);
     }
-    private String createHeader(MailHeader mailHeader, String value) {
-        return mailHeaderEncoder.create(mailHeader.getValue(), value);
+    private String createHeader(String mailHeader, String value) {
+        return mailHeaderEncoder.create(mailHeader, value);
     }
 
 
@@ -135,7 +135,5 @@ public class MailProcessor {
         sendResultService.saveSendResult(sendResult);
         return sendResult;
     }
-
-
 
 }

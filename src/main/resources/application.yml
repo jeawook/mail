@@ -19,10 +19,11 @@ logging:
     com.SystemMail.mail: debug
 
 mail:
-  returnPath: jwpark@infomail.co.kr
-  X-Mailer: mailer
-  MIME-Version: 1.0
-  DKIM-Signature: test
+  propertyMap:
+    returnPath: jwpark@infomail.co.kr
+    X-Mailer: mailer
+    MIME-Version: 1.0
+    DKIM-Signature: test
 
 
 domain:

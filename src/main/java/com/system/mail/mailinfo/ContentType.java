@@ -4,9 +4,15 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 
 @AllArgsConstructor
-@Getter
 public enum ContentType {
     HTML("text/html"),PLAIN("text/plain");
 
     private String contentType;
+
+    public String getValue() {
+        return contentType;
+    }
+    public String getName() {
+        return this.name();
+    }
 }

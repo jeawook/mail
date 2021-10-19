@@ -12,14 +12,14 @@ import static java.util.Base64.Encoder;
 public class MailHeaderEncoder {
 
     public String encode(String header, String value, String charset) {
-        return encodeHeader(create(header, value), charset);
+        return create(header,encodeHeader( value, charset));
     }
     public String create(String key, String value) {
         return String.format("%s: %s%s", key, value, "\r\n");
     }
 
     public String encodeNameHeader(String key, String value, String charset) {
-        return encodeNameHeader(create(key, value), charset);
+        return create(key, encodeNameHeader( value, charset));
     }
 
     private String encodeNameHeader(String value, String charset) {

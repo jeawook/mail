@@ -1,6 +1,7 @@
 package com.system.mail.mailprocessor;
 
 import lombok.Getter;
+import lombok.RequiredArgsConstructor;
 import lombok.Setter;
 import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.stereotype.Component;
@@ -10,7 +11,9 @@ import java.util.HashMap;
 import java.util.Set;
 
 @Component
+@RequiredArgsConstructor
 @ConfigurationProperties(prefix = "mail")
+@Setter
 public class MailProperties {
 
     private HashMap<String, String> propertyMap = new HashMap<>();
