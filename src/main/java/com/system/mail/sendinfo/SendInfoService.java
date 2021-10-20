@@ -25,4 +25,7 @@ public class SendInfoService {
         return sendInfoRepository.findAll(pageable);
     }
 
+    public SendInfo findSendInfoByStatusWaitOne() {
+        return sendInfoRepository.findByStatusWait();
+    }
 }

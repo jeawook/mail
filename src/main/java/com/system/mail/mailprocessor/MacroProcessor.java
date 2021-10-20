@@ -3,8 +3,6 @@ package com.system.mail.mailprocessor;
 import org.springframework.stereotype.Component;
 
 import java.util.HashMap;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
 
 @Component
 public class MacroProcessor {
@@ -30,7 +28,7 @@ public class MacroProcessor {
     private HashMap<String, String> makeMacroMap(String macroKey, String macroValue) {
         String[] macroKeyArr = macroKey.split(MACRO_COMMA);
         int macroCnt = macroKeyArr.length;
-        String[] macroValueArr = getMacroValueToArr(macroValue, macroCnt);
+        String[] macroValueArr = macroValueToArr(macroValue, macroCnt);
         HashMap<String,String> macroMap = new HashMap<>();
 
         for(int i=0; i < macroCnt; i++) {
@@ -39,7 +37,7 @@ public class MacroProcessor {
         return macroMap;
     }
 
-    private String[] getMacroValueToArr(String macroValue, int macroCnt) {
+    private String[] macroValueToArr(String macroValue, int macroCnt) {
         String[] macroValueArr = new String[macroCnt];
         int pre = 0;
         int i;

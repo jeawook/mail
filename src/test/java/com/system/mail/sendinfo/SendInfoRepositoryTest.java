@@ -11,32 +11,32 @@ import com.system.mail.mailprocessor.ContentEncoding;
 import com.system.mail.sendresult.SendResult;
 import com.system.mail.sendresult.SendResultRepository;
 import org.assertj.core.api.Assertions;
-import org.junit.jupiter.api.DisplayName;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDateTime;
 
-import static org.assertj.core.api.Assertions.*;
 import static org.junit.jupiter.api.Assertions.*;
 
 @SpringBootTest
-class SendInfoServiceTest {
+class SendInfoRepositoryTest {
+    @Autowired
+    private SendInfoRepository sendInfoRepository;
     @Autowired
     private MailInfoRepository mailInfoRepository;
     @Autowired
     private MailGroupRepository mailGroupRepository;
     @Autowired
     private SendResultRepository sendResultRepository;
-
-    @Autowired
-    private SendInfoService sendInfoService;
-
     @Test
-    @DisplayName("발송 정보 생성 테스트")
-    void sendInfoServiceSaveTest() {
-        MailAddress mail = MailAddress.builder().name("no_reply").email("test@email.com").build();
+    @Transactional
+    void findSendInfoByStatusWaitTest() {
+        String content = "메일 본문";
+        String subject = "제목";
+        MailAddress mail = MailAddress.builder().name("no_reply").email("pdj13579@nate.com").build();
         MailAddress mailAddress = MailAddress.builder().name("고객").email("pdj13579@nate.com").build();
         MailGroup mailGroup = MailGroup.builder().mailGroupName("테스트 그룹").macroKey("macro1,macro2").build();
         User user = User.builder().mailAddress(mailAddress).macroValue("안녕하세요,10000").build();
@@ -50,30 +50,23 @@ class SendInfoServiceTest {
                 .contentType(ContentType.HTML)
                 .mailInfoName("테스트 설정")
                 .build();
-        SendResult sendResult = SendResult.builder().mailGroup(mailGroup).build();
-        sendResult.createSendResultDetails(mailGroup.getUsers());
-        SendInfo sendInfo = SendInfo.builder()
+        SendResult sendResult = SendResult.builder().mailGroup(mailGroup).totalCnt(1).completedCnt(0).build();
+        SendInfo saveSendInfo = SendInfo.builder()
                 .mailInfo(mailInfo)
-                .subject("테스트발송")
+                .subject(subject)
                 .status(Status.WAIT)
                 .sendDate(LocalDateTime.now())
                 .mailGroup(mailGroup)
                 .sendResult(sendResult)
-                .content("메일 본문")
+                .content(content)
                 .build();
-        MailGroup saveMailGroup = mailGroupRepository.save(mailGroup);
-        MailInfo saveMailInfo = mailInfoRepository.save(mailInfo);
-        SendResult saveSendResult = sendResultRepository.save(sendResult);
-
-        SendInfo saveSendInfo = sendInfoService.saveSendInfo(sendInfo);
-        assertThat(mailGroup).isEqualTo(saveMailGroup);
-        assertThat(mailInfo).isEqualTo(saveMailInfo);
-        assertThat(sendInfo).isEqualTo(saveSendInfo);
-        assertThat(saveSendResult).isEqualTo(sendInfo.getSendResult());
-        assertThat(saveMailInfo).isEqualTo(sendInfo.getMailInfo());
-        assertThat(saveMailGroup).isEqualTo(sendInfo.getMailGroup());
-        assertThat(saveSendResult.getSendResultDetails()).isEqualTo(saveSendInfo.getSendResult().getSendResultDetails());
-
+        mailGroupRepository.save(mailGroup);
+        mailInfoRepository.save(mailInfo);
+        sendResultRepository.save(sendResult);
+        sendInfoRepository.save(saveSendInfo);
+        SendInfo byStatusWait = sendInfoRepository.findByStatusWait();
+        Assertions.assertThat(byStatusWait).isEqualTo(saveSendInfo);
     }
+
 
 }

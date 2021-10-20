@@ -46,7 +46,7 @@ public class SendResult {
     }
 
     public void createSendResultDetails(List<User> users) {
-        users.forEach(user -> addSendResultDetail(SendResultDetail.SendResultDetail(user).build()));
+        users.forEach(user -> addSendResultDetail(SendResultDetail.builder().user(user).build()));
     }
 
 }

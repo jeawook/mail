@@ -9,6 +9,7 @@ import com.system.mail.sendresult.SendResult;
 import com.system.mail.sendresult.SendResultService;
 import com.system.mail.sendresultdetail.SendResultDetail;
 import lombok.RequiredArgsConstructor;
+import org.modelmapper.ModelMapper;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -27,7 +28,6 @@ public class MailProcessor {
     private final SendInfoService sendInfoService;
     private final SendResultService sendResultService;
     private final SocketMailSender socketMailSender;
-
 
     @Transactional
     public void process(Long sendInfoId) {
@@ -67,7 +67,7 @@ public class MailProcessor {
         String data = makeMailData(sendInfo, sendResultDetail);
         MailAddress mailFrom = sendInfo.getMailFrom();
         MailAddress rcpTo = sendResultDetail.getMailAddress();
-        return MailDTO.mailDto(rcpTo, mailFrom, data).build();
+        return MailDTO.builder().data(data).mailFrom(mailFrom).rcpTo(rcpTo).build();
     }
 
     private String makeMailData(SendInfo sendInfo, SendResultDetail sendResultDetail) {
@@ -129,7 +129,7 @@ public class MailProcessor {
 
     @Transactional
     private SendResult createResult(MailGroup mailGroup) {
-        SendResult sendResult = SendResult.SendResult(mailGroup).build();
+        SendResult sendResult = SendResult.builder().mailGroup(mailGroup).build();
         sendResult.createSendResultDetails(mailGroup.getUsers());
         sendResultService.saveSendResult(sendResult);
         return sendResult;

@@ -9,8 +9,9 @@ import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
 
 @Entity
+@AllArgsConstructor
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
-@Builder
+@Builder(builderMethodName = "MailInfoBuilder")
 @Getter
 public class MailInfo extends BaseTimeEntity {
 
@@ -45,6 +46,10 @@ public class MailInfo extends BaseTimeEntity {
     @Enumerated(EnumType.STRING)
     @NotNull
     private ContentType contentType;
+
+    public static MailInfoBuilder builder(MailInfoForm mailInfoForm) {
+        return MailInfoBuilder().encoding(mailInfoForm.getEncoding());
+    }
 
     public String getHeaderFrom() {
         return mailFrom.getHeaderAddress();

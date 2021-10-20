@@ -80,9 +80,9 @@ class MailProcessorTest {
     void mailSendTest() {
         String content = "메일 본문";
         String subject = "제목";
-        MailAddress mail = MailAddress.MailAddressBuilder().name("no_reply").email("pdj13579@nate.com").build();
-        MailAddress mailAddress = MailAddress.MailAddressBuilder().name("고객").email("pdj13579@nate.com").build();
-        MailGroup mailGroup = MailGroup.MailGroupBuilder().mailGroupName("테스트 그룹").macroKey("macro1,macro2").build();
+        MailAddress mail = MailAddress.builder().name("no_reply").email("pdj13579@nate.com").build();
+        MailAddress mailAddress = MailAddress.builder().name("고객").email("pdj13579@nate.com").build();
+        MailGroup mailGroup = MailGroup.builder().mailGroupName("테스트 그룹").macroKey("macro1,macro2").build();
         User user = User.builder().mailAddress(mailAddress).macroValue("안녕하세요,10000").build();
         mailGroup.addUser(user);
 
@@ -94,8 +94,8 @@ class MailProcessorTest {
                 .contentType(ContentType.HTML)
                 .mailInfoName("테스트 설정")
                 .build();
-        SendResult sendResult = SendResult.SendResult(mailGroup).build();
-        SendInfo saveSendInfo = SendInfo.SendInfoBuilder()
+        SendResult sendResult = SendResult.builder().mailGroup(mailGroup).build();
+        SendInfo saveSendInfo = SendInfo.builder()
                 .mailInfo(mailInfo)
                 .subject(subject)
                 .status(Status.WAIT)
@@ -139,9 +139,9 @@ class MailProcessorTest {
                 "</body>\n" +
                 "</html>\n";
         String subject = "제목";
-        MailAddress mail = MailAddress.builder("재욱", "pdj13579@nate.com").build();
-        MailAddress mailAddress = MailAddress.builder("재욱", "pdj13579@nate.com").build();
-        MailGroup mailGroup = MailGroup.MailGroupBuilder().mailGroupName("테스트 그룹").macroKey("macro1,macro2").build();
+        MailAddress mail = MailAddress.builder().name("재욱").email("pdj13579@nate.com").build();
+        MailAddress mailAddress = MailAddress.builder().name("재욱").email("pdj13579@nate.com").build();
+        MailGroup mailGroup = MailGroup.builder().mailGroupName("테스트 그룹").macroKey("macro1,macro2").build();
         User user = User.builder().mailAddress(mailAddress).macroValue("안녕하세요,10000").build();
         mailGroup.addUser(user);
 
@@ -153,8 +153,8 @@ class MailProcessorTest {
                 .contentType(ContentType.HTML)
                 .mailInfoName("테스트 설정")
                 .build();
-        SendResult sendResult = SendResult.SendResult(mailGroup).build();
-        SendInfo saveSendInfo = SendInfo.SendInfoBuilder()
+        SendResult sendResult = SendResult.builder().mailGroup(mailGroup).build();
+        SendInfo saveSendInfo = SendInfo.builder()
                 .mailInfo(mailInfo)
                 .subject(subject)
                 .status(Status.WAIT)

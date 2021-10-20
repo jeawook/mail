@@ -56,7 +56,7 @@ public class SocketMailSender {
         } finally {
             quit();
         }
-        return SMTPResult.builder(resultCode, resultMessage).build();
+        return SMTPResult.builder().resultCode(resultCode).resultMessage(resultMessage).build();
     }
     private boolean isConnect(String domain) throws IOException, SMTPException, NamingException {
         logger.info("lookup domain : "+ domain);
