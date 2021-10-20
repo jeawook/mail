@@ -8,26 +8,18 @@ import javax.validation.constraints.Email;
 import javax.validation.constraints.NotNull;
 
 @Embeddable
-@EqualsAndHashCode
+@AllArgsConstructor
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
-
+@Builder
 @Getter
 public class MailAddress {
 
+    @NonNull
     private String name;
 
     @Email
+    @NotNull
     private String email;
-
-    @Builder(builderMethodName = "MailAddressBuilder")
-    public MailAddress(@NonNull String name,@NonNull @Email String email) {
-        this.name = name;
-        this.email = email;
-    }
-
-    public static MailAddressBuilder builder(String name, String email) {
-        return MailAddressBuilder().name(name).email(email);
-    }
 
     public String getDomain() {
         int index = email.indexOf("@");

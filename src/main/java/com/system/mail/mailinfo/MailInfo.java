@@ -10,10 +10,12 @@ import javax.validation.constraints.NotNull;
 
 @Entity
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
+@Builder
 @Getter
 public class MailInfo extends BaseTimeEntity {
 
-    @Id @GeneratedValue
+    @Id
+    @GeneratedValue
     @Column(name = "mail_info_id")
     private Long id;
 
@@ -47,31 +49,15 @@ public class MailInfo extends BaseTimeEntity {
     public String getHeaderFrom() {
         return mailFrom.getHeaderAddress();
     }
+
     public String getHeaderReply() {
         return replyTo.getHeaderAddress();
     }
+
     public String getHeaderContentType() {
-        return contentType.getValue() + "; "+charset;
-    }
-    @Builder(builderMethodName = "MailInfoBuilder")
-    public MailInfo(@NotBlank @NonNull String mailInfoName, @NotNull @NonNull MailAddress mailFrom, @NotNull @NonNull MailAddress replyTo, @NotBlank @NonNull String charset, String encoding, @NotNull @NonNull ContentType contentType) {
-        this.mailInfoName = mailInfoName;
-        this.mailFrom = mailFrom;
-        this.replyTo = replyTo;
-        this.charset = charset;
-        this.encoding = encoding;
-        this.contentType = contentType;
+        return contentType.getValue() + "; " + charset;
     }
 
-    public static MailInfoBuilder builder(MailInfoForm mailInfoForm) {
-        return MailInfoBuilder()
-                .mailInfoName(mailInfoForm.getMailInfoName())
-                .mailFrom(mailInfoForm.getMailFrom())
-                .replyTo(mailInfoForm.getReplyTo())
-                .encoding(mailInfoForm.getEncoding())
-                .charset(mailInfoForm.getCharset())
-                .contentType(mailInfoForm.getContentType());
-    }
     public void updateByMailInfoForm(MailInfoForm mailInfoForm) {
         this.mailInfoName = mailInfoForm.getMailInfoName();
         this.charset = mailInfoForm.getCharset();

@@ -15,7 +15,7 @@ import java.time.LocalDateTime;
 @Entity
 @NoArgsConstructor
 @AllArgsConstructor
-@Builder(builderMethodName = "SendResultDetailBuilder")
+@Builder
 public class SendResultDetail {
 
     @Id @GeneratedValue
@@ -72,8 +72,5 @@ public class SendResultDetail {
         this.resultCode = smtpResult.getResultCode();
         this.resultMessage = smtpResult.getResultMessage();
         setCompleted();
-    }
-    public static SendResultDetailBuilder SendResultDetail(User user) {
-        return SendResultDetailBuilder().user(user).mailAddress(user.getMailAddress());
     }
 }

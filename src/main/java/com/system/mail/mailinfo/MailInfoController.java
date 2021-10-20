@@ -2,6 +2,7 @@ package com.system.mail.mailinfo;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.RequiredArgsConstructor;
+import org.modelmapper.ModelMapper;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.web.PageableDefault;
@@ -20,7 +21,7 @@ import java.util.Optional;
 public class MailInfoController {
 
     private final MailInfoService mailInfoService;
-
+    private final ModelMapper modelMapper;
     /**
      *  mailInfoList 조회 page 사용
      * @param pageable
@@ -94,7 +95,7 @@ public class MailInfoController {
         if (bindingResult.hasErrors()) {
             return "mailInfo/createMailInfo";
         }
-        MailInfo mailInfo = MailInfo.builder(mailInfoForm).build();
+        MailInfo mailInfo = modelMapper.map(mailInfoForm, MailInfo.class);
         MailInfo saveMailInfo = mailInfoService.saveMailInfo(mailInfo);
 
         redirectAttributes.addAttribute("mailInfoId", saveMailInfo.getId());

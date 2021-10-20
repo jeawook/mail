@@ -15,7 +15,7 @@ import java.time.LocalDateTime;
 @Entity
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @AllArgsConstructor
-@Builder(builderMethodName = "SendInfoBuilder")
+@Builder
 @Getter
 public class SendInfo extends BaseTimeEntity {
 
@@ -51,13 +51,13 @@ public class SendInfo extends BaseTimeEntity {
     private SendResult sendResult;
 
 
-    private void setMailInfo(MailInfo mailInfo) {
+    public void setMailInfo(MailInfo mailInfo) {
         this.mailInfo = mailInfo;
     }
-    private void setMailGroup(MailGroup mailGroup) {
+    public void setMailGroup(MailGroup mailGroup) {
         this.mailGroup = mailGroup;
     }
-    private void setComplete() {
+    public void setComplete() {
         completedDate = LocalDateTime.now();
     }
 
@@ -81,12 +81,4 @@ public class SendInfo extends BaseTimeEntity {
         return mailGroup.getMacroKey();
     }
 
-    public static SendInfoBuilder SendInfo(SendInfoForm sendInfoForm, MailInfo mailInfo, MailGroup mailGroup) {
-        return SendInfoBuilder().mailInfo(mailInfo)
-                .mailGroup(mailGroup)
-                .sendDate(sendInfoForm.getSendDate())
-                .subject(sendInfoForm.getSubject())
-                .content(sendInfoForm.getContent())
-                .status(Status.REGISTER);
-    }
 }

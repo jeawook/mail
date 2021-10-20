@@ -34,7 +34,7 @@ public class MailInfoForm {
     private String encoding;
 
     @Embedded
-    @NotNull(message = "mailFrom의 주소는 필수입니다.")
+    @NotNull(message = "mailFrom 의 주소는 필수입니다.")
     private MailAddress mailFrom;
 
     @Embedded

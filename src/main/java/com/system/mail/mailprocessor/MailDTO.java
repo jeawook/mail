@@ -7,7 +7,7 @@ import javax.validation.constraints.NotNull;
 
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @AllArgsConstructor
-@Builder(builderMethodName = "MailDTOBuilder")
+@Builder
 @Getter
 public class MailDTO {
 
@@ -28,11 +28,5 @@ public class MailDTO {
     }
     public String getMailFrom() {
         return mailFrom.getAddress();
-    }
-    public static MailDTOBuilder mailDto(MailAddress rcpTo, MailAddress mailFrom, String data) {
-        return MailDTOBuilder()
-                .rcpTo(rcpTo)
-                .mailFrom(mailFrom)
-                .data(data);
     }
 }

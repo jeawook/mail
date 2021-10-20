@@ -5,6 +5,7 @@ import com.system.mail.mailgroup.MailGroupService;
 import com.system.mail.mailinfo.MailInfo;
 import com.system.mail.mailinfo.MailInfoService;
 import lombok.AllArgsConstructor;
+import org.modelmapper.ModelMapper;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.web.PageableDefault;
@@ -21,7 +22,6 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.Optional;
 
 @Controller
 @AllArgsConstructor
@@ -31,7 +31,7 @@ public class SendInfoController {
     private final SendInfoService sendInfoService;
     private final MailInfoService mailInfoService;
     private final MailGroupService mailGroupService;
-
+    private final ModelMapper modelMapper;
     @ModelAttribute(name = "mailInfoList")
     public Map<Long, String> mailInfoList() {
         Map<Long, String> mailInfoMap = new HashMap<>();
@@ -59,7 +59,7 @@ public class SendInfoController {
     }
 
     @GetMapping("/add")
-    public String createSendInfo(@ModelAttribute(name = "sendInfo")SendInfoForm sendInfoForm) {
+    public String mapToSendInfo(@ModelAttribute(name = "sendInfo")SendInfoForm sendInfoForm) {
         return "sendInfo/createSendInfo";
     }
 
@@ -75,12 +75,20 @@ public class SendInfoController {
             return "sendInfo/createSendInfo";
         }
 
-        SendInfo sendInfo = SendInfo.SendInfo(sendInfoForm, mailInfo, mailGroup).build();
+        SendInfo sendInfo = mapToSendInfo(sendInfoForm, mailInfo, mailGroup);
+
         Long sendInfoId = sendInfoService.saveSendInfo(sendInfo).getId();
 
         redirectAttributes.addAttribute("sendInfoId", sendInfoId);
 
         return "redirect:/senInfo/{sendInfoId}";
+    }
+
+    private SendInfo mapToSendInfo(SendInfoForm sendInfoForm, MailInfo mailInfo, MailGroup mailGroup) {
+        SendInfo sendInfo = modelMapper.map(sendInfoForm, SendInfo.class);
+        sendInfo.setMailInfo(mailInfo);
+        sendInfo.setMailGroup(mailGroup);
+        return sendInfo;
     }
 
     private void checkMailInfoNMailGroup(BindingResult bindingResult, MailInfo mailInfoById, MailGroup mailGroupById) {

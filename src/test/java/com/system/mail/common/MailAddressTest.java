@@ -22,11 +22,4 @@ class MailAddressTest {
         assertThat(mailAddress.getHeaderAddress()).isEqualTo("\""+name+"\""+"<"+email+">");
     }
 
-    @Test
-    void createMailAddressExceptionTest() {
-        String name = "이름";
-        String email = "test";
-        MailAddress mailAddress = MailAddress.builder(null, email).build();
-    }
-
 }

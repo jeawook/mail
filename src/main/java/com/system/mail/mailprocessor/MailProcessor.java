@@ -57,7 +57,6 @@ public class MailProcessor {
             resultDetailLinkedList.add(sendResultDetail);
         }
         sendInfo.mailStatusEnd();
-        System.out.println("end");
     }
     private boolean isDomainConnectionCheck(String domain) {
         connectionCnt.putIfAbsent(domain, 0);

@@ -16,7 +16,7 @@ import java.util.List;
 @Getter
 @AllArgsConstructor
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
-@Builder(builderMethodName = "SendResultBuilder")
+@Builder
 public class SendResult {
 
     @Id @GeneratedValue
@@ -48,11 +48,5 @@ public class SendResult {
     public void createSendResultDetails(List<User> users) {
         users.forEach(user -> addSendResultDetail(SendResultDetail.SendResultDetail(user).build()));
     }
-
-
-    public static SendResultBuilder SendResult(MailGroup mailGroup) {
-        return SendResultBuilder().mailGroup(mailGroup).totalCnt(mailGroup.getUserCnt()).completedCnt(0);
-    }
-
 
 }
