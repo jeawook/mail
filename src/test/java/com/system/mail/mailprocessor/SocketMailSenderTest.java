@@ -34,9 +34,9 @@ class SocketMailSenderTest {
     @Test
     @DisplayName("smtp 통신 테스트")
     void sendTest() {
-        MailAddress rcpTo = MailAddress.builder().name("수신자").email("pdj13579@nate.com").build();
-        MailAddress mailFrom = MailAddress.builder().name("발신자").email("pdj13579@nate.com").build();
-        MailDTO mailDTO = MailDTO.builder().mailFrom(mailFrom).rcpTo(rcpTo).data("테스트메일").build();
+        MailAddress rcpTo = MailAddress.builder("수신자", "pdj13579@nate.com").build();
+        MailAddress mailFrom = MailAddress.builder("발신자","pdj13579@nate.com").build();
+        MailDTO mailDTO = MailDTO.builder(rcpTo, mailFrom, "테스트메일").build();
         SMTPResult smtpResult = socketMailSender.send(mailDTO);
         assertThat(smtpResult.getResultCode()).isEqualTo(SMTPCode.SUCCESS.getValue());
     }
@@ -44,9 +44,9 @@ class SocketMailSenderTest {
     @Test
     @DisplayName("smtp server error 테스트")
     void sendExceptionTest() {
-        MailAddress rcpTo = MailAddress.builder().name("수신자").email("pdj13579@nate.com").build();
-        MailAddress mailFrom = MailAddress.builder().name("발신자").email("pdj13579@nate.com").build();
-        MailDTO mailDTO = MailDTO.builder().mailFrom(mailFrom).rcpTo(rcpTo).data("테스트메일").build();
+        MailAddress rcpTo = MailAddress.builder("수신자", "pdj13579@nate1.com").build();
+        MailAddress mailFrom = MailAddress.builder("발신자","pdj13579@nate.com").build();
+        MailDTO mailDTO = MailDTO.builder(rcpTo, mailFrom, "테스트메일").build();
         SMTPResult smtpResult = socketMailSender.send(mailDTO);
         assertThat(smtpResult.getResultCode()).isEqualTo(SMTPCode.SYSTEM_ERROR.getValue());
     }

@@ -33,8 +33,8 @@
         <div>
             <label for="encoding" th:text="#{label.mailInfo.encoding}">encoding</label>
             <select id="encoding" name="encoding" class="form-select">
-                <option th:each="encodingValue : ${T(com.system.mail.mailprocessor.ContentEncoding.values()}"
-                        th:value="${encodingValue}" th:text="${encodingValue.contentType}" th:selected="${encodingValue} == 'DEFAULT"></option>
+                <option th:each="encodingValue : ${T(com.system.mail.mailprocessor.ContentEncoding).values()}"
+                        th:value="${encodingValue}" th:text="${encodingValue.name()}" th:selected="${encodingValue.name()} == 'DEFAULT'"></option>
             </select>
             <div class="field-error" th:errors="*{encoding}">
                 encoding 오류
@@ -44,7 +44,7 @@
             <label for="contentType" th:text="#{label.mailInfo.contentType}">contentType</label>
             <select id="contentType" name="contentType" class="form-select">
                 <option th:each="contentTypeValue : ${T(com.system.mail.mailinfo.ContentType).values()}"
-                        th:value="${contentTypeValue}" th:text="${contentTypeValue.contentType}"></option>
+                        th:value="${contentTypeValue}" th:text="${contentTypeValue.name()}"></option>
             </select>
         </div>
         <div>

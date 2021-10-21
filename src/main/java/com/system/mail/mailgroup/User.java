@@ -6,8 +6,8 @@ import lombok.*;
 import javax.persistence.*;
 
 @Entity
-@Getter
-@Builder
+@Getter @Setter
+@Builder(builderMethodName = "UserBuilder")
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @AllArgsConstructor
 public class User {
@@ -35,5 +35,11 @@ public class User {
 
     public void setMacroValue(String macroValue) {
         this.macroValue = macroValue;
+    }
+
+    public static UserBuilder builder(MailAddress mailAddress, String macroValue) {
+        return UserBuilder()
+                .mailAddress(mailAddress)
+                .macroValue(macroValue);
     }
 }

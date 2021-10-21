@@ -36,10 +36,10 @@ class SendInfoRepositoryTest {
     void findSendInfoByStatusWaitTest() {
         String content = "메일 본문";
         String subject = "제목";
-        MailAddress mail = MailAddress.builder().name("no_reply").email("pdj13579@nate.com").build();
-        MailAddress mailAddress = MailAddress.builder().name("고객").email("pdj13579@nate.com").build();
-        MailGroup mailGroup = MailGroup.builder().mailGroupName("테스트 그룹").macroKey("macro1,macro2").build();
-        User user = User.builder().mailAddress(mailAddress).macroValue("안녕하세요,10000").build();
+        MailAddress mail = MailAddress.builder("no_reply", "pdj13579@nate.com").build();
+        MailAddress mailAddress = MailAddress.builder("고객", "pdj13579@nate.com").build();
+        MailGroup mailGroup = MailGroup.builder("테스트 그룹", "macro1,macro2").build();
+        User user = User.builder(mailAddress, "안녕하세요,10000").build();
         mailGroup.addUser(user);
 
         MailInfo mailInfo = MailInfo.MailInfoBuilder()
@@ -50,15 +50,13 @@ class SendInfoRepositoryTest {
                 .contentType(ContentType.HTML)
                 .mailInfoName("테스트 설정")
                 .build();
-        SendResult sendResult = SendResult.builder().mailGroup(mailGroup).totalCnt(1).completedCnt(0).build();
-        SendInfo saveSendInfo = SendInfo.builder()
+        SendResult sendResult = SendResult.builder(mailGroup).build();
+        sendResult.createSendResultDetails(mailGroup.getUsers());
+        SendInfo saveSendInfo = SendInfo.builder(subject,content,LocalDateTime.now(), Status.WAIT)
                 .mailInfo(mailInfo)
-                .subject(subject)
-                .status(Status.WAIT)
                 .sendDate(LocalDateTime.now())
                 .mailGroup(mailGroup)
                 .sendResult(sendResult)
-                .content(content)
                 .build();
         mailGroupRepository.save(mailGroup);
         mailInfoRepository.save(mailInfo);

@@ -67,7 +67,7 @@ public class MailProcessor {
         String data = makeMailData(sendInfo, sendResultDetail);
         MailAddress mailFrom = sendInfo.getMailFrom();
         MailAddress rcpTo = sendResultDetail.getMailAddress();
-        return MailDTO.builder().data(data).mailFrom(mailFrom).rcpTo(rcpTo).build();
+        return MailDTO.builder(rcpTo, mailFrom, data).build();
     }
 
     private String makeMailData(SendInfo sendInfo, SendResultDetail sendResultDetail) {
@@ -129,7 +129,7 @@ public class MailProcessor {
 
     @Transactional
     private SendResult createResult(MailGroup mailGroup) {
-        SendResult sendResult = SendResult.builder().mailGroup(mailGroup).build();
+        SendResult sendResult = SendResult.builder(mailGroup).build();
         sendResult.createSendResultDetails(mailGroup.getUsers());
         sendResultService.saveSendResult(sendResult);
         return sendResult;

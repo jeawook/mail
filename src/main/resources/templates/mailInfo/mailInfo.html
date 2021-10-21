@@ -25,7 +25,7 @@
     </div>
     <div>
         <label for="contentType" th:text="#{label.mailInfo.contentType}">contentType</label>
-        <input type="text" id="contentType" name="contentType" class="form-control" value="contentType" th:value="${mailInfo.contentType.contentType}" readonly>
+        <input type="text" id="contentType" name="contentType" class="form-control" value="contentType.name" th:value="${mailInfo.contentType.value}" readonly>
     </div>
     <div>
         <label for="mailFrom" th:text="#{label.mailInfo.mailFrom}">mailFrom</label>
@@ -37,11 +37,11 @@
     </div>
     <div>
         <label for="lastModifiedDate" th:text="#{label.lastModifiedDate}">최종 수정일</label>
-        <input type="text" id="lastModifiedDate" name="lastModifiedDate" class="form-control" value="10" th:value="${mailInfo.lastModifiedDate}" readonly>
+        <input type="text" id="lastModifiedDate" name="lastModifiedDate" class="form-control" value="10" th:value="${{mailInfo.lastModifiedDate}}" readonly>
     </div>
     <div>
         <label for="createdDate" th:text="#{label.createdDate}">생성일</label>
-        <input type="text" id="createdDate" name="createdDate" class="form-control" value="10" th:value="${mailInfo.createdDate}" readonly>
+        <input type="text" id="createdDate" name="createdDate" class="form-control" value="10" th:value="${{mailInfo.createdDate}}" readonly>
     </div>
 
     <hr class="my-4">

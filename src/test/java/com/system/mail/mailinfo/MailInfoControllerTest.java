@@ -18,7 +18,7 @@ class MailInfoControllerTest {
 
     @Test
     void mailInfoServiceSaveTest() {
-        MailAddress mail = MailAddress.builder().name("no_reply").email("test@email.com").build();
+        MailAddress mail = MailAddress.builder("no_reply", "test@email.com").build();
 
         String encoding = ContentEncoding.BASE64.getValue();
         ContentType contentType = ContentType.HTML;

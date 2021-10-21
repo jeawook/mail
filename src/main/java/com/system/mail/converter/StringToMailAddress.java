@@ -16,6 +16,6 @@ public class StringToMailAddress implements Converter<String, MailAddress> {
             return null;
 //            throw new IllegalArgumentException("주소는 \"이름,메일\" 로 입력 되어야 합니다.");
         }
-        return MailAddress.builder().name(tmp[0]).email(tmp[1]).build();
+        return MailAddress.builder(tmp[0], tmp[1]).build();
     }
 }

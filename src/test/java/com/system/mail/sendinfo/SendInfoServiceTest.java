@@ -36,10 +36,10 @@ class SendInfoServiceTest {
     @Test
     @DisplayName("발송 정보 생성 테스트")
     void sendInfoServiceSaveTest() {
-        MailAddress mail = MailAddress.builder().name("no_reply").email("test@email.com").build();
-        MailAddress mailAddress = MailAddress.builder().name("고객").email("pdj13579@nate.com").build();
-        MailGroup mailGroup = MailGroup.builder().mailGroupName("테스트 그룹").macroKey("macro1,macro2").build();
-        User user = User.builder().mailAddress(mailAddress).macroValue("안녕하세요,10000").build();
+        MailAddress mail = MailAddress.builder("no_reply", "pdj13579@nate.com").build();
+        MailAddress mailAddress = MailAddress.builder("고객", "pdj13579@nate.com").build();
+        MailGroup mailGroup = MailGroup.builder("테스트 그룹", "macro1,macro2").build();
+        User user = User.builder(mailAddress, "안녕하세요,10000").build();
         mailGroup.addUser(user);
 
         MailInfo mailInfo = MailInfo.MailInfoBuilder()
@@ -50,16 +50,13 @@ class SendInfoServiceTest {
                 .contentType(ContentType.HTML)
                 .mailInfoName("테스트 설정")
                 .build();
-        SendResult sendResult = SendResult.builder().mailGroup(mailGroup).build();
+        SendResult sendResult = SendResult.builder(mailGroup).build();
         sendResult.createSendResultDetails(mailGroup.getUsers());
-        SendInfo sendInfo = SendInfo.builder()
+        SendInfo sendInfo = SendInfo.builder("제목","본문",LocalDateTime.now(), Status.WAIT)
                 .mailInfo(mailInfo)
-                .subject("테스트발송")
-                .status(Status.WAIT)
                 .sendDate(LocalDateTime.now())
                 .mailGroup(mailGroup)
                 .sendResult(sendResult)
-                .content("메일 본문")
                 .build();
         MailGroup saveMailGroup = mailGroupRepository.save(mailGroup);
         MailInfo saveMailInfo = mailInfoRepository.save(mailInfo);

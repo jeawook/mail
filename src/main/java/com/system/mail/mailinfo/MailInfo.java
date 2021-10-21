@@ -12,7 +12,7 @@ import javax.validation.constraints.NotNull;
 @AllArgsConstructor
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @Builder(builderMethodName = "MailInfoBuilder")
-@Getter
+@Getter @Setter
 public class MailInfo extends BaseTimeEntity {
 
     @Id
@@ -35,7 +35,6 @@ public class MailInfo extends BaseTimeEntity {
     @AttributeOverride(name = "name", column = @Column(name = "replyToName"))
     private MailAddress replyTo;
 
-
     // 메일의 charset ex) utf-8
     @NotBlank
     private String charset;
@@ -47,9 +46,6 @@ public class MailInfo extends BaseTimeEntity {
     @NotNull
     private ContentType contentType;
 
-    public static MailInfoBuilder builder(MailInfoForm mailInfoForm) {
-        return MailInfoBuilder().encoding(mailInfoForm.getEncoding());
-    }
 
     public String getHeaderFrom() {
         return mailFrom.getHeaderAddress();
@@ -67,5 +63,15 @@ public class MailInfo extends BaseTimeEntity {
         this.mailInfoName = mailInfoForm.getMailInfoName();
         this.charset = mailInfoForm.getCharset();
         this.contentType = mailInfoForm.getContentType();
+    }
+
+    public static MailInfoBuilder builder(String mailInfoName, String encoding, ContentType contentType, String charset, MailAddress replyTo, MailAddress mailFrom) {
+        return MailInfoBuilder()
+                .mailInfoName(mailInfoName)
+                .encoding(encoding)
+                .contentType(contentType)
+                .charset(charset)
+                .replyTo(replyTo)
+                .mailFrom(mailFrom);
     }
 }

@@ -37,7 +37,7 @@
                 <tr>
                     <th th:text="#{label.mailGroup.mailAddress}">emailAddress</th>
                     <th th:text="#{label.mailGroup.macroValue}">메크로 정보</th>
-                    <th></th>
+                    <th><i class="fas fa-plus"></i></th>
                 </tr>
                 </thead>
                 <tbody>
@@ -54,10 +54,12 @@
                             macroValue 오류
                         </div>
                     </td>
+                    <td></td>
                 </tr>
                 <tr th:if="*{userForms == null}">
                     <td><input type="text"  th:field="*{userForms[0].mailAddress}" placeholder="홍길동,email@email.com" class="form-control"></td>
                     <td><input type="text"  th:field="*{userForms[0].macroValue}" placeholder="이름,test" class="form-control"></td>
+                    <td></td>
                 </tr>
                 </tbody>
             </table>

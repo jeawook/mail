@@ -32,8 +32,8 @@
             <tr th:each="mailInfo : ${mailInfoList}">
                 <td><a href="item.html" th:href="@{/mailInfo/{mailInfoId}(mailInfoId=${mailInfo.id})}" th:text="${mailInfo.id}">메일 발송 정보 id</a></td>
                 <td><a href="item.html" th:href="@{/mailInfo/{mailInfoId}(mailInfoId=${mailInfo.id})}" th:text="${mailInfo.mailInfoName}">메일 발송 정보</a></td>
-                <td th:text="${mailInfo.createdDate}">10000</td>
-                <td th:text="${mailInfo.lastModifiedDate}">10</td>
+                <td th:text="${{mailInfo.createdDate}}"></td>
+                <td th:text="${{mailInfo.lastModifiedDate}}"></td>
             </tr>
             </tbody>
         </table>

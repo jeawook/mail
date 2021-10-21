@@ -10,8 +10,8 @@ import java.util.List;
 @Entity
 @AllArgsConstructor
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
-@Builder
-@Getter
+@Builder(builderMethodName = "MailGroupBuilder")
+@Getter @Setter
 public class MailGroup extends BaseTimeEntity {
 
     @Id
@@ -37,6 +37,12 @@ public class MailGroup extends BaseTimeEntity {
 
     public void setUsers(ArrayList<User> users) {
         users.forEach(this::addUser);
+    }
+    public static MailGroupBuilder builder(String mailGroupName, String macroKey) {
+        return MailGroupBuilder()
+                .mailGroupName(mailGroupName)
+                .macroKey(macroKey);
+
     }
 }
 

@@ -9,6 +9,7 @@ import lombok.*;
 
 import javax.persistence.*;
 import javax.validation.constraints.Min;
+import javax.validation.constraints.NotNull;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -16,13 +17,14 @@ import java.util.List;
 @Getter
 @AllArgsConstructor
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
-@Builder
+@Builder(builderMethodName = "SendResultBuilder")
 public class SendResult {
 
     @Id @GeneratedValue
     @Column(name = "send_result_id")
     private Long id;
 
+    @NotNull
     @OneToOne
     @JoinColumn(name = "mail_group_id")
     private MailGroup mailGroup;
@@ -46,7 +48,18 @@ public class SendResult {
     }
 
     public void createSendResultDetails(List<User> users) {
-        users.forEach(user -> addSendResultDetail(SendResultDetail.builder().user(user).build()));
+        users.forEach(user -> addSendResultDetail(SendResultDetail.builder(user).build()));
+        setTotalCnt(users.size());
+    }
+    private void setTotalCnt(int totalCnt) {
+        this.totalCnt = totalCnt;
+    }
+
+    public static SendResultBuilder builder(MailGroup mailGroup) {
+        return SendResultBuilder()
+                .mailGroup(mailGroup)
+                .completedCnt(0);
+
     }
 
 }

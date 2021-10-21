@@ -10,11 +10,10 @@ import javax.validation.constraints.NotNull;
 @Embeddable
 @AllArgsConstructor
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
-@Builder
+@Builder(builderMethodName = "MailAddressBuilder")
 @Getter
 public class MailAddress {
 
-    @NonNull
     private String name;
 
     @Email
@@ -33,4 +32,12 @@ public class MailAddress {
     public String getAddress() {
         return "<"+email+">";
     }
+
+    public static MailAddressBuilder builder(String name, String email) {
+        return MailAddressBuilder()
+                .name(name)
+                .email(email);
+    }
+
+
 }

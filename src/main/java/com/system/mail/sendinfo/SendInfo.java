@@ -15,8 +15,8 @@ import java.time.LocalDateTime;
 @Entity
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @AllArgsConstructor
-@Builder
-@Getter
+@Builder(builderMethodName = "SendInfoBuilder")
+@Getter @Setter
 public class SendInfo extends BaseTimeEntity {
 
     @Id @GeneratedValue
@@ -81,4 +81,10 @@ public class SendInfo extends BaseTimeEntity {
         return mailGroup.getMacroKey();
     }
 
+    public static SendInfoBuilder builder(String subject, String content, LocalDateTime sendDate, Status status) {
+        return SendInfoBuilder().subject(subject)
+                .content(content)
+                .sendDate(sendDate)
+                .status(status);
+    }
 }
