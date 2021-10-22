@@ -3,8 +3,18 @@
       layout:decorator="~{layout/layout}">
 <body>
 
-<div class="container-fluid px-4" layout:fragment="content">
 
+<div class="container-fluid px-4" layout:fragment="content">
+    <script type="text/javascript">
+    $(function() {
+        $("#user_table").on("click", "a", function() {
+            $(this).closest("tr").remove()
+        });
+        $("#user_table").on("click", "button", function() {
+            $(this).closest("tr").remove()
+        });
+    });
+    </script>
     <div class="py-2">
         <h2 th:text="#{page.mailGroup}">그룹 등록</h2>
     </div>
@@ -32,7 +42,7 @@
             </div>
         </div>
         <div>
-            <table class="table">
+            <table id="user_table" class="table">
                 <thead>
                 <tr>
                     <th th:text="#{label.mailGroup.mailAddress}">emailAddress</th>
@@ -59,7 +69,7 @@
                 <tr th:if="*{userForms == null}">
                     <td><input type="text"  th:field="*{userForms[0].mailAddress}" placeholder="홍길동,email@email.com" class="form-control"></td>
                     <td><input type="text"  th:field="*{userForms[0].macroValue}" placeholder="이름,test" class="form-control"></td>
-                    <td></td>
+                    <td><button type="button" class="btn btn-danger"> <i class="fa fa-minus"></i></button> </td>
                 </tr>
                 </tbody>
             </table>

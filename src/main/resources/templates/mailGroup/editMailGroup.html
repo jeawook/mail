@@ -1,6 +1,11 @@
 <!DOCTYPE HTML>
 <html xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
       layout:decorator="~{layout/layout}">
+<script th:inline="javascript">
+    $('#user_table').on("click", "button", function() {
+        $(this).closest("tr").remove()
+    });
+</script>
 <body>
 
 <div class="container" layout:fragment="content">
@@ -32,7 +37,7 @@
             </div>
         </div>
         <div>
-            <table class="table">
+            <table id="user_table" class="table">
                 <thead>
                 <tr>
                     <th th:text="#{label.mailGroup.mailAddress}">email</th>
@@ -54,12 +59,12 @@
                             macroValue 오류
                         </div>
                     </td>
-                    <td></td>
+                    <td><button type='button' class='btn btn-danger'> <i class='fa fa-minus'></i></button> </td>
                 </tr>
                 <tr th:if="*{users == null}">
                     <td><input type="text"  th:field="*{users[0].mailAddress}" placeholder="홍길동,email@email.com" class="form-control"></td>
                     <td><input type="text"  th:field="*{users[0].macroValue}" placeholder="이름,test" class="form-control"></td>
-                    <td></td>
+                    <td><button type='button' class='btn btn-danger'> <i class='fa fa-minus'></i></button> </td>
                 </tr>
                 </tbody>
             </table>
