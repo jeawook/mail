@@ -38,6 +38,7 @@ public class MailGroup extends BaseTimeEntity {
     public void setUsers(List<User> users) {
         this.users = users;
     }
+
     public static MailGroupBuilder builder(String mailGroupName, String macroKey) {
         return MailGroupBuilder()
                 .mailGroupName(mailGroupName)
