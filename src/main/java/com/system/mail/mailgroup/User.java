@@ -42,4 +42,10 @@ public class User {
                 .mailAddress(mailAddress)
                 .macroValue(macroValue);
     }
+    public boolean isChange(User user) {
+        if (!this.macroValue.equals(user.getMacroValue()) || !this.mailAddress.equals(user.getMailAddress()) ) {
+            return true;
+        }
+        return false;
+    }
 }

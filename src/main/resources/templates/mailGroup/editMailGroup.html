@@ -2,8 +2,18 @@
 <html xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
       layout:decorator="~{layout/layout}">
 <script th:inline="javascript">
-    $('#user_table').on("click", "button", function() {
+    var user_size = ${mailGroup.users.size};
+    $('input[name=minus_btn]').on("click", "button", function() {
         $(this).closest("tr").remove()
+    });
+    $('#plus_btn').on("click", "button", function() {
+        var row = "";
+        row += "<tr>";
+        row += "<td><input type='text'  name='users0.mailAddress' placeholder='홍길동,email@email.com' class='form-control'></td>"
+        row += "<td><input type='text'  name='users0.macroValue' placeholder='이름,test' class='form-control'></td>"
+        row += "<td><button type='button' name='minus_btn' class='btn btn-danger'> <i class='fa fa-minus'></i></button> </td>'
+        row += "</tr>"
+        $('#user_tbody').prepend(row);
     });
 </script>
 <body>
@@ -42,13 +52,14 @@
                 <tr>
                     <th th:text="#{label.mailGroup.mailAddress}">email</th>
                     <th th:text="#{label.mailGroup.macroValue}">메크로 정보</th>
-                    <th><a href="!#"><i class="fas fa-plus"></i></a></th>
+                    <th><input type="button" id="plus_btn" class='btn btn-light'><i class="fas fa-plus"></i></a></th>
                 </tr>
                 </thead>
-                <tbody>
+                <tbody id="user_tbody">
                 <tr th:each="user, stat : *{users}">
                     <td>
                         <input type="text"  th:field="*{users[__${stat.index}__].mailAddress}" th:value="${{user.mailAddress}}"  class="form-control">
+                        <input type="hidden" th:field="*{users[__${stat.index}__].id}" th:value="${user.id}">
                         <div class="field-error" th:errors="*{users[__${stat.index}__].mailAddress}">
                             mailAddress 오류
                         </div>
@@ -64,7 +75,7 @@
                 <tr th:if="*{users == null}">
                     <td><input type="text"  th:field="*{users[0].mailAddress}" placeholder="홍길동,email@email.com" class="form-control"></td>
                     <td><input type="text"  th:field="*{users[0].macroValue}" placeholder="이름,test" class="form-control"></td>
-                    <td><button type='button' class='btn btn-danger'> <i class='fa fa-minus'></i></button> </td>
+                    <td><button type='button' name="minus_btn" class='btn btn-danger'> <i class='fa fa-minus'></i></button> </td>
                 </tr>
                 </tbody>
             </table>

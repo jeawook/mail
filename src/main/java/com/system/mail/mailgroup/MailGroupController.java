@@ -15,7 +15,7 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import javax.annotation.PostConstruct;
 import java.util.ArrayList;
-import java.util.Optional;
+import java.util.List;
 import java.util.stream.Collectors;
 
 @Controller
@@ -58,10 +58,12 @@ public class MailGroupController {
 
     @PostMapping("/{mailGroupId}/edit")
     public String edit(@PathVariable Long mailGroupId, @Validated @ModelAttribute("mailGroup") MailGroupForm mailGroupForm,
-                       BindingResult bindingResult) {
+                       BindingResult bindingResult, ArrayList<String> delUserIdxArr) {
         if (bindingResult.hasErrors()) {
             return "mailGroup/editMailGroup";
         }
+        MailGroup mailGroup = modelMapper.map(mailGroupForm, MailGroup.class);
+        mailGroupService.updateMailGroup(mailGroupId, mailGroup);
 
         return "redirect:/mailGroup/{mailGroupId}";
     }
@@ -82,7 +84,9 @@ public class MailGroupController {
         }
 
         MailGroup mailGroup = modelMapper.map(mailGroupForm, MailGroup.class);
-        mailGroup.setUsers(userFormListToUserList(mailGroupForm.getUserForms(), mailGroup));
+        List<User> users = mailGroup.getUsers();
+        users.forEach(user -> user.setMailGroup(mailGroup));
+//        mailGroup.setUsers(userFormListToUserList(mailGroupForm.getUsers()));
         MailGroup saveMailGroup = mailGroupService.saveMailGroup(mailGroup);
 
         redirectAttributes.addAttribute("mailGroupId", saveMailGroup.getId());
@@ -93,7 +97,7 @@ public class MailGroupController {
 
         String macroKey = mailGroupForm.getMacroKey();
         int macroKeyCnt = countComma(macroKey);
-        checkComma(bindingResult, macroKeyCnt, mailGroupForm.getUserForms());
+        checkComma(bindingResult, macroKeyCnt, mailGroupForm.getUsers());
 
     }
 
@@ -111,7 +115,7 @@ public class MailGroupController {
         return (int) macro.chars().filter(c -> c == MACRO_POINT_COMMA).count();
     }
 
-    private ArrayList<User> userFormListToUserList(ArrayList<UserForm> userFormList, MailGroup mailGroup) {
+    private ArrayList<User> userFormListToUserList(ArrayList<UserForm> userFormList) {
         return new ArrayList<>(userFormList.stream().map(userForm -> modelMapper.map(userForm, User.class)).collect(Collectors.toList()));
     }
 

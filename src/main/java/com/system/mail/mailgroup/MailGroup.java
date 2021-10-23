@@ -24,7 +24,7 @@ public class MailGroup extends BaseTimeEntity {
     private String macroKey;
 
     @OneToMany(mappedBy = "mailGroup", cascade = CascadeType.ALL)
-    private final List<User> users = new ArrayList<>();
+    private List<User> users = new ArrayList<>();
 
     public void addUser(User user) {
         this.users.add(user);
@@ -35,14 +35,13 @@ public class MailGroup extends BaseTimeEntity {
         return users.size();
     }
 
-    public void setUsers(ArrayList<User> users) {
-        users.forEach(this::addUser);
+    public void setUsers(List<User> users) {
+        this.users = users;
     }
     public static MailGroupBuilder builder(String mailGroupName, String macroKey) {
         return MailGroupBuilder()
                 .mailGroupName(mailGroupName)
                 .macroKey(macroKey);
-
     }
 }
 

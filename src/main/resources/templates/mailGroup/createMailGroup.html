@@ -51,24 +51,24 @@
                 </tr>
                 </thead>
                 <tbody>
-                <tr th:each="user, stat : *{userForms}">
+                <tr th:each="user, stat : *{users}">
                     <td>
-                        <input type="text"  th:field="*{userForms[__${stat.index}__].mailAddress}" th:value="${{user.mailAddress}}"  class="form-control">
-                        <div class="field-error" th:errors="*{userForms[__${stat.index}__].mailAddress}">
+                        <input type="text"  th:field="*{users[__${stat.index}__].mailAddress}" th:value="${{user.mailAddress}}"  class="form-control">
+                        <div class="field-error" th:errors="*{users[__${stat.index}__].mailAddress}">
                             mailAddress 오류
                         </div>
                     </td>
                     <td>
-                        <input type="text"  th:field="*{userForms[__${stat.index}__].macroValue}" th:value="${user.macroValue}" class="form-control">
-                        <div class="field-error" th:errors="*{userForms[__${stat.index}__].macroValue}">
+                        <input type="text"  th:field="*{users[__${stat.index}__].macroValue}" th:value="${user.macroValue}" class="form-control">
+                        <div class="field-error" th:errors="*{users[__${stat.index}__].macroValue}">
                             macroValue 오류
                         </div>
                     </td>
                     <td></td>
                 </tr>
-                <tr th:if="*{userForms == null}">
-                    <td><input type="text"  th:field="*{userForms[0].mailAddress}" placeholder="홍길동,email@email.com" class="form-control"></td>
-                    <td><input type="text"  th:field="*{userForms[0].macroValue}" placeholder="이름,test" class="form-control"></td>
+                <tr th:if="*{users == null}">
+                    <td><input type="text"  th:field="*{users[0].mailAddress}" placeholder="홍길동,email@email.com" class="form-control"></td>
+                    <td><input type="text"  th:field="*{users[0].macroValue}" placeholder="이름,test" class="form-control"></td>
                     <td><button type="button" class="btn btn-danger"> <i class="fa fa-minus"></i></button> </td>
                 </tr>
                 </tbody>

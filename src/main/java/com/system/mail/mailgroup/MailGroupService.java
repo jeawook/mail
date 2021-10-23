@@ -4,6 +4,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 import java.util.Optional;
@@ -28,5 +29,12 @@ public class MailGroupService {
 
     public List<MailGroup> findMailGroupAll() {
         return mailGroupRepository.findAll();
+    }
+    @Transactional
+    public void updateMailGroup(Long id, MailGroup mailGroup) {
+        MailGroup findMailGroup = mailGroupRepository.findById(id).orElseGet(MailGroup::new);
+        findMailGroup.setMacroKey(mailGroup.getMacroKey());
+        findMailGroup.setMailGroupName(mailGroup.getMailGroupName());
+        findMailGroup.setUsers(mailGroup.getUsers());
     }
 }

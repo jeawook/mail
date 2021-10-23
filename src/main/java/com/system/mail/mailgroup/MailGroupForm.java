@@ -14,7 +14,7 @@ public class MailGroupForm {
 
     private String macroKey;
 
-    ArrayList<UserForm> userForms;
+    ArrayList<UserForm> users;
 
     private LocalDateTime createdDate;
 
