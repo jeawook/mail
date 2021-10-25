@@ -1,5 +1,7 @@
 package com.system.mail.mailgroup;
 
+import com.system.mail.user.User;
+import com.system.mail.user.UserForm;
 import lombok.RequiredArgsConstructor;
 import org.modelmapper.ModelMapper;
 import org.springframework.data.domain.Page;
@@ -25,7 +27,6 @@ public class MailGroupController {
 
     private final ModelMapper modelMapper;
     private final MailGroupService mailGroupService;
-
     static char MACRO_POINT_COMMA = ',';
 
     @GetMapping("/list")
@@ -64,9 +65,10 @@ public class MailGroupController {
         }
         MailGroup mailGroup = modelMapper.map(mailGroupForm, MailGroup.class);
         mailGroupService.updateMailGroup(mailGroupId, mailGroup);
-
         return "redirect:/mailGroup/{mailGroupId}";
     }
+
+
 
     @GetMapping("/add")
     public String createMailGroup(@ModelAttribute("mailGroup") MailGroupForm mailGroupForm) {

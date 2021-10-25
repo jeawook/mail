@@ -1,7 +1,7 @@
 package com.system.mail.sendresultdetail;
 
 import com.system.mail.common.MailAddress;
-import com.system.mail.mailgroup.User;
+import com.system.mail.user.User;
 import com.system.mail.mailprocessor.SMTPResult;
 import com.system.mail.sendresult.SendResult;
 import lombok.AllArgsConstructor;
@@ -9,7 +9,6 @@ import lombok.Builder;
 import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
-import javax.validation.constraints.NotNull;
 import java.time.LocalDateTime;
 
 @Entity

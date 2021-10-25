@@ -1,6 +1,7 @@
 package com.system.mail.mailgroup;
 
 import com.system.mail.common.BaseTimeEntity;
+import com.system.mail.user.User;
 import lombok.*;
 
 import javax.persistence.*;

@@ -3,7 +3,7 @@ package com.system.mail.sendinfo;
 import com.system.mail.common.MailAddress;
 import com.system.mail.mailgroup.MailGroup;
 import com.system.mail.mailgroup.MailGroupRepository;
-import com.system.mail.mailgroup.User;
+import com.system.mail.user.User;
 import com.system.mail.mailinfo.ContentType;
 import com.system.mail.mailinfo.MailInfo;
 import com.system.mail.mailinfo.MailInfoRepository;
@@ -11,15 +11,12 @@ import com.system.mail.mailprocessor.ContentEncoding;
 import com.system.mail.sendresult.SendResult;
 import com.system.mail.sendresult.SendResultRepository;
 import org.assertj.core.api.Assertions;
-import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDateTime;
-
-import static org.junit.jupiter.api.Assertions.*;
 
 @SpringBootTest
 class SendInfoRepositoryTest {

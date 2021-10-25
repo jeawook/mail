@@ -7,10 +7,10 @@ import lombok.*;
 import javax.persistence.*;
 
 @Entity
-@Getter @Setter
-@Builder(builderMethodName = "UserBuilder")
-@NoArgsConstructor(access = AccessLevel.PROTECTED)
 @AllArgsConstructor
+@NoArgsConstructor(access = AccessLevel.PROTECTED)
+@Builder(builderMethodName = "UserBuilder")
+@Getter @Setter
 public class User {
 
     @Id @GeneratedValue

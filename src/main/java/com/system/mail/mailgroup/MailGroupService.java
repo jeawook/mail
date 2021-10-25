@@ -1,5 +1,7 @@
 package com.system.mail.mailgroup;
 
+import com.system.mail.user.User;
+import com.system.mail.user.UserRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -14,7 +16,7 @@ import java.util.Optional;
 public class MailGroupService {
 
     private final MailGroupRepository mailGroupRepository;
-
+    private final UserRepository userRepository;
     public MailGroup saveMailGroup(MailGroup mailGroup) {
         return mailGroupRepository.save(mailGroup);
     }
@@ -35,6 +37,19 @@ public class MailGroupService {
         MailGroup findMailGroup = mailGroupRepository.findById(id).orElseGet(MailGroup::new);
         findMailGroup.setMacroKey(mailGroup.getMacroKey());
         findMailGroup.setMailGroupName(mailGroup.getMailGroupName());
-        findMailGroup.setUsers(mailGroup.getUsers());
+        updateUser(mailGroup, findMailGroup);
     }
+    private void updateUser( MailGroup mailGroup, MailGroup findMailGroup) {
+        for (User user : mailGroup.getUsers()) {
+            if (user.getId() == null) {
+                findMailGroup.addUser(user);
+                continue;
+            }
+            User findUser = userRepository.findById(user.getId()).orElseGet(null);
+            findUser.setMacroValue(user.getMacroValue());
+            findUser.setMailAddress(user.getMailAddress());
+        }
+    }
+
+
 }

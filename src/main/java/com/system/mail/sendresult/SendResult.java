@@ -1,9 +1,7 @@
 package com.system.mail.sendresult;
 
 import com.system.mail.mailgroup.MailGroup;
-import com.system.mail.mailgroup.User;
-import com.system.mail.sendinfo.SendInfo;
-import com.system.mail.sendinfo.Status;
+import com.system.mail.user.User;
 import com.system.mail.sendresultdetail.SendResultDetail;
 import lombok.*;
 

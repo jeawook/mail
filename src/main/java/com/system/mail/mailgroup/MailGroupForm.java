@@ -1,5 +1,6 @@
 package com.system.mail.mailgroup;
 
+import com.system.mail.user.UserForm;
 import lombok.Data;
 
 import javax.validation.constraints.NotBlank;

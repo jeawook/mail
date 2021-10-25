@@ -5,18 +5,24 @@
 <body>
 <div class="container" layout:fragment="content">
     <script th:inline="javascript">
-    $('#user_table').on("click", "button[name='btn_plus']", function() {
-        alert("test");
-        var row = "";
-        row += "<tr>";
-        row += "<td><input type='text'  name='users0.mailAddress' placeholder='홍길동,email@email.com' class='form-control'></td>"
-        row += "<td><input type='text'  name='users0.macroValue' placeholder='이름,test' class='form-control'></td>"
-        row += "<td><button type='button' name='minus_btn' class='btn btn-danger'> <i class='fa fa-minus'></i></button> </td>"
-        row += "</tr>"
-        $('#user_tbody').prepend(row);
-    });
-    $('#user_table').on("click", "button[name='btn_minus']", function() {
-        $(this).closest("tr").remove();
+    /*<![CDATA[*/
+     var user_idx = /*[[ ${users} eq null ? 0 : ${#lists.list(users)}   ]]*/;
+     /*]]*/
+
+    $(function(){
+        $('#user_table').on("click", "button[name='btn_plus']", function() {
+            var row = "";
+            row += "<tr>";
+            row += "<td><input type='text'  name='users["+user_idx+"].mailAddress' placeholder='홍길동,email@email.com' class='form-control'></td>"
+            row += "<td><input type='text'  name='users["+user_idx+"].macroValue' placeholder='이름,test' class='form-control'></td>"
+            row += "<td><button type='button' name='btn_minus' class='btn btn-danger'> <i class='fa fa-minus'></i></button> </td>"
+            row += "</tr>"
+            user_idx++;
+            $('#user_tbody').prepend(row);
+        });
+        $('#user_table').on("click", "button[name='btn_minus']", function() {
+            $(this).closest("tr").remove();
+        });
     });
     </script>
 
@@ -52,7 +58,7 @@
                 <tr>
                     <th th:text="#{label.mailGroup.mailAddress}">email</th>
                     <th th:text="#{label.mailGroup.macroValue}">메크로 정보</th>
-                    <th><button name="btn_plus" class='btn btn-light'><i class="fas fa-plus"></i></button></th>
+                    <th><button type="button" name="btn_plus" class='btn btn-light'><i class="fas fa-plus"></i></button></th>
                 </tr>
                 </thead>
                 <tbody id="user_tbody">
@@ -70,12 +76,7 @@
                             macroValue 오류
                         </div>
                     </td>
-                    <td><button name="btn_minus" class='btn btn-danger'> <i class='fa fa-minus'></i></button> </td>
-                </tr>
-                <tr th:if="*{users == null}">
-                    <td><input type="text"  th:field="*{users[0].mailAddress}" placeholder="홍길동,email@email.com" class="form-control"></td>
-                    <td><input type="text"  th:field="*{users[0].macroValue}" placeholder="이름,test" class="form-control"></td>
-                    <td><button name="btn_minus" class='btn btn-danger'> <i class='fa fa-minus'></i></button> </td>
+                    <td><button type="button" name="btn_minus" class='btn btn-danger'> <i class='fa fa-minus'></i></button> </td>
                 </tr>
                 </tbody>
             </table>
