@@ -1,4 +1,4 @@
-package com.system.mail.mailgroup;
+package com.system.mail.user;
 
 import com.system.mail.common.MailAddress;
 import lombok.AllArgsConstructor;
