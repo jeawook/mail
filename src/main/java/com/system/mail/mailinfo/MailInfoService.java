@@ -4,6 +4,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -32,8 +33,8 @@ public class MailInfoService {
         return mailInfoRepository.findAll(pageable);
     }
 
-    public List<MailInfo> findMailInfoAll() {
-        return mailInfoRepository.findAll();
+    public List<MailInfo> findMailInfoAll(Sort sort) {
+        return mailInfoRepository.findAll(sort);
     }
     @Transactional
     public void updateMailInfo(Long mailInfoId, MailInfoForm mailInfoForm) {

@@ -5,6 +5,7 @@ import com.system.mail.user.UserRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -29,8 +30,8 @@ public class MailGroupService {
         return mailGroupRepository.findAll(pageable);
     }
 
-    public List<MailGroup> findMailGroupAll() {
-        return mailGroupRepository.findAll();
+    public List<MailGroup> findMailGroupAll(Sort orders) {
+        return mailGroupRepository.findAll(orders);
     }
     @Transactional
     public void updateMailGroup(Long id, MailGroup mailGroup) {

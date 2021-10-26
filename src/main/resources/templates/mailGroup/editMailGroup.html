@@ -6,7 +6,7 @@
 <div class="container" layout:fragment="content">
     <script th:inline="javascript">
     /*<![CDATA[*/
-     var user_idx = /*[[ ${users} eq null ? 0 : ${#lists.list(users)}   ]]*/;
+     var user_idx = /*[[ ${mailGroup.users} eq null ? 0 : ${#lists.size(mailGroup.users)}   ]]*/;
      /*]]*/
 
     $(function(){

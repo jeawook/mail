@@ -3,68 +3,68 @@
       layout:decorator="~{layout/layout}">
 <body>
 
-<div class="container-fluid px-4" layout:fragment="content" th:object="${mailGroup}" >
-    <div class="py-2">
-        <h2 th:text="#{page.mailGroup}">그룹 정보</h2>
-    </div>
-
-    <!-- 추가 -->
-<!--    <h2 th:if="${param.status}" th:text="'저장 완료'"></h2>-->
-    <div>
-        <label for="id" th:text="#{label.id}">ID</label>
-        <input type="text" id="id" th:field="*{id}" class="form-control" value="1" th:value="*{id}" readonly>
-    </div>
-    <div>
-        <label for="mailGroupName" th:text="#{label.mailGroup.mailGroupName}">설정명</label>
-        <input type="text" id="mailGroupName" th:field="*{mailGroupName}" class="form-control" value="설정명" th:value="*{mailGroupName}" readonly>
-    </div>
-    <div>
-        <label for="macroKey" th:text="#{label.mailGroup.macroKey}">macroKey</label>
-        <input type="text" id="macroKey" th:field="*{macroKey}" class="form-control" value="macroKey" th:value="*{macroKey}" readonly>
-    </div>
-    <div>
-        <label for="createdDate" th:text="#{label.createdDate}">생성일</label>
-        <input type="text" id="createdDate" th:field="*{createdDate}" class="form-control" value="10" th:value="*{createdDate}" readonly>
-    </div>
-    <div>
-        <label for="lastModifiedDate" th:text="#{label.lastModifiedDate}">생성일</label>
-        <input type="text" id="lastModifiedDate" th:field="*{lastModifiedDate}" class="form-control" value="10" th:value="*{lastModifiedDate}" readonly>
-    </div>
-    <div>
-        <table class="table">
-            <thead>
-            <tr>
-                <th th:text="#{label.id}">ID</th>
-                <th th:text="#{label.mailGroup.mailAddress}">email</th>
-                <th th:text="#{label.mailGroup.macroValue}">메크로 정보</th>
-            </tr>
-            </thead>
-            <tbody>
-            <tr th:each="user, stat : *{users}">
-                <td th:field="*{users[__${stat.index}__].id}" th:text="${user.id}">id</td>
-                <td th:field="*{users[__${stat.index}__].mailAddress}" th:text="${{user.mailAddress}}">id</td>
-                <td th:field="*{users[__${stat.index}__].macroValue}" th:text="${user.macroValue}">10000</td>
-            </tr>
-            </tbody>
-        </table>
-    </div>
-    <hr class="my-4">
-
-    <div class="row">
-        <div class="col">
-            <button class="w-100 btn btn-primary btn-lg"
-                    onclick="location.href='editMailGroup.html'"
-                    th:onclick="|location.href='@{/mailGroup/{mailGroupId}/edit(mailGroupId=${mailGroup.id})}'|"
-                    type="button" th:text="#{button.update}">수정</button>
+<div class="container-fluid px-4" layout:fragment="content" >
+    <form action="sendInfo.html" th:action="@{/mailGroup/send}" th:object="${mailGroup}" method="post">
+        <div class="py-2">
+            <h2 th:text="#{page.mailGroup}">그룹 정보</h2>
         </div>
-        <div class="col">
-            <button class="w-100 btn btn-secondary btn-lg"
-                    onclick="location.href='mailGroupList.html'"
-                    th:onclick="|location.href='@{/mailGroup/list}'|"
-                    type="button" th:text="#{button.list}">목록으로</button>
+        <!-- 추가 -->
+    <!--    <h2 th:if="${param.status}" th:text="'저장 완료'"></h2>-->
+        <div>
+            <label for="id" th:text="#{label.id}">ID</label>
+            <input type="text" id="id" th:field="*{id}" class="form-control" value="1" th:value="*{id}" readonly>
         </div>
-    </div>
+        <div>
+            <label for="mailGroupName" th:text="#{label.mailGroup.mailGroupName}">설정명</label>
+            <input type="text" id="mailGroupName" th:field="*{mailGroupName}" class="form-control" value="설정명" th:value="*{mailGroupName}" readonly>
+        </div>
+        <div>
+            <label for="macroKey" th:text="#{label.mailGroup.macroKey}">macroKey</label>
+            <input type="text" id="macroKey" th:field="*{macroKey}" class="form-control" value="macroKey" th:value="*{macroKey}" readonly>
+        </div>
+        <div>
+            <label for="createdDate" th:text="#{label.createdDate}">생성일</label>
+            <input type="text" id="createdDate" th:field="*{createdDate}" class="form-control" value="10" th:value="*{createdDate}" readonly>
+        </div>
+        <div>
+            <label for="lastModifiedDate" th:text="#{label.lastModifiedDate}">생성일</label>
+            <input type="text" id="lastModifiedDate" th:field="*{lastModifiedDate}" class="form-control" value="10" th:value="*{lastModifiedDate}" readonly>
+        </div>
+        <div>
+            <table class="table">
+                <thead>
+                <tr>
+                    <th th:text="#{label.id}">ID</th>
+                    <th th:text="#{label.mailGroup.mailAddress}">email</th>
+                    <th th:text="#{label.mailGroup.macroValue}">메크로 정보</th>
+                </tr>
+                </thead>
+                <tbody>
+                <tr th:each="user, stat : *{users}">
+                    <td th:field="*{users[__${stat.index}__].id}" th:text="${user.id}">id</td>
+                    <td th:field="*{users[__${stat.index}__].mailAddress}" th:text="${{user.mailAddress}}">id</td>
+                    <td th:field="*{users[__${stat.index}__].macroValue}" th:text="${user.macroValue}">10000</td>
+                </tr>
+                </tbody>
+            </table>
+        </div>
+        <hr class="my-4">
 
+        <div class="row">
+            <div class="col">
+                <button class="w-100 btn btn-primary btn-lg"
+                        onclick="location.href='editMailGroup.html'"
+                        th:onclick="|location.href='@{/mailGroup/{mailGroupId}/edit(mailGroupId=${mailGroup.id})}'|"
+                        type="button" th:text="#{button.update}">수정</button>
+            </div>
+            <div class="col">
+                <button class="w-100 btn btn-secondary btn-lg"
+                        onclick="location.href='mailGroupList.html'"
+                        th:onclick="|location.href='@{/mailGroup/list}'|"
+                        type="button" th:text="#{button.list}">목록으로</button>
+            </div>
+        </div>
+    </form>
 </div> <!-- /container -->
 </body>
 </html>

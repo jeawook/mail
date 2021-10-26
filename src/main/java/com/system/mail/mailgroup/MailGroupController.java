@@ -60,6 +60,7 @@ public class MailGroupController {
     @PostMapping("/{mailGroupId}/edit")
     public String edit(@PathVariable Long mailGroupId, @Validated @ModelAttribute("mailGroup") MailGroupForm mailGroupForm,
                        BindingResult bindingResult, ArrayList<String> delUserIdxArr) {
+        checkMacroValidation(mailGroupForm, bindingResult);
         if (bindingResult.hasErrors()) {
             return "mailGroup/editMailGroup";
         }
@@ -86,13 +87,15 @@ public class MailGroupController {
         }
 
         MailGroup mailGroup = modelMapper.map(mailGroupForm, MailGroup.class);
-        List<User> users = mailGroup.getUsers();
-        users.forEach(user -> user.setMailGroup(mailGroup));
-//        mailGroup.setUsers(userFormListToUserList(mailGroupForm.getUsers()));
+        setUser(mailGroup);
         MailGroup saveMailGroup = mailGroupService.saveMailGroup(mailGroup);
 
         redirectAttributes.addAttribute("mailGroupId", saveMailGroup.getId());
         return "redirect:/mailGroup/{mailGroupId}";
+    }
+
+    private void setUser(MailGroup mailGroup) {
+        mailGroup.getUsers().forEach(user -> user.setMailGroup(mailGroup));
     }
 
     private void checkMacroValidation(MailGroupForm mailGroupForm, BindingResult bindingResult) {
@@ -115,10 +118,6 @@ public class MailGroupController {
 
     private int countComma(String macro) {
         return (int) macro.chars().filter(c -> c == MACRO_POINT_COMMA).count();
-    }
-
-    private ArrayList<User> userFormListToUserList(ArrayList<UserForm> userFormList) {
-        return new ArrayList<>(userFormList.stream().map(userForm -> modelMapper.map(userForm, User.class)).collect(Collectors.toList()));
     }
 
     /**

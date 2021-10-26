@@ -8,15 +8,13 @@ import lombok.AllArgsConstructor;
 import org.modelmapper.ModelMapper;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.data.web.PageableDefault;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.annotation.Validated;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.ModelAttribute;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import java.util.HashMap;
@@ -35,7 +33,8 @@ public class SendInfoController {
     @ModelAttribute(name = "mailInfoList")
     public Map<Long, String> mailInfoList() {
         Map<Long, String> mailInfoMap = new HashMap<>();
-        List<MailInfo> mailInfoAll = mailInfoService.findMailInfoAll();
+        Sort id = Sort.by(Sort.Direction.DESC, "id");
+        List<MailInfo> mailInfoAll = mailInfoService.findMailInfoAll(id);
         mailInfoAll.forEach(mailInfo -> mailInfoMap.put(mailInfo.getId(), mailInfo.getMailInfoName()));
         return mailInfoMap;
     }
@@ -43,7 +42,8 @@ public class SendInfoController {
     @ModelAttribute(name = "mailGroupList")
     public Map<Long, String> mailGroupList() {
         Map<Long, String> mailGroupMap = new HashMap<>();
-        List<MailGroup> mailGroupAll = mailGroupService.findMailGroupAll();
+        Sort sort = Sort.by(Sort.Direction.DESC, "id");
+        List<MailGroup> mailGroupAll = mailGroupService.findMailGroupAll(sort);
         mailGroupAll.forEach(mailGroup -> mailGroupMap.put(mailGroup.getId(), mailGroup.getMailGroupName()));
         return mailGroupMap;
     }
@@ -56,6 +56,13 @@ public class SendInfoController {
         model.addAttribute("sendInfoList", sendInfoList);
 
         return "sendInfo/sendInfoList";
+    }
+    @GetMapping("/{mailInfoId}")
+    public String sendInfo(@PathVariable Long mailInfoId, Model model) {
+        SendInfo sendInfoById = sendInfoService.findSendInfoById(mailInfoId);
+        model.addAttribute("sendInfo", sendInfoById);
+        return "sendInfo/sendInfo";
+
     }
 
     @GetMapping("/add")
@@ -81,13 +88,23 @@ public class SendInfoController {
 
         redirectAttributes.addAttribute("sendInfoId", sendInfoId);
 
-        return "redirect:/senInfo/{sendInfoId}";
+        return "redirect:/sendInfo/{sendInfoId}";
+    }
+    @PostMapping("/send")
+    public String sendMail(@ModelAttribute("sendInfo") SendInfoForm sendInfoForm) {
+        SendInfo sendInfoById = sendInfoService.findSendInfoById(sendInfoForm.getSendInfoId());
+        if (sendInfoById.getId() == null) {
+            return "redirect:sendInfo/sendInfoList";
+        }
+        sendInfoById.mailStatusSending();
+        return "redirect:sendInfo/sendInfoList";
     }
 
     private SendInfo mapToSendInfo(SendInfoForm sendInfoForm, MailInfo mailInfo, MailGroup mailGroup) {
         SendInfo sendInfo = modelMapper.map(sendInfoForm, SendInfo.class);
         sendInfo.setMailInfo(mailInfo);
         sendInfo.setMailGroup(mailGroup);
+        sendInfo.setStatus(Status.WAIT);
         return sendInfo;
     }
 

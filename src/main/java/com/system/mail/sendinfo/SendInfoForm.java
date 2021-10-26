@@ -9,7 +9,6 @@ import java.time.LocalDateTime;
 @Data
 public class SendInfoForm {
 
-    @NotNull
     private Long sendInfoId;
 
     @NotNull
@@ -26,7 +25,6 @@ public class SendInfoForm {
 
     private LocalDateTime createdDate;
 
-    @NotNull
     private Status status;
 
     private String subject;
