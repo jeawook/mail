@@ -48,7 +48,7 @@ public class SocketMailSender {
             resultMessage = e.getMessage();
             resultCode = e.getCode();
         } catch (IOException e) {
-            resultCode = SMTPCode.SYSTEM_ERROR.getValue();
+            resultCode = SMTPCode.SERVER_ERROR.getValue();
             resultMessage = SMTPCode.SERVER_ERROR.name();
         } catch (Exception e) {
             resultCode = SMTPCode.SYSTEM_ERROR.getValue();
