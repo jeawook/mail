@@ -25,6 +25,7 @@ public class MailGroup extends BaseTimeEntity {
     private String macroKey;
 
     @OneToMany(mappedBy = "mailGroup", cascade = CascadeType.ALL)
+    @Builder.Default
     private List<User> users = new ArrayList<>();
 
     public void addUser(User user) {

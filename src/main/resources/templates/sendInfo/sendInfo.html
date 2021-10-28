@@ -4,18 +4,26 @@
 <body>
 
 <div class="container-fluid px-4" layout:fragment="content">
-    <form th:action="@{/sendInfo/send}" th:object="${sendInfo}">
+    <form th:action="@{/sendInfo/{sendInfoId}/send(sendInfoId=${sendInfo.Id})}" th:object="${sendInfo}" method="post">
         <div class="py-2">
             <h2 th:text="#{page.sendInfo}">메일 설정 정보</h2>
         </div>
         <div class="row">
-            <button class="w-100 btn btn-secondary btn-lg">메일 발송</button>
+            <div class="col"></div>
+            <div class="col"></div>
+            <div class="col"></div>
+            <div class="col">
+                <button  th:if="*{status.value} ne 'COMPLETE'" class="w-100 btn btn-secondary btn-lg">메일 발송</button>
+                <button th:if="*{status.value} eq 'COMPLETE'"
+                        th:onclick="|location.href='@{/sendInfo/{sendInfoId}/result/(sendInfoId=${sendInfo.id})}'|"
+                        type="button" class="w-100 btn btn-secondary btn-lg">결과 보기</button>
+            </div>
         </div>
         <!-- 추가 -->
     <!--    <h2 th:if="${param.status}" th:text="'저장 완료'"></h2>-->
         <div>
             <label for="sendInfoId" th:text="#{label.id}">ID</label>
-            <input type="text" id="sendInfoId" th:field="{*id}" class="form-control" value="1" th:value="*{id}" readonly>
+            <input type="text" id="sendInfoId" th:field="*{id}" class="form-control" value="1" th:value="*{id}" readonly>
         </div>
         <div>
             <label for="sendDate" th:text="#{label.sendInfo.sendDate}">발송 예정 시간</label>
@@ -26,12 +34,12 @@
             <input type="text" id="completedDate" th:field="*{completedDate}" class="form-control" value="completedDate" th:value="*{completedDate}" readonly>
         </div>
         <div>
-            <label for="mailGroupName" th:text="#{label.sendInfo.mailGroup}">그룹</label>
+            <label for="mailGroupName" th:text="#{label.mailGroup}">그룹</label>
             <input type="text" id="mailGroupName" th:field="*{mailGroup.mailGroupName}" class="form-control" value="10000" th:value="*{mailGroup.mailGroupName}" readonly>
         </div>
         <div>
             <label for="status" th:text="#{label.sendInfo.status}">발송 상태</label>
-            <input type="text" id="status" th:field="*{status}" class="form-control" value="등록" th:value="${{sendInfo.status}}" readonly>
+            <input type="text" id="status" th:field="*{status.value}" class="form-control" value="등록" th:value="*{status.value}" readonly>
         </div>
 
         <div>
@@ -51,6 +59,8 @@
         <hr class="my-4">
 
         <div class="row">
+            <div class="col"></div>
+            <div class="col"></div>
             <div class="col">
                 <button class="w-100 btn btn-primary btn-lg"
                         onclick="location.href='editForm.html'"

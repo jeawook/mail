@@ -1,5 +1,6 @@
 package com.system.mail.mailgroup;
 
+import com.system.mail.common.MailAddress;
 import com.system.mail.user.User;
 import com.system.mail.user.UserForm;
 import lombok.RequiredArgsConstructor;
@@ -102,16 +103,19 @@ public class MailGroupController {
 
         String macroKey = mailGroupForm.getMacroKey();
         int macroKeyCnt = countComma(macroKey);
+
         checkComma(bindingResult, macroKeyCnt, mailGroupForm.getUsers());
 
     }
 
     private void checkComma(BindingResult bindingResult, int macroKeyCnt, ArrayList<UserForm> userForms) {
-        for (UserForm tmp : userForms) {
-            int userMacroCnt = countComma(tmp.getMacroValue());
-            if (macroKeyCnt != userMacroCnt) {
-                bindingResult.reject("macroError", "macroKey 와 macroValue 의 개수는 동일 하게 입력 되어야 합니다.");
-                return;
+        if (userForms != null) {
+            for (UserForm tmp : userForms) {
+                int userMacroCnt = countComma(tmp.getMacroValue());
+                if (macroKeyCnt != userMacroCnt) {
+                    bindingResult.reject("macroError", "macroKey 와 macroValue 의 개수는 동일 하게 입력 되어야 합니다.");
+                    return;
+                }
             }
         }
     }
@@ -121,7 +125,7 @@ public class MailGroupController {
     }
 
     /**
-     * paging 처리 확인을 위한 데이터
+     * paging 및 test 확인을 위한 데이터
      */
     @PostConstruct
     public void init() {
@@ -163,6 +167,10 @@ public class MailGroupController {
         mailGroupService.saveMailGroup(MailGroup.MailGroupBuilder().mailGroupName("테스트10").build());
         mailGroupService.saveMailGroup(MailGroup.MailGroupBuilder().mailGroupName("테스트11").build());
         mailGroupService.saveMailGroup(MailGroup.MailGroupBuilder().mailGroupName("테스트12").build());
-        mailGroupService.saveMailGroup(MailGroup.MailGroupBuilder().mailGroupName("테스트13").build());
+        MailAddress mailAddress = MailAddress.builder("박재욱", "pdj13579@nate.com").build();
+        MailGroup mailGroup = MailGroup.builder("테스트그룹", "subject,content").build();
+        User user = User.builder(mailAddress, "제목입니다,본문입니다").build();
+        mailGroup.addUser(user);
+        mailGroupService.saveMailGroup(mailGroup);
     }
 }

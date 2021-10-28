@@ -6,7 +6,6 @@ import com.system.mail.mailgroup.MailGroup;
 import com.system.mail.mailinfo.MailInfo;
 import com.system.mail.sendresult.SendResult;
 import lombok.*;
-import org.springframework.web.bind.annotation.GetMapping;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
@@ -35,6 +34,7 @@ public class SendInfo extends BaseTimeEntity {
     @Column(length = 4000)
     private String content;
 
+    @Enumerated(EnumType.STRING)
     @NotNull
     private Status status;
 
@@ -57,18 +57,18 @@ public class SendInfo extends BaseTimeEntity {
     public void setMailGroup(MailGroup mailGroup) {
         this.mailGroup = mailGroup;
     }
-    public void setComplete() {
+    private void setCompletedDate() {
         completedDate = LocalDateTime.now();
     }
-
+    public void mailRegister() {
+        this.status = Status.REGISTER;
+    }
     public void mailStatusSending() {
         this.status = Status.SENDING;
     }
-    public void mailStatusEnd() {
+    public void mailStatusComplete() {
         this.status = Status.COMPLETE;
-    }
-    public void mailStatusWait() {
-        this.status = Status.WAIT;
+        setCompletedDate();
     }
 
     public MailAddress getMailFrom() {

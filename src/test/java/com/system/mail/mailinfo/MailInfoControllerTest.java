@@ -1,14 +1,11 @@
 package com.system.mail.mailinfo;
 
 import com.system.mail.common.MailAddress;
-import com.system.mail.mailprocessor.ContentEncoding;
-import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 
 import static org.assertj.core.api.Assertions.*;
-import static org.junit.jupiter.api.Assertions.*;
 
 @SpringBootTest
 class MailInfoControllerTest {
@@ -20,7 +17,7 @@ class MailInfoControllerTest {
     void mailInfoServiceSaveTest() {
         MailAddress mail = MailAddress.builder("no_reply", "test@email.com").build();
 
-        String encoding = ContentEncoding.BASE64.getValue();
+        ContentEncoding encoding = ContentEncoding.BASE64;
         ContentType contentType = ContentType.HTML;
         String charset = "utf-8";
         String mailInfoName = "테스트 설정";

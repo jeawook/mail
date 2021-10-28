@@ -1,7 +1,7 @@
 package com.system.mail.sendinfo;
 
-import java.util.List;
+import java.time.LocalDateTime;
 
 public interface SendInfoRepositoryCustom {
-    SendInfo findByStatusWait();
+    SendInfo findByStatusAndSendTime(Status status, LocalDateTime localDateTime);
 }

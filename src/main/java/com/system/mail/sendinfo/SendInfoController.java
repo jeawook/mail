@@ -6,6 +6,8 @@ import com.system.mail.mailinfo.MailInfo;
 import com.system.mail.mailinfo.MailInfoService;
 import lombok.AllArgsConstructor;
 import org.modelmapper.ModelMapper;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
@@ -25,6 +27,8 @@ import java.util.Map;
 @AllArgsConstructor
 @RequestMapping("/sendInfo")
 public class SendInfoController {
+
+    private final Logger logger = LoggerFactory.getLogger(this.getClass());
 
     private final SendInfoService sendInfoService;
     private final MailInfoService mailInfoService;
@@ -73,14 +77,14 @@ public class SendInfoController {
     @PostMapping("/add")
     public String create(@Validated @ModelAttribute(name = "sendInfo") SendInfoForm sendInfoForm,
                          BindingResult bindingResult, RedirectAttributes redirectAttributes) {
-        MailInfo mailInfo = mailInfoService.findMailInfoById(sendInfoForm.getMailInfoId());
-        MailGroup mailGroup = mailGroupService.findMailGroupById(sendInfoForm.getMailGroupId());
-
-        checkMailInfoNMailGroup(bindingResult, mailInfo, mailGroup);
 
         if (bindingResult.hasErrors()) {
             return "sendInfo/createSendInfo";
         }
+        MailInfo mailInfo = mailInfoService.findMailInfoById(sendInfoForm.getMailInfoId());
+        MailGroup mailGroup = mailGroupService.findMailGroupById(sendInfoForm.getMailGroupId());
+
+        checkMailInfoNMailGroup(bindingResult, mailInfo, mailGroup);
 
         SendInfo sendInfo = mapToSendInfo(sendInfoForm, mailInfo, mailGroup);
 
@@ -90,14 +94,16 @@ public class SendInfoController {
 
         return "redirect:/sendInfo/{sendInfoId}";
     }
-    @PostMapping("/send")
-    public String sendMail(@ModelAttribute("sendInfo") SendInfoForm sendInfoForm) {
-        SendInfo sendInfoById = sendInfoService.findSendInfoById(sendInfoForm.getSendInfoId());
+    @PostMapping("/{sendInfoId}/send")
+    public String sendMail(@PathVariable Long sendInfoId) {
+        logger.info("sendMail");
+        SendInfo sendInfoById = sendInfoService.findSendInfoById(sendInfoId);
         if (sendInfoById.getId() == null) {
-            return "redirect:sendInfo/sendInfoList";
+            return "redirect:/sendInfo/list";
         }
-        sendInfoById.mailStatusSending();
-        return "redirect:sendInfo/sendInfoList";
+        sendInfoService.mailRegistering(sendInfoById.getId());
+
+        return "redirect:/sendInfo/list";
     }
 
     private SendInfo mapToSendInfo(SendInfoForm sendInfoForm, MailInfo mailInfo, MailGroup mailGroup) {
@@ -110,10 +116,10 @@ public class SendInfoController {
 
     private void checkMailInfoNMailGroup(BindingResult bindingResult, MailInfo mailInfoById, MailGroup mailGroupById) {
         if (mailInfoById.getId() == null ) {
-            bindingResult.reject("field-error", "메일 그룹이 잘못 되었습니다.");
+            bindingResult.rejectValue("mailInfoId","field-error", "메일 정보가 잘못 되었습니다.");
         }
         if (mailGroupById.getId() == null) {
-            bindingResult.reject("field-error", "메일 그룹이 잘못 되었습니다.");
+            bindingResult.rejectValue("mailGroupId","field-error", "메일 그룹이 잘못 되었습니다.");
         }
     }
 

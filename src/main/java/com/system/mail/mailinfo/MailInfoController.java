@@ -1,6 +1,7 @@
 package com.system.mail.mailinfo;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.system.mail.common.MailAddress;
 import lombok.RequiredArgsConstructor;
 import org.modelmapper.ModelMapper;
 import org.springframework.data.domain.Page;
@@ -13,6 +14,7 @@ import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
+import javax.annotation.PostConstruct;
 import java.util.Optional;
 
 @Controller
@@ -101,6 +103,16 @@ public class MailInfoController {
         redirectAttributes.addAttribute("mailInfoId", saveMailInfo.getId());
 
         return "redirect:/mailInfo/{mailInfoId}";
+    }
+
+    /**
+     * 메일 발송 테스트를 위한 임시 데이터
+     */
+    @PostConstruct
+    public void init() {
+        MailAddress mailAddress = MailAddress.builder("test", "test@test.com").build();
+        MailInfo mailInfo = MailInfo.builder("테스트 정보", ContentEncoding.BASE64, ContentType.HTML, "utf-8", mailAddress, mailAddress).build();
+        mailInfoService.saveMailInfo(mailInfo);
     }
 
 }

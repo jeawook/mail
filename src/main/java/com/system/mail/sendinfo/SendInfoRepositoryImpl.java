@@ -14,11 +14,9 @@ public class SendInfoRepositoryImpl implements  SendInfoRepositoryCustom {
 
     private final JPAQueryFactory queryFactory;
     @Override
-    public SendInfo findByStatusWait() {
+    public SendInfo findByStatusAndSendTime(Status status, LocalDateTime localDateTime) {
         return queryFactory.selectFrom(sendInfo)
-                .where(sendInfo.status.eq(Status.WAIT))
-                .where(sendInfo.sendDate.before(LocalDateTime.now())).fetchOne();
-
+                .where(sendInfo.status.eq(status))
+                .where(sendInfo.sendDate.before(localDateTime)).fetchOne();
     }
-
 }

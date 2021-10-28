@@ -4,7 +4,9 @@ import lombok.AllArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
+import java.time.LocalDateTime;
 import java.util.Optional;
 
 @Service
@@ -25,7 +27,13 @@ public class SendInfoService {
         return sendInfoRepository.findAll(pageable);
     }
 
-    public SendInfo findSendInfoByStatusWaitOne() {
-        return sendInfoRepository.findByStatusWait();
+    public SendInfo findSendInfo(Status status, LocalDateTime sendDate) {
+        return sendInfoRepository.findByStatusAndSendTime(status, sendDate);
+    }
+
+    @Transactional
+    public void mailRegistering(Long id) {
+        SendInfo sendInfo = sendInfoRepository.findById(id).orElseGet(SendInfo::new);
+        sendInfo.mailRegister();
     }
 }

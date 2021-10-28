@@ -4,7 +4,7 @@
 <body>
 
 <div class="container-fluid px-4" layout:fragment="content" >
-    <form action="sendInfo.html" th:action="@{/mailGroup/send}" th:object="${mailGroup}" method="post">
+    <form action="sendInfo.html" th:action="@{/mailGroup/list}" th:object="${mailGroup}" method="post">
         <div class="py-2">
             <h2 th:text="#{page.mailGroup}">그룹 정보</h2>
         </div>

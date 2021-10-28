@@ -27,13 +27,14 @@ public class SendResult {
     @JoinColumn(name = "mail_group_id")
     private MailGroup mailGroup;
 
-    @Min(1)
+    @Min(0)
     private int totalCnt;
 
     @Min(0)
     private int completedCnt;
 
     @OneToMany(mappedBy = "sendResult", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    @Builder.Default
     private final List<SendResultDetail> sendResultDetails = new ArrayList<>();
 
     private void addCompleteCnt() {

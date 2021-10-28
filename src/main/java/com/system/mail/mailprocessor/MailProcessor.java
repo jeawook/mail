@@ -2,6 +2,7 @@ package com.system.mail.mailprocessor;
 
 import com.system.mail.common.MailAddress;
 import com.system.mail.mailgroup.MailGroup;
+import com.system.mail.mailinfo.ContentEncoding;
 import com.system.mail.mailinfo.MailInfo;
 import com.system.mail.sendinfo.SendInfo;
 import com.system.mail.sendinfo.SendInfoService;
@@ -9,7 +10,6 @@ import com.system.mail.sendresult.SendResult;
 import com.system.mail.sendresult.SendResultService;
 import com.system.mail.sendresultdetail.SendResultDetail;
 import lombok.RequiredArgsConstructor;
-import org.modelmapper.ModelMapper;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -56,7 +56,7 @@ public class MailProcessor {
             }
             resultDetailLinkedList.add(sendResultDetail);
         }
-        sendInfo.mailStatusEnd();
+        sendInfo.mailStatusComplete();
     }
     private boolean isDomainConnectionCheck(String domain) {
         connectionCnt.putIfAbsent(domain, 0);
@@ -64,41 +64,46 @@ public class MailProcessor {
     }
 
     private MailDTO makeMailDTO(SendInfo sendInfo, SendResultDetail sendResultDetail) {
-        String data = makeMailData(sendInfo, sendResultDetail);
+        String data = makeData(sendInfo, sendResultDetail);
         MailAddress mailFrom = sendInfo.getMailFrom();
         MailAddress rcpTo = sendResultDetail.getMailAddress();
         return MailDTO.builder(rcpTo, mailFrom, data).build();
     }
 
-    private String makeMailData(SendInfo sendInfo, SendResultDetail sendResultDetail) {
+    private String makeData(SendInfo sendInfo, SendResultDetail sendResultDetail) {
         StringBuffer sb = new StringBuffer();
-        sb.append(makeHeader(sendInfo, sendResultDetail.getMailAddress()));
-        String encoding = sendInfo.getMailInfo().getEncoding();
-        String content = makeMacroContent(sendInfo, sendResultDetail);
-        if (encoding.equals(ContentEncoding.BASE64.getValue())) {
+        sb.append(makeHeader(sendInfo, sendResultDetail));
+
+        String content = makeMacroProcess(sendInfo, sendResultDetail, sendInfo.getContent());
+        if (sendInfo.getMailInfo().getEncoding().equals(ContentEncoding.BASE64)) {
             content = Base64.getMimeEncoder().encodeToString(content.getBytes());
         }
+
         sb.append(content);
         return sb.toString();
     }
 
-    private String makeMacroContent(SendInfo sendInfo, SendResultDetail sendResultDetail) {
-        return macroProcessor.process(sendInfo.getMacroKey(), sendResultDetail.getMacroValue(), sendInfo.getContent());
+    private String makeMacroProcess(SendInfo sendInfo, SendResultDetail sendResultDetail, String target) {
+        return macroProcessor.process(sendInfo.getMacroKey(), sendResultDetail.getMacroValue(), target);
     }
 
-    private String makeHeader(SendInfo sendInfo, MailAddress mailTo) {
+    private String makeHeader(SendInfo sendInfo, SendResultDetail sendResultDetail) {
         StringBuffer sb = new StringBuffer();
         MailInfo mailInfo = sendInfo.getMailInfo();
         String charset = getCharset(mailInfo);
 
-        sb.append(encodeHeader(MailHeader.SUBJECT, sendInfo.getSubject(), charset));
+        String subject = makeMacroProcess(sendInfo, sendResultDetail, sendInfo.getSubject());
+        sb.append(encodeHeader(MailHeader.SUBJECT, subject, charset));
+
         sb.append(encodeNameHeader(MailHeader.FROM, mailInfo.getHeaderFrom(), charset));
         sb.append(encodeNameHeader(MailHeader.REPLY_TO, mailInfo.getHeaderReply(), charset));
-        sb.append(encodeNameHeader(MailHeader.TO, mailTo.getHeaderAddress(), charset));
+        sb.append(encodeNameHeader(MailHeader.TO, sendResultDetail.getMailAddress().getHeaderAddress(), charset));
         sb.append(createHeader(MailHeader.DATE.getValue(), LocalDateTime.now().toString()));
         sb.append(createHeader(MailHeader.CONTENT_TYPE.getValue(), mailInfo.getHeaderContentType()));
-        sb.append(createHeader(MailHeader.CONTENT_TRANSFER_ENCODING.getValue(), mailInfo.getEncoding()));
+        sb.append(createHeader(MailHeader.CONTENT_TRANSFER_ENCODING.getValue(), mailInfo.getEncoding().getValue()));
+
         createHeaderProperties(sb);
+
         sb.append(MailHeader.CRLF.getValue());
 
         return sb.toString();

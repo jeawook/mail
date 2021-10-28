@@ -3,6 +3,7 @@ package com.system.mail.mailprocessor;
 import com.system.mail.common.MailAddress;
 import com.system.mail.mailgroup.MailGroup;
 import com.system.mail.mailgroup.MailGroupRepository;
+import com.system.mail.mailinfo.ContentEncoding;
 import com.system.mail.user.User;
 import com.system.mail.mailinfo.ContentType;
 import com.system.mail.mailinfo.MailInfo;
@@ -87,7 +88,7 @@ class MailProcessorTest {
                 .mailFrom(mail)
                 .replyTo(mail)
                 .charset("utf-8")
-                .encoding(ContentEncoding.BASE64.getValue())
+                .encoding(ContentEncoding.BASE64)
                 .contentType(ContentType.HTML)
                 .mailInfoName("테스트 설정")
                 .build();
@@ -144,7 +145,7 @@ class MailProcessorTest {
                 .mailFrom(mail)
                 .replyTo(mail)
                 .charset("utf-8")
-                .encoding(ContentEncoding.DEFAULT.getValue())
+                .encoding(ContentEncoding.DEFAULT)
                 .contentType(ContentType.HTML)
                 .mailInfoName("테스트 설정")
                 .build();

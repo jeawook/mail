@@ -39,7 +39,9 @@ public class MailInfo extends BaseTimeEntity {
     @NotBlank
     private String charset;
 
-    private String encoding;
+    @Enumerated(EnumType.STRING)
+    @NotNull
+    private ContentEncoding encoding;
 
     // 메일 본문의 타입 ex) text/html or text/plain ....
     @Enumerated(EnumType.STRING)
@@ -65,7 +67,7 @@ public class MailInfo extends BaseTimeEntity {
         this.contentType = mailInfoForm.getContentType();
     }
 
-    public static MailInfoBuilder builder(String mailInfoName, String encoding, ContentType contentType, String charset, MailAddress replyTo, MailAddress mailFrom) {
+    public static MailInfoBuilder builder(String mailInfoName, ContentEncoding encoding, ContentType contentType, String charset, MailAddress replyTo, MailAddress mailFrom) {
         return MailInfoBuilder()
                 .mailInfoName(mailInfoName)
                 .encoding(encoding)

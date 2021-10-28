@@ -7,7 +7,7 @@ import com.system.mail.user.User;
 import com.system.mail.mailinfo.ContentType;
 import com.system.mail.mailinfo.MailInfo;
 import com.system.mail.mailinfo.MailInfoRepository;
-import com.system.mail.mailprocessor.ContentEncoding;
+import com.system.mail.mailinfo.ContentEncoding;
 import com.system.mail.sendresult.SendResult;
 import com.system.mail.sendresult.SendResultRepository;
 import org.assertj.core.api.Assertions;
@@ -43,7 +43,7 @@ class SendInfoRepositoryTest {
                 .mailFrom(mail)
                 .replyTo(mail)
                 .charset("utf-8")
-                .encoding(ContentEncoding.BASE64.getValue())
+                .encoding(ContentEncoding.BASE64)
                 .contentType(ContentType.HTML)
                 .mailInfoName("테스트 설정")
                 .build();
@@ -59,7 +59,7 @@ class SendInfoRepositoryTest {
         mailInfoRepository.save(mailInfo);
         sendResultRepository.save(sendResult);
         sendInfoRepository.save(saveSendInfo);
-        SendInfo byStatusWait = sendInfoRepository.findByStatusWait();
+        SendInfo byStatusWait = sendInfoRepository.findByStatusAndSendTime(Status.WAIT, LocalDateTime.now());
         Assertions.assertThat(byStatusWait).isEqualTo(saveSendInfo);
     }
 

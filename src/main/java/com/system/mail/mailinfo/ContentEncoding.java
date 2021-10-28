@@ -1,4 +1,4 @@
-package com.system.mail.mailprocessor;
+package com.system.mail.mailinfo;
 
 public enum ContentEncoding {
     DEFAULT("Quoted-Printable"), BASE64("base64");

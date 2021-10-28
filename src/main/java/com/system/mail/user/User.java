@@ -5,6 +5,7 @@ import com.system.mail.mailgroup.MailGroup;
 import lombok.*;
 
 import javax.persistence.*;
+import javax.validation.constraints.NotNull;
 
 @Entity
 @AllArgsConstructor
@@ -22,6 +23,7 @@ public class User {
 
     private String macroValue;
 
+    @NotNull
     @ManyToOne
     @JoinColumn(name = "mail_group_id")
     private MailGroup mailGroup;
@@ -30,9 +32,6 @@ public class User {
         this.mailGroup = mailGroup;
     }
 
-    public void setMailAddress(MailAddress mailAddress) {
-        this.mailAddress = mailAddress;
-    }
 
     public void setMacroValue(String macroValue) {
         this.macroValue = macroValue;

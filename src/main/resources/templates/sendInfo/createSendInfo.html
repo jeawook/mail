@@ -38,6 +38,9 @@
                 <option th:selected="${sendInfo.mailInfoId} eq null" value="">선택</option>
                 <option th:each="mailInfo : ${mailInfoList}" th:value="${mailInfo.key}" th:text="${mailInfo.value}" th:selected="${mailInfo.key} eq ${sendInfo.mailInfoId}" >
             </select>
+            <div class="field-error" th:errors="*{mailInfoId}">
+                mailInfoId 오류
+            </div>
         </div>
         <div>
             <label for="mailGroup" th:text="#{label.mailGroup.mailGroupName}">발송 그룹</label>
@@ -45,12 +48,15 @@
                 <option th:selected="${sendInfo.mailGroupId} eq null" value="">선택</option>
                 <option th:each="mailGroup : ${mailGroupList}" th:value="${mailGroup.key}"  th:text="${mailGroup.value}" th:selected="${mailGroup.key} eq ${sendInfo.mailGroupId}" >
             </select>
+            <div class="field-error" th:errors="*{mailGroupId}">
+                mailGroupId 오류
+            </div>
         </div>
         <div>
             <label for="sendDate" th:text="#{label.sendInfo.sendDate}">발송시간</label>
-            <input type="text" id="sendDate" th:field="*{sendDate}"
+            <input type="text" id="sendDate" name="sendDate"
                    th:errorclass="field-error"
-                   class="form-control" th:value="${#calendars.format(#calendars.createNow(), 'yyyyMMddHHmm')}">
+                   class="form-control" th:value="${#dates.format(#dates.createNow(), 'yyyyMMddHHmm')}">
             <div class="field-error" th:errors="*{sendDate}">
                 발송일 오류
             </div>

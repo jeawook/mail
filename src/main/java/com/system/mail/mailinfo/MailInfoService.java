@@ -38,9 +38,7 @@ public class MailInfoService {
     }
     @Transactional
     public void updateMailInfo(Long mailInfoId, MailInfoForm mailInfoForm) {
-        Optional<MailInfo> mailInfoOptional = mailInfoRepository.findById(mailInfoId);
-
-        MailInfo mailInfo = mailInfoOptional.get();
+        MailInfo mailInfo = mailInfoRepository.findById(mailInfoId).orElseGet(MailInfo::new);
         mailInfo.updateByMailInfoForm(mailInfoForm);
     }
 

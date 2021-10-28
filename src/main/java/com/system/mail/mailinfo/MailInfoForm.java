@@ -30,8 +30,9 @@ public class MailInfoForm {
     private LocalDateTime createdDate;
 
     private LocalDateTime modifiedDate;
-
-    private String encoding;
+    @Enumerated(EnumType.STRING)
+    @NotNull
+    private ContentEncoding encoding;
 
     @Embedded
     @NotNull(message = "mailFrom 의 주소는 필수입니다.")

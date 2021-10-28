@@ -1,15 +1,12 @@
 package com.system.mail.mailinfo;
 
 import com.system.mail.common.MailAddress;
-import com.system.mail.mailprocessor.ContentEncoding;
-import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 
 import static org.assertj.core.api.Assertions.*;
-import static org.junit.jupiter.api.Assertions.*;
 
 @SpringBootTest
 class MailInfoServiceTest {
@@ -24,7 +21,7 @@ class MailInfoServiceTest {
                 .mailFrom(mailAddress)
                 .replyTo(mailAddress)
                 .charset("utf-8")
-                .encoding(ContentEncoding.BASE64.getValue())
+                .encoding(ContentEncoding.BASE64)
                 .contentType(ContentType.HTML)
                 .mailInfoName("테스트 설정")
                 .build();

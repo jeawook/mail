@@ -25,6 +25,7 @@
                 <th th:text="#{label.id}">ID</th>
                 <th th:text="#{label.sendInfo.subject}">발송 정보</th>
                 <th th:text="#{label.sendInfo.sendDate}">발송 예정 시간</th>
+                <th th:text="#{label.sendInfo.completedDate}">발송 완료 시간</th>
                 <th th:text="#{label.sendInfo.status}">발송 상태</th>
                 <th th:text="#{label.createdDate}">등록일</th>
             </tr>
@@ -32,10 +33,11 @@
             <tbody>
             <tr th:each="sendInfo : ${sendInfoList}">
                 <td><a href="sendInfo.html" th:href="@{/sendInfo/{sendInfoId}(sendInfoId=${sendInfo.id})}" th:text="${sendInfo.id}">메일 그룹 정보 id</a></td>
-                <td><a href="sendInfo.html" th:href="@{/sendInfo/{sendInfoId}(sendInfoId=${sendInfo.id})}" th:text="${sendInfo.sendInfoName}">메일 그룹 정보</a></td>
-                <td th:text="${sendInfo.sendDate}"></td>
-                <td th:text="${sendInfo.status}"></td>
-                <td th:text="${sendInfo.createdDate}">10000</td>
+                <td><a href="sendInfo.html" th:href="@{/sendInfo/{sendInfoId}(sendInfoId=${sendInfo.id})}" th:text="${sendInfo.subject}">제목</a></td>
+                <td th:text="${{sendInfo.sendDate}}"></td>
+                <td th:text="${{sendInfo.completedDate}}"></td>
+                <td th:text="${sendInfo.status.value}"></td>
+                <td th:text="${{sendInfo.createdDate}}">10000</td>
             </tr>
             </tbody>
         </table>
