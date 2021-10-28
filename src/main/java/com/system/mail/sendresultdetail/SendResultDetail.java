@@ -64,7 +64,7 @@ public class SendResultDetail {
     public String getMacroValue() {
         return user.getMacroValue();
     }
-    public void setCompleted() {
+    private void setCompleted() {
         completedDate = LocalDateTime.now();
     }
     public void setResult(SMTPResult smtpResult) {

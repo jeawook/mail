@@ -9,13 +9,13 @@ public class MacroProcessor {
     private static final String PRE = "\\[\\$";
     private static final String POST = "\\$\\]";
     private static final String MACRO_COMMA = ",";
-    public String process(String macroKey, String macroValue, String content) {
+    public String process(String macroKey, String macroValue, String target) {
         HashMap<String, String> macro = makeMacroMap(macroKey, macroValue);
         for (String key : macro.keySet()) {
             String value = macro.get(key);
-            content = content.replaceAll(PRE + key + POST, value);
+            target = target.replaceAll(PRE + key + POST, value);
         }
-        return content;
+        return target;
     }
 
 
