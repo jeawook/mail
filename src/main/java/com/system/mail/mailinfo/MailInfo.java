@@ -65,6 +65,9 @@ public class MailInfo extends BaseTimeEntity {
         this.mailInfoName = mailInfoForm.getMailInfoName();
         this.charset = mailInfoForm.getCharset();
         this.contentType = mailInfoForm.getContentType();
+        this.encoding = mailInfoForm.getEncoding();
+        this.replyTo = mailInfoForm.getReplyTo();
+        this.mailFrom = mailInfoForm.getMailFrom();
     }
 
     public static MailInfoBuilder builder(String mailInfoName, ContentEncoding encoding, ContentType contentType, String charset, MailAddress replyTo, MailAddress mailFrom) {

@@ -33,15 +33,15 @@
             <p class="field-error" th:each="err : ${#fields.globalErrors()}" th:text="${err}">전체 오류 메시지</p>
         </div>
         <div>
-            <label for="mailInfo" th:text="#{label.mailInfo.mailInfoName}">메일 설정</label>
-            <select id="mailInfo" th:field="*{mailInfoId}" class="form-select">
+            <label for="mailInfoId" th:text="#{label.mailInfo.mailInfoName}">메일 설정</label>
+            <select id="mailInfoId" th:field="*{mailInfoId}" class="form-select">
                 <option th:selected="${sendInfo.mailInfoId} eq null" value="">선택</option>
                 <option th:each="mailInfo : ${mailInfoList}" th:value="${mailInfo.key}" th:text="${mailInfo.value}" th:selected="${mailInfo.key} eq ${sendInfo.mailInfoId}" >
             </select>
         </div>
         <div>
-            <label for="mailGroup" th:text="#{label.mailGroup.mailGroupName}">발송 그룹</label>
-            <select id="mailGroup" th:field="*{mailGroupId}" class="form-select">
+            <label for="mailGroupId" th:text="#{label.mailGroup.mailGroupName}">발송 그룹</label>
+            <select id="mailGroupId" th:field="*{mailGroupId}" class="form-select">
                 <option th:selected="${sendInfo.mailGroupId} eq null" value="">선택</option>
                 <option th:each="mailGroup : ${mailGroupList}" th:value="${mailGroup.key}"  th:text="${mailGroup.value}" th:selected="${mailGroup.key} eq ${sendInfo.mailGroupId}" >
             </select>
@@ -50,7 +50,7 @@
             <label for="sendDate" th:text="#{label.sendInfo.sendDate}">발송시간</label>
             <input type="text" id="sendDate" th:field="*{sendDate}"
                    th:errorclass="field-error"
-                   class="form-control" th:value="${#calendars.format(#calendars.createNow(), 'yyyyMMddHHmm')}">
+                   class="form-control">
             <div class="field-error" th:errors="*{sendDate}">
                 발송일 오류
             </div>
@@ -77,13 +77,15 @@
         <hr class="my-4">
 
         <div class="row">
+            <div class="col"></div>
+            <div class="col"></div>
             <div class="col">
                 <button class="w-100 btn btn-primary btn-lg" type="submit" th:text="#{button.save}">완료</button>
             </div>
             <div class="col">
                 <button class="w-100 btn btn-secondary btn-lg"
-                        onclick="location.href='mailGroupList.html'"
-                        th:onclick="|location.href='@{/sendInfo/{sendInfoId}(sendInfoId=${sendInfo.id})}'|"
+                        onclick="location.href='sendInfo.html'"
+                        th:onclick="|location.href='@{/sendInfo/{sendInfoId}(sendInfoId=${sendInfoId})}'|"
                         type="button" th:text="#{button.cancel}">취소</button>
             </div>
         </div>

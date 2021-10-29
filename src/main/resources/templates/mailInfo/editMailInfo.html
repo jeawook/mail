@@ -34,8 +34,8 @@
         <div>
             <label for="encoding" th:text="#{label.mailInfo.encoding}">encoding</label>
             <select id="encoding" name="encoding" class="form-select">
-                <option th:each="encodingValue : ${T(com.system.mail.mailprocessor.ContentEncoding).values()}"
-                        th:value="${encodingValue}" th:text="${encodingValue.name()}" th:selected="${encodingValue.name()} == *{encoding}"></option>
+                <option th:each="encodingValue : ${T(com.system.mail.mailinfo.ContentEncoding).values()}"
+                        th:value="${encodingValue}" th:text="${encodingValue.name()}" th:selected="${encodingValue} == *{encoding}"></option>
             </select>
             <div class="field-error" th:errors="*{encoding}">
                 encoding 오류
@@ -76,7 +76,7 @@
             </div>
             <div class="col">
                 <button class="w-100 btn btn-secondary btn-lg"
-                        onclick="location.href='items.html'"
+                        onclick="location.href='mailInfo.html'"
                         th:onclick="|location.href='@{/mailInfo/{mailInfoId}(mailInfoId=${mailInfoId})}'|"
                         type="button" th:text="#{button.cancel}">취소</button>
             </div>

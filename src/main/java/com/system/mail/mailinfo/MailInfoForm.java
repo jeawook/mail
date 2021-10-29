@@ -30,6 +30,7 @@ public class MailInfoForm {
     private LocalDateTime createdDate;
 
     private LocalDateTime modifiedDate;
+
     @Enumerated(EnumType.STRING)
     @NotNull
     private ContentEncoding encoding;

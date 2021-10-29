@@ -36,4 +36,13 @@ public class SendInfoService {
         SendInfo sendInfo = sendInfoRepository.findById(id).orElseGet(SendInfo::new);
         sendInfo.mailRegister();
     }
+
+    @Transactional
+    public void updateSendInfo(Long sendInfoId, SendInfo sendInfo) {
+        SendInfo findSendInfo = sendInfoRepository.findById(sendInfoId).orElseGet(SendInfo::new);
+        findSendInfo.setMailGroup(sendInfo.getMailGroup());
+        findSendInfo.setSendDate(sendInfo.getSendDate());
+        findSendInfo.setSubject(sendInfo.getSubject());
+        findSendInfo.setContent(sendInfo.getContent());
+    }
 }

@@ -4,6 +4,7 @@ import com.system.mail.mailgroup.MailGroup;
 import com.system.mail.mailgroup.MailGroupService;
 import com.system.mail.mailinfo.MailInfo;
 import com.system.mail.mailinfo.MailInfoService;
+import com.system.mail.sendresult.SendResult;
 import lombok.AllArgsConstructor;
 import org.modelmapper.ModelMapper;
 import org.slf4j.Logger;
@@ -81,10 +82,12 @@ public class SendInfoController {
         if (bindingResult.hasErrors()) {
             return "sendInfo/createSendInfo";
         }
+
         MailInfo mailInfo = mailInfoService.findMailInfoById(sendInfoForm.getMailInfoId());
         MailGroup mailGroup = mailGroupService.findMailGroupById(sendInfoForm.getMailGroupId());
-
-        checkMailInfoNMailGroup(bindingResult, mailInfo, mailGroup);
+        if (isCheckMailInfoNMailGroup(bindingResult, mailInfo, mailGroup)) {
+            return "sendInfo/createSendInfo";
+        }
 
         SendInfo sendInfo = mapToSendInfo(sendInfoForm, mailInfo, mailGroup);
 
@@ -106,6 +109,50 @@ public class SendInfoController {
         return "redirect:/sendInfo/list";
     }
 
+    @GetMapping("/{sendInfoId}/edit")
+    public String updateSendInfoForm(@PathVariable Long sendInfoId, Model model) {
+
+        SendInfo sendInfo = sendInfoService.findSendInfoById(sendInfoId);
+        if (sendInfo == null) {
+            return "redirect:/sendInfo/list";
+        }
+        model.addAttribute("sendInfo", mapToSendInfoForm(sendInfo));
+
+        return "sendInfo/editSendInfo";
+    }
+
+    @PostMapping("/{sendInfoId}/edit")
+    public String updateSendInfo(@PathVariable Long sendInfoId, @ModelAttribute("sendInfo") SendInfoForm sendInfoForm, BindingResult bindingResult) {
+        if (bindingResult.hasErrors()) {
+            return "sendInfo/editSendInfo";
+        }
+        SendInfo sendInfoById = sendInfoService.findSendInfoById(sendInfoId);
+        MailInfo mailInfo = mailInfoService.findMailInfoById(sendInfoForm.getMailInfoId());
+        MailGroup mailGroup = mailGroupService.findMailGroupById(sendInfoForm.getSendInfoId());
+        if (sendInfoById == null || !sendInfoById.getStatus().equals(Status.WAIT)
+                || isCheckMailInfoNMailGroup(bindingResult, mailInfo, mailGroup)) {
+            return "sendInfo/editSendInfo";
+        }
+        SendInfo sendInfo = mapToSendInfo(sendInfoForm, mailInfo, mailGroup);
+        sendInfoService.updateSendInfo(sendInfoId, sendInfo);
+
+
+        return "redirect:/sendInfo/{sendInfoId}";
+    }
+
+    @GetMapping("/{sendInfoId}/result")
+    public String sendResult(@PathVariable Long sendInfoId, Model model) {
+        SendInfo sendInfo = sendInfoService.findSendInfoById(sendInfoId);
+        if (!sendInfo.getStatus().equals(Status.COMPLETE)) {
+            return "redirect:/{sendInfoId}";
+        }
+        SendResult sendResult = sendInfo.getSendResult();
+
+        model.addAttribute("sendResult", sendResult);
+        return "sendInfo/sendResult";
+    }
+
+
     private SendInfo mapToSendInfo(SendInfoForm sendInfoForm, MailInfo mailInfo, MailGroup mailGroup) {
         SendInfo sendInfo = modelMapper.map(sendInfoForm, SendInfo.class);
         sendInfo.setMailInfo(mailInfo);
@@ -113,14 +160,25 @@ public class SendInfoController {
         sendInfo.setStatus(Status.WAIT);
         return sendInfo;
     }
+    private SendInfoForm mapToSendInfoForm(SendInfo sendInfo) {
+        SendInfoForm sendInfoForm = modelMapper.map(sendInfo, SendInfoForm.class);
+        sendInfoForm.setMailInfoId(sendInfo.getMailInfo().getId());
+        sendInfoForm.setMailGroupId(sendInfo.getMailGroup().getId());
+        sendInfoForm.setStatus(Status.WAIT);
+        return sendInfoForm;
+    }
 
-    private void checkMailInfoNMailGroup(BindingResult bindingResult, MailInfo mailInfoById, MailGroup mailGroupById) {
-        if (mailInfoById.getId() == null ) {
+    private boolean isCheckMailInfoNMailGroup(BindingResult bindingResult, MailInfo mailInfoById, MailGroup mailGroupById) {
+        boolean flag = false;
+        if (mailInfoById == null ) {
             bindingResult.rejectValue("mailInfoId","field-error", "메일 정보가 잘못 되었습니다.");
+            flag = true;
         }
-        if (mailGroupById.getId() == null) {
+        if (mailGroupById == null) {
             bindingResult.rejectValue("mailGroupId","field-error", "메일 그룹이 잘못 되었습니다.");
+            flag = true;
         }
+        return flag;
     }
 
 }
