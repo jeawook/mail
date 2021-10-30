@@ -23,7 +23,7 @@ public class MailGroupService {
     }
 
     public MailGroup findMailGroupById(Long id) {
-        return mailGroupRepository.findById(id).orElseGet(MailGroup::new);
+        return mailGroupRepository.findById(id).orElseThrow(IllegalArgumentException::new);
     }
 
     public Page<MailGroup> findMailGroupList(Pageable pageable) {
@@ -35,18 +35,19 @@ public class MailGroupService {
     }
     @Transactional
     public void updateMailGroup(Long id, MailGroup mailGroup) {
-        MailGroup findMailGroup = mailGroupRepository.findById(id).orElseGet(MailGroup::new);
+        MailGroup findMailGroup = mailGroupRepository.findById(id).orElseThrow(IllegalArgumentException::new);
         findMailGroup.setMacroKey(mailGroup.getMacroKey());
         findMailGroup.setMailGroupName(mailGroup.getMailGroupName());
         updateUser(mailGroup, findMailGroup);
     }
+
     private void updateUser( MailGroup mailGroup, MailGroup findMailGroup) {
         for (User user : mailGroup.getUsers()) {
             if (user.getId() == null) {
                 findMailGroup.addUser(user);
                 continue;
             }
-            User findUser = userRepository.findById(user.getId()).orElseGet(null);
+            User findUser = userRepository.findById(user.getId()).orElseThrow(IllegalArgumentException::new);
             findUser.setMacroValue(user.getMacroValue());
             findUser.setMailAddress(user.getMailAddress());
         }

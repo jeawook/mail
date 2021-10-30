@@ -24,7 +24,7 @@ public class MailInfoService {
     }
 
     public MailInfo findMailInfoById(Long mailInfoId) {
-        return mailInfoRepository.findById(mailInfoId).orElseGet(MailInfo::new);
+        return mailInfoRepository.findById(mailInfoId).orElseThrow(IllegalArgumentException::new);
     }
 
     public Page<MailInfo> findMailInfoListByPage(Pageable pageable) {
@@ -38,7 +38,7 @@ public class MailInfoService {
     }
     @Transactional
     public void updateMailInfo(Long mailInfoId, MailInfoForm mailInfoForm) {
-        MailInfo mailInfo = mailInfoRepository.findById(mailInfoId).orElseGet(MailInfo::new);
+        MailInfo mailInfo = mailInfoRepository.findById(mailInfoId).orElseThrow(IllegalArgumentException::new);
         mailInfo.updateByMailInfoForm(mailInfoForm);
     }
 

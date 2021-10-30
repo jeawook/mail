@@ -85,7 +85,9 @@ public class SendInfoController {
 
         MailInfo mailInfo = mailInfoService.findMailInfoById(sendInfoForm.getMailInfoId());
         MailGroup mailGroup = mailGroupService.findMailGroupById(sendInfoForm.getMailGroupId());
-        if (isCheckMailInfoNMailGroup(bindingResult, mailInfo, mailGroup)) {
+
+        if (isNullCheck(bindingResult, mailInfo, "mailInfoId")
+                ||isNullCheck(bindingResult, mailGroup, "mailGroupId")) {
             return "sendInfo/createSendInfo";
         }
 
@@ -97,6 +99,7 @@ public class SendInfoController {
 
         return "redirect:/sendInfo/{sendInfoId}";
     }
+
     @PostMapping("/{sendInfoId}/send")
     public String sendMail(@PathVariable Long sendInfoId) {
         logger.info("sendMail");
@@ -129,13 +132,14 @@ public class SendInfoController {
         SendInfo sendInfoById = sendInfoService.findSendInfoById(sendInfoId);
         MailInfo mailInfo = mailInfoService.findMailInfoById(sendInfoForm.getMailInfoId());
         MailGroup mailGroup = mailGroupService.findMailGroupById(sendInfoForm.getSendInfoId());
-        if (sendInfoById == null || !sendInfoById.getStatus().equals(Status.WAIT)
-                || isCheckMailInfoNMailGroup(bindingResult, mailInfo, mailGroup)) {
+        if (isNullCheck(bindingResult, sendInfoById, "sendInfo") || !sendInfoById.getStatus().equals(Status.WAIT)
+                || isNullCheck(bindingResult, mailInfo, "mailInfoId")
+                || isNullCheck(bindingResult, mailGroup, "mailGroupId")) {
             return "sendInfo/editSendInfo";
         }
+
         SendInfo sendInfo = mapToSendInfo(sendInfoForm, mailInfo, mailGroup);
         sendInfoService.updateSendInfo(sendInfoId, sendInfo);
-
 
         return "redirect:/sendInfo/{sendInfoId}";
     }
@@ -168,17 +172,12 @@ public class SendInfoController {
         return sendInfoForm;
     }
 
-    private boolean isCheckMailInfoNMailGroup(BindingResult bindingResult, MailInfo mailInfoById, MailGroup mailGroupById) {
-        boolean flag = false;
-        if (mailInfoById == null ) {
-            bindingResult.rejectValue("mailInfoId","field-error", "메일 정보가 잘못 되었습니다.");
-            flag = true;
+    private boolean isNullCheck(BindingResult bindingResult, Object o, String field) {
+        if (o == null) {
+            bindingResult.rejectValue(field, "field-error", "잘못된 데이터 입니다.");
+            return true;
         }
-        if (mailGroupById == null) {
-            bindingResult.rejectValue("mailGroupId","field-error", "메일 그룹이 잘못 되었습니다.");
-            flag = true;
-        }
-        return flag;
+        return false;
     }
 
 }
