@@ -70,6 +70,7 @@ public class SendResultDetail {
     public void setResult(SMTPResult smtpResult) {
         this.resultCode = smtpResult.getResultCode();
         this.resultMessage = smtpResult.getResultMessage();
+        sendResult.checkResultAddCnt(resultCode);
         setCompleted();
     }
 

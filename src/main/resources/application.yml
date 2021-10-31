@@ -17,7 +17,6 @@ logging:
     org.hibernate.SQL: debug
     org.hibernate.type: trace
     com.SystemMail.mail: debug
-
 mail:
   propertyMap:
     returnPath: jwpark@infomail.co.kr

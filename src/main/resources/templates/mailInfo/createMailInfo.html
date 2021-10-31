@@ -33,7 +33,7 @@
         <div>
             <label for="encoding" th:text="#{label.mailInfo.encoding}">encoding</label>
             <select id="encoding" name="encoding" class="form-select">
-                <option th:each="encodingValue : ${T(com.system.mail.mailprocessor.ContentEncoding).values()}"
+                <option th:each="encodingValue : ${T(com.system.mail.mailinfo.ContentEncoding).values()}"
                         th:value="${encodingValue}" th:text="${encodingValue.name()}" th:selected="${encodingValue.name()} == 'DEFAULT'"></option>
             </select>
             <div class="field-error" th:errors="*{encoding}">

@@ -27,11 +27,17 @@ public class SendResult {
     @JoinColumn(name = "mail_group_id")
     private MailGroup mailGroup;
 
-    @Min(0)
-    private int totalCnt;
+    @Builder.Default
+    private int totalCnt = 0;
 
-    @Min(0)
-    private int completedCnt;
+    @Builder.Default
+    private int completedCnt = 0;
+
+    @Builder.Default
+    private int errorCnt = 0;
+
+    @Builder.Default
+    private int successCnt = 0;
 
     @OneToMany(mappedBy = "sendResult", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     @Builder.Default
@@ -54,10 +60,29 @@ public class SendResult {
         this.totalCnt = totalCnt;
     }
 
+    private void addSuccessCnt() {
+        this.successCnt++;
+        addTotalCnt();
+    }
+    private void addErrorCnt() {
+        this.errorCnt++;
+        addTotalCnt();
+    }
+    private void addTotalCnt() {
+        this.totalCnt++;
+    }
     public static SendResultBuilder builder(MailGroup mailGroup) {
         return SendResultBuilder()
-                .mailGroup(mailGroup)
-                .completedCnt(0);
+                .mailGroup(mailGroup);
+
+    }
+
+    public void checkResultAddCnt(String resultCode) {
+        if (resultCode.equals("250")) {
+            addSuccessCnt();
+            return;
+        }
+        addErrorCnt();
 
     }
 

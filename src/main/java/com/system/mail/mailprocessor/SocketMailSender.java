@@ -23,7 +23,7 @@ public class SocketMailSender {
     private static final String SERVER_DOMAIN = "sender.com";
     private static final int PORT = 25;
     private static final String LINE_FEED_CHAR = "\r\n";
-    private Logger logger = LoggerFactory.getLogger(this.getClass());
+    private final Logger logger = LoggerFactory.getLogger(this.getClass());
 
     private final DNSLookup dnsLookup;
 

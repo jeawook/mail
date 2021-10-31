@@ -28,7 +28,7 @@ public class MailGroupController {
 
     private final ModelMapper modelMapper;
     private final MailGroupService mailGroupService;
-    static char MACRO_POINT_COMMA = ',';
+    static final char MACRO_POINT_COMMA = ',';
 
     @GetMapping("/list")
     public String mailGroupList(@PageableDefault(size = 10, sort = "id", direction = Sort.Direction.DESC)Pageable pageable, Model model) {
@@ -96,7 +96,10 @@ public class MailGroupController {
     }
 
     private void setUser(MailGroup mailGroup) {
-        mailGroup.getUsers().forEach(user -> user.setMailGroup(mailGroup));
+        List<User> users = mailGroup.getUsers();
+        if(users != null) {
+            users.forEach(user -> user.setMailGroup(mailGroup));
+        }
     }
 
     private void checkMacroValidation(MailGroupForm mailGroupForm, BindingResult bindingResult) {

@@ -49,6 +49,7 @@ public class MailProcessor {
                 connectionCnt.put(domain, connectionCnt.get(domain)+1);
 
                 SMTPResult smtpResult = socketMailSender.send(makeMailDTO(sendInfo, sendResultDetail));
+
                 sendResultDetail.setResult(smtpResult);
 
                 connectionCnt.put(domain, connectionCnt.get(domain)-1);

@@ -5,6 +5,8 @@ import com.system.mail.mailgroup.MailGroupService;
 import com.system.mail.mailinfo.MailInfo;
 import com.system.mail.mailinfo.MailInfoService;
 import com.system.mail.sendresult.SendResult;
+import com.system.mail.sendresultdetail.SendResultDetail;
+import com.system.mail.sendresultdetail.SendResultDetailForm;
 import lombok.AllArgsConstructor;
 import org.modelmapper.ModelMapper;
 import org.slf4j.Logger;
@@ -151,8 +153,9 @@ public class SendInfoController {
             return "redirect:/{sendInfoId}";
         }
         SendResult sendResult = sendInfo.getSendResult();
+        SendResultDetailForm sendResultDetailForm = modelMapper.map(sendResult, SendResultDetailForm.class);
 
-        model.addAttribute("sendResult", sendResult);
+        model.addAttribute("sendResult", sendResultDetailForm);
         return "sendInfo/sendResult";
     }
 
