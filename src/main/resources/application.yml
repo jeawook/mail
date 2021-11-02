@@ -14,9 +14,9 @@ spring:
 logging:
   level:
     root: info
-    org.hibernate.SQL: debug
-    org.hibernate.type: trace
-    com.SystemMail.mail: debug
+#    org.hibernate.SQL: debug
+#    org.hibernate.type: trace
+#    com.SystemMail.mail: debug
 mail:
   propertyMap:
     returnPath: jwpark@infomail.co.kr

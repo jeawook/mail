@@ -27,6 +27,8 @@ public class SendResult {
     @JoinColumn(name = "mail_group_id")
     private MailGroup mailGroup;
 
+    private String macroKey;
+    
     @Builder.Default
     private int totalCnt = 0;
 
@@ -62,19 +64,19 @@ public class SendResult {
 
     private void addSuccessCnt() {
         this.successCnt++;
-        addTotalCnt();
+        addCompletedCnt();
     }
     private void addErrorCnt() {
         this.errorCnt++;
-        addTotalCnt();
+        addCompletedCnt();
     }
-    private void addTotalCnt() {
-        this.totalCnt++;
+    private void addCompletedCnt() {
+        this.completedCnt++;
     }
     public static SendResultBuilder builder(MailGroup mailGroup) {
         return SendResultBuilder()
-                .mailGroup(mailGroup);
-
+                .mailGroup(mailGroup)
+                 .macroKey(mailGroup.getMacroKey());
     }
 
     public void checkResultAddCnt(String resultCode) {

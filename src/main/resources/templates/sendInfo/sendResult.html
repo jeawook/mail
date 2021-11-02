@@ -1,34 +1,32 @@
 <!DOCTYPE html>
 <html lang="ko" xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
       layout:decorator="~{layout/layout}">
-<main layout:fragment="content" th:object="${mailGroup}">
+<main layout:fragment="content" th:object="${sendResult}">
     <div class="container-fluid px-4">
-        <h1 class="mt-4">DashmailGroup</h1>
-        <ol class="breadcrumb mb-4">
-            <li class="breadcrumb-item active">DashmailGroup</li>
-        </ol>
+        <h1 class="mt-4">메일 발송 결과</h1>
         <div class="card mb-4">
             <div class="card-header">
                 <i class="fas fa-table me-1"></i>
-                메일 발송 결과
+                메일 발송 데이터
             </div>
             <div class="card-body">
-                <table>
+                <table class="table table-bordered">
                     <thead>
                     <tr>
-                        <th>총 발송수</th>
-                        <th>성공</th>
-                        <th>오류</th>
+                        <th>total</th>
+                        <th>success</th>
+                        <th>error</th>
+                        <th>complete</th>
+                        <th>macroKey</th>
                     </tr>
                     </thead>
                     <tbody>
                     <tr>
-                        <td th:value="*{totalCnt">Tiger Nixon</td>
-                        <td th:value="*{completeCnt}">System Architect</td>
-                        <td th:value="${user.macroValue}">Edinburgh</td>
-                        <td>61</td>
-                        <td>2011/04/25</td>
-                        <td>$320,800</td>
+                        <td th:text="*{totalCnt}">0</td>
+                        <td th:text="*{successCnt}">0</td>
+                        <td th:text="*{errorCnt}">0</td>
+                        <td th:text="*{completedCnt}">0</td>
+                        <td th:text="*{macroKey}">macroKey</td>
                     </tr>
                     </tbody>
                 </table>
@@ -40,7 +38,7 @@
                 메일 발송 상세 결과
             </div>
             <div class="card-body">
-                <table id="datatablesSimple">
+                <table class="table table-bordered">
                     <thead>
                     <tr>
                         <th>mailAddress</th>
@@ -52,13 +50,13 @@
                     </tr>
                     </thead>
                     <tbody>
-                    <tr th:each="user : ${users}">
-                        <td th:value="${user.mailAddress.email">Tiger Nixon</td>
-                        <td th:value="${user.mailAddress.name}">System Architect</td>
-                        <td th:value="${user.macroValue}">Edinburgh</td>
-                        <td>61</td>
-                        <td>2011/04/25</td>
-                        <td>$320,800</td>
+                    <tr th:each="detail : *{sendResultDetails}">
+                        <td th:text="${detail.mailAddress.email}"></td>
+                        <td th:text="${detail.mailAddress.name}"></td>
+                        <td th:text="${detail.macroValue}"></td>
+                        <td th:text="${detail.resultCode}"></td>
+                        <td th:text="${detail.resultMessage}"></td>
+                        <td th:text="${{detail.completedDate}}"></td>
                     </tr>
                     </tbody>
                 </table>

@@ -1,10 +1,9 @@
 package com.system.mail.sendresult;
 
 import com.system.mail.sendresultdetail.SendResultDetailForm;
-import lombok.Builder;
 import lombok.Data;
 
-import java.util.ArrayList;
+import java.util.List;
 
 @Data
 public class SendResultForm {
@@ -17,7 +16,9 @@ public class SendResultForm {
 
     private int successCnt;
 
-    private int completeCnt;
+    private int completedCnt;
 
-    private ArrayList<SendResultDetailForm> sendResultDetailForms;
+    private String macroKey;
+
+    private List<SendResultDetailForm> sendResultDetails;
 }

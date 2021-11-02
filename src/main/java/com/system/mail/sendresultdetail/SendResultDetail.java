@@ -21,11 +21,9 @@ public class SendResultDetail {
     @Column(name = "send_result_detail_id")
     private Long id;
 
-    @OneToOne
-    @JoinColumn(name = "user_id")
-    private User user;
-
     private MailAddress mailAddress;
+
+    private String macroValue;
 
     private String resultCode;
 
@@ -38,17 +36,14 @@ public class SendResultDetail {
     @JoinColumn(name = "send_result_id")
     private SendResult sendResult;
 
-    public User getUser() {
-        return user;
-    }
     public String getDomain() {
-        return user.getMailAddress().getDomain();
+        return this.mailAddress.getDomain();
     }
     public Long getId() {
         return id;
     }
     public MailAddress getMailAddress() {
-        return user.getMailAddress();
+        return this.mailAddress;
     }
 
     public void setSendResult(SendResult sendResult) {
@@ -61,8 +56,11 @@ public class SendResultDetail {
     public String getResultMessage() {
         return  this.resultMessage;
     }
+    public LocalDateTime getCompletedDate() {
+        return this.completedDate;
+    }
     public String getMacroValue() {
-        return user.getMacroValue();
+        return this.macroValue;
     }
     private void setCompleted() {
         completedDate = LocalDateTime.now();
@@ -76,7 +74,7 @@ public class SendResultDetail {
 
     public static SendResultDetailBuilder builder(User user) {
         return SendResultDetailBuilder()
-                .user(user)
-                .mailAddress(user.getMailAddress());
+                .mailAddress(user.getMailAddress())
+                .macroValue(user.getMacroValue());
     }
 }

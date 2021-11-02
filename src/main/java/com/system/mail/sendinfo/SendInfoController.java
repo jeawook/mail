@@ -5,6 +5,7 @@ import com.system.mail.mailgroup.MailGroupService;
 import com.system.mail.mailinfo.MailInfo;
 import com.system.mail.mailinfo.MailInfoService;
 import com.system.mail.sendresult.SendResult;
+import com.system.mail.sendresult.SendResultForm;
 import com.system.mail.sendresultdetail.SendResultDetail;
 import com.system.mail.sendresultdetail.SendResultDetailForm;
 import lombok.AllArgsConstructor;
@@ -25,6 +26,7 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.stream.Collectors;
 
 @Controller
 @AllArgsConstructor
@@ -111,7 +113,7 @@ public class SendInfoController {
         }
         sendInfoService.mailRegistering(sendInfoById.getId());
 
-        return "redirect:/sendInfo/list";
+        return "redirect:/sendInfo/{sendInfoId}";
     }
 
     @GetMapping("/{sendInfoId}/edit")
@@ -150,13 +152,22 @@ public class SendInfoController {
     public String sendResult(@PathVariable Long sendInfoId, Model model) {
         SendInfo sendInfo = sendInfoService.findSendInfoById(sendInfoId);
         if (!sendInfo.getStatus().equals(Status.COMPLETE)) {
-            return "redirect:/{sendInfoId}";
+            return "redirect:/sendInfo/{sendInfoId}";
         }
         SendResult sendResult = sendInfo.getSendResult();
-        SendResultDetailForm sendResultDetailForm = modelMapper.map(sendResult, SendResultDetailForm.class);
 
-        model.addAttribute("sendResult", sendResultDetailForm);
+        SendResultForm sendResultForm = modelMapper.map(sendResult, SendResultForm.class);
+        sendResultForm.setSendResultDetails(mapResultLisToResultForm(sendResult));
+
+        model.addAttribute("sendResult", sendResultForm);
+
         return "sendInfo/sendResult";
+    }
+
+    private List<SendResultDetailForm> mapResultLisToResultForm(SendResult sendResult) {
+        return sendResult.getSendResultDetails().stream()
+                .map(sendResultDetail -> modelMapper.map(sendResultDetail, SendResultDetailForm.class))
+                .collect(Collectors.toList());
     }
 
 

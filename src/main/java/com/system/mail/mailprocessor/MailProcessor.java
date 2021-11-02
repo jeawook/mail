@@ -10,6 +10,8 @@ import com.system.mail.sendresult.SendResult;
 import com.system.mail.sendresult.SendResultService;
 import com.system.mail.sendresultdetail.SendResultDetail;
 import lombok.RequiredArgsConstructor;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -20,6 +22,7 @@ import java.util.*;
 @RequiredArgsConstructor
 public class MailProcessor {
 
+    private final Logger logger = LoggerFactory.getLogger(this.getClass());
     private static HashMap<String, Integer> connectionCnt = new HashMap<>();
     private final MacroProcessor macroProcessor;
     private final DomainConnectionProperties domainConnectionProperties;
@@ -49,7 +52,7 @@ public class MailProcessor {
                 connectionCnt.put(domain, connectionCnt.get(domain)+1);
 
                 SMTPResult smtpResult = socketMailSender.send(makeMailDTO(sendInfo, sendResultDetail));
-
+                logger.info("smtpResult : %d, %d",smtpResult.getResultCode(),smtpResult.getResultMessage());
                 sendResultDetail.setResult(smtpResult);
 
                 connectionCnt.put(domain, connectionCnt.get(domain)-1);
