@@ -17,6 +17,7 @@ import java.util.Set;
 public class MailProperties {
 
     private HashMap<String, String> propertyMap = new HashMap<>();
+    private String domain;
 
     public String getProperty(String key) {
         String value = propertyMap.get(key);
@@ -25,5 +26,7 @@ public class MailProperties {
     public Set<String> getProperties() {
         return propertyMap.keySet();
     }
-
+    public String getDomain() {
+        return domain;
+    }
 }

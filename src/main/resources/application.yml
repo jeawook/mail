@@ -18,6 +18,7 @@ logging:
 #    org.hibernate.type: trace
 #    com.SystemMail.mail: debug
 mail:
+  domain: sender.com
   propertyMap:
     returnPath: jwpark@infomail.co.kr
     X-Mailer: mailer

@@ -5,6 +5,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Component;
 
+import javax.annotation.PostConstruct;
 import javax.naming.NamingException;
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -19,8 +20,8 @@ public class SocketMailSender {
     private Socket smtp;
     private BufferedReader input;
     private PrintStream output;
+    private final MailProperties mailProperties;
     private static final int SOCKET_TIME_OUT = 10000;
-    private static final String SERVER_DOMAIN = "sender.com";
     private static final int PORT = 25;
     private static final String LINE_FEED_CHAR = "\r\n";
     private final Logger logger = LoggerFactory.getLogger(this.getClass());
@@ -32,7 +33,7 @@ public class SocketMailSender {
         String resultCode;
         try {
             if (isConnect(mailDTO.getRcpToDomain())) {
-                sendMessage(createMessage(SMTPCommand.HELO, SERVER_DOMAIN), SMTPCode.SUCCESS);
+                sendMessage(createMessage(SMTPCommand.HELO, mailProperties.getDomain()), SMTPCode.SUCCESS);
                 sendMessage(createMessage(SMTPCommand.MAILFROM, mailDTO.getMailFromAddress()), SMTPCode.SUCCESS);
                 sendMessage(createMessage(SMTPCommand.RECPTO, mailDTO.getRcpTo()), SMTPCode.SUCCESS);
                 sendMessage(SMTPCommand.DATA.getValue(), SMTPCode.PROCESS);
@@ -56,7 +57,7 @@ public class SocketMailSender {
         } finally {
             quit();
         }
-        return SMTPResult.builder().resultCode(resultCode).resultMessage(resultMessage).build();
+        return SMTPResult.builder(resultCode, resultMessage).build();
     }
     private boolean isConnect(String domain) throws IOException, SMTPException, NamingException {
         logger.info("lookup domain : "+ domain);

@@ -19,4 +19,10 @@ public class SendInfoRepositoryImpl implements  SendInfoRepositoryCustom {
                 .where(sendInfo.status.eq(status))
                 .where(sendInfo.sendDate.before(localDateTime)).fetchOne();
     }
+
+    @Override
+    public Page<SendInfo> findByDateAndSubject(LocalDateTime data, String subject, Pageable pageable) {
+        return queryFactory.selectFrom(sendInfo);
+    }
+
 }

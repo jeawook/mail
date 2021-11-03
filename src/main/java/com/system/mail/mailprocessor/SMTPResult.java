@@ -6,7 +6,7 @@ import javax.validation.constraints.NotNull;
 
 @AllArgsConstructor
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
-@Builder
+@Builder(builderMethodName = "SMTPResultBuilder")
 @Getter
 public class SMTPResult {
     @NotNull
@@ -20,5 +20,8 @@ public class SMTPResult {
                 "resultCode='" + resultCode + '\'' +
                 ", resultMessage='" + resultMessage + '\'' +
                 '}';
+    }
+    public static SMTPResultBuilder builder(String resultCode, String resultMessage) {
+        return SMTPResultBuilder().resultCode(resultCode).resultMessage(resultMessage);
     }
 }
