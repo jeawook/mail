@@ -1,7 +1,7 @@
 package com.system.mail.mailinfo;
 
 public enum ContentEncoding {
-    DEFAULT("Quoted-Printable"), BASE64("base64");
+    DEFAULT("quoted-printable"), BASE64("base64");
 
     private String value;
 

@@ -58,7 +58,7 @@ public class MailInfo extends BaseTimeEntity {
     }
 
     public String getHeaderContentType() {
-        return contentType.getValue() + "; " + charset;
+        return contentType.getValue() + ";charset=\"" + charset + "\"";
     }
 
     public void updateByMailInfoForm(MailInfoForm mailInfoForm) {

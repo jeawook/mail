@@ -52,7 +52,7 @@ public class MailProcessor {
                 connectionCnt.put(domain, connectionCnt.get(domain)+1);
 
                 SMTPResult smtpResult = socketMailSender.send(makeMailDTO(sendInfo, sendResultDetail));
-                logger.info("smtpResult : %d, %d",smtpResult.getResultCode(),smtpResult.getResultMessage());
+                logger.info("smtpResult : "+smtpResult.getResultCode()+", "+smtpResult.getResultMessage());
                 sendResultDetail.setResult(smtpResult);
 
                 connectionCnt.put(domain, connectionCnt.get(domain)-1);
