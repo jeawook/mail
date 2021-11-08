@@ -39,6 +39,7 @@ public class SendInfoController {
     private final MailInfoService mailInfoService;
     private final MailGroupService mailGroupService;
     private final ModelMapper modelMapper;
+
     @ModelAttribute(name = "mailInfoList")
     public Map<Long, String> mailInfoList() {
         Map<Long, String> mailInfoMap = new HashMap<>();
@@ -66,12 +67,12 @@ public class SendInfoController {
 
         return "sendInfo/sendInfoList";
     }
+
     @GetMapping("/{mailInfoId}")
     public String sendInfo(@PathVariable Long mailInfoId, Model model) {
         SendInfo sendInfoById = sendInfoService.findSendInfoById(mailInfoId);
         model.addAttribute("sendInfo", sendInfoById);
         return "sendInfo/sendInfo";
-
     }
 
     @GetMapping("/add")
@@ -104,6 +105,7 @@ public class SendInfoController {
         return "redirect:/sendInfo/{sendInfoId}";
     }
 
+
     @PostMapping("/{sendInfoId}/send")
     public String sendMail(@PathVariable Long sendInfoId) {
         logger.info("sendMail");
@@ -129,7 +131,7 @@ public class SendInfoController {
     }
 
     @PostMapping("/{sendInfoId}/edit")
-    public String updateSendInfo(@PathVariable Long sendInfoId, @ModelAttribute("sendInfo") SendInfoForm sendInfoForm, BindingResult bindingResult) {
+    public String updateSendInfo(@PathVariable Long sendInfoId,@Validated @ModelAttribute("sendInfo") SendInfoForm sendInfoForm, BindingResult bindingResult) {
         if (bindingResult.hasErrors()) {
             return "sendInfo/editSendInfo";
         }
@@ -178,6 +180,7 @@ public class SendInfoController {
         sendInfo.setStatus(Status.WAIT);
         return sendInfo;
     }
+
     private SendInfoForm mapToSendInfoForm(SendInfo sendInfo) {
         SendInfoForm sendInfoForm = modelMapper.map(sendInfo, SendInfoForm.class);
         sendInfoForm.setMailInfoId(sendInfo.getMailInfo().getId());

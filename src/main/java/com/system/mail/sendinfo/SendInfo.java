@@ -40,10 +40,12 @@ public class SendInfo extends BaseTimeEntity {
 
     @ManyToOne
     @JoinColumn(name = "mail_info_id")
+    @NotNull
     private MailInfo mailInfo;
 
     @ManyToOne
     @JoinColumn(name = "mail_group_id")
+    @NotNull
     private MailGroup mailGroup;
 
     @OneToOne

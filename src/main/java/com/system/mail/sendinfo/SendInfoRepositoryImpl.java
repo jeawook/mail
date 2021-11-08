@@ -22,7 +22,7 @@ public class SendInfoRepositoryImpl implements  SendInfoRepositoryCustom {
 
     @Override
     public Page<SendInfo> findByDateAndSubject(LocalDateTime data, String subject, Pageable pageable) {
-        return queryFactory.selectFrom(sendInfo);
+        return null;
     }
 
 }
