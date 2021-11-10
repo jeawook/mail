@@ -13,14 +13,21 @@
         $('#user_table').on("click", "button[name='btn_plus']", function() {
             var row = "";
             row += "<tr>";
-            row += "<td><input type='text'  name='users["+user_idx+"].mailAddress' placeholder='홍길동,email@email.com' class='form-control'></td>"
+            row += "<td><input type='text'  name='users["+user_idx+"].mailAddress' placeholder='홍길동,email@email.com' class='form-control'>"
+            row += "<input type='hidden'  name='users["+user_idx+"].id'></td>"
             row += "<td><input type='text'  name='users["+user_idx+"].macroValue' placeholder='이름,test' class='form-control'></td>"
-            row += "<td><button type='button' name='btn_minus' class='btn btn-danger'> <i class='fa fa-minus'></i></button> </td>"
+            row += "<td><button type='button' name='btn_minus' id='"+user_idx+"' class='btn btn-danger'> <i class='fa fa-minus'></i></button> </td>"
             row += "</tr>"
             user_idx++;
             $('#user_tbody').prepend(row);
         });
         $('#user_table').on("click", "button[name='btn_minus']", function() {
+            var id = $(this).attr("id");
+            var del_id = $('#users'+id+'\\.id').val();
+            if(del_id) {
+                alert("add del");
+                $("#del_list").append("<input type='hidden' name='del_id' value="+del_id+">");
+            }
             $(this).closest("tr").remove();
         });
     });
@@ -53,6 +60,8 @@
             </div>
         </div>
         <div>
+            <div id="del_list">
+            </div>
             <table id="user_table" class="table">
                 <thead>
                 <tr>
@@ -69,6 +78,12 @@
                         <div class="field-error" th:errors="*{users[__${stat.index}__].mailAddress}">
                             mailAddress 오류
                         </div>
+                        <div class="field-error" th:errors="*{users[__${stat.index}__].mailAddress.name}">
+                            mailAddress 오류
+                        </div>
+                        <div class="field-error" th:errors="*{users[__${stat.index}__].mailAddress.email}">
+                            mailAddress 오류
+                        </div>
                     </td>
                     <td>
                         <input type="text"  th:field="*{users[__${stat.index}__].macroValue}" th:value="${user.macroValue}" class="form-control">
@@ -76,7 +91,7 @@
                             macroValue 오류
                         </div>
                     </td>
-                    <td><button type="button" name="btn_minus" class='btn btn-danger'> <i class='fa fa-minus'></i></button> </td>
+                    <td><button type="button" name="btn_minus" th:id="${stat.index}" class='btn btn-danger'> <i class='fa fa-minus'></i></button> </td>
                 </tr>
                 </tbody>
             </table>

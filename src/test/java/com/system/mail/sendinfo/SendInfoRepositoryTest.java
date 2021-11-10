@@ -17,6 +17,7 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDateTime;
+import java.util.Optional;
 
 @SpringBootTest
 class SendInfoRepositoryTest {
@@ -59,7 +60,8 @@ class SendInfoRepositoryTest {
         mailInfoRepository.save(mailInfo);
         sendResultRepository.save(sendResult);
         sendInfoRepository.save(saveSendInfo);
-        SendInfo byStatusWait = sendInfoRepository.findByStatusAndSendTime(Status.WAIT, LocalDateTime.now());
+        Optional<SendInfo> byStatusAndSendTime = sendInfoRepository.findByStatusAndSendTime(Status.WAIT, LocalDateTime.now());
+        SendInfo byStatusWait = byStatusAndSendTime.orElseThrow(IllegalArgumentException::new);
         Assertions.assertThat(byStatusWait).isEqualTo(saveSendInfo);
     }
 

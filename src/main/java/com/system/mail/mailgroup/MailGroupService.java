@@ -9,6 +9,7 @@ import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
@@ -33,9 +34,16 @@ public class MailGroupService {
     public List<MailGroup> findMailGroupAll(Sort orders) {
         return mailGroupRepository.findAll(orders);
     }
+
     @Transactional
-    public void updateMailGroup(Long id, MailGroup mailGroup) {
-        MailGroup findMailGroup = mailGroupRepository.findById(id).orElseThrow(IllegalArgumentException::new);
+    public void deleteUser(ArrayList<Long> delUserIdxArr) {
+        for (Long userIdx : delUserIdxArr) {
+            User user = userRepository.findById(userIdx).orElseThrow(IllegalArgumentException::new);
+            userRepository.delete(user);
+        }
+    }
+    @Transactional
+    public void updateMailGroup(MailGroup findMailGroup, MailGroup mailGroup) {
         findMailGroup.setMacroKey(mailGroup.getMacroKey());
         findMailGroup.setMailGroupName(mailGroup.getMailGroupName());
         updateUser(mailGroup, findMailGroup);

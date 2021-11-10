@@ -68,6 +68,12 @@
                         <div class="field-error" th:errors="*{users[__${stat.index}__].mailAddress}">
                             mailAddress 오류
                         </div>
+                        <div class="field-error" th:errors="*{users[__${stat.index}__].mailAddress.name}">
+                            mailAddress 오류
+                        </div>
+                        <div class="field-error" th:errors="*{users[__${stat.index}__].mailAddress.email}">
+                            mailAddress 오류
+                        </div>
                     </td>
                     <td>
                         <input type="text"  th:field="*{users[__${stat.index}__].macroValue}" th:value="${user.macroValue}" class="form-control">

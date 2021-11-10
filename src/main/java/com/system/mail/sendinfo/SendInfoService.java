@@ -20,7 +20,7 @@ public class SendInfoService {
     }
 
     public SendInfo findSendInfoById(Long id) {
-        return sendInfoRepository.findById(id).orElseThrow(IllegalArgumentException::new);
+        return sendInfoRepository.findById(id).orElseGet(SendInfo::new);
     }
 
     public Page<SendInfo> findSendInfoList(Pageable pageable) {
@@ -28,7 +28,7 @@ public class SendInfoService {
     }
 
     public SendInfo findSendInfo(Status status, LocalDateTime sendDate) {
-        return sendInfoRepository.findByStatusAndSendTime(status, sendDate);
+        return sendInfoRepository.findByStatusAndSendTime(status, sendDate).orElse(null);
     }
 
     @Transactional

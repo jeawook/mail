@@ -55,6 +55,12 @@
             <div class="field-error" th:errors="*{mailFrom}">
                 mailFrom 오류
             </div>
+            <div class="field-error" th:errors="*{mailFrom.name}">
+                mailFrom 오류
+            </div>
+            <div class="field-error" th:errors="*{mailFrom.email}">
+                mailFrom 오류
+            </div>
         </div>
         <div>
             <label for="replyTo" th:text="#{label.mailInfo.replyTo}">replyTo</label>
@@ -62,6 +68,12 @@
                    th:errorclass="field-error"
                    class="form-control" placeholder="no-reply,no-reply@test.com">
             <div class="field-error" th:errors="*{replyTo}">
+                replyTo 오류
+            </div>
+            <div class="field-error" th:errors="*{replyTo.name}">
+                replyTo 오류
+            </div>
+            <div class="field-error" th:errors="*{replyTo.email}">
                 replyTo 오류
             </div>
         </div>

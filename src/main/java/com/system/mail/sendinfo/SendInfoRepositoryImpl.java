@@ -6,6 +6,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 
 import java.time.LocalDateTime;
+import java.util.Optional;
 
 import static com.system.mail.sendinfo.QSendInfo.sendInfo;
 
@@ -14,10 +15,10 @@ public class SendInfoRepositoryImpl implements  SendInfoRepositoryCustom {
 
     private final JPAQueryFactory queryFactory;
     @Override
-    public SendInfo findByStatusAndSendTime(Status status, LocalDateTime localDateTime) {
-        return queryFactory.selectFrom(sendInfo)
+    public Optional<SendInfo> findByStatusAndSendTime(Status status, LocalDateTime localDateTime) {
+        return Optional.ofNullable(queryFactory.selectFrom(sendInfo)
                 .where(sendInfo.status.eq(status))
-                .where(sendInfo.sendDate.before(localDateTime)).fetchOne();
+                .where(sendInfo.sendDate.before(localDateTime)).fetchOne());
     }
 
     @Override

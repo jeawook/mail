@@ -50,22 +50,24 @@ public class MailGroupController {
     @GetMapping("/{mailGroupId}/edit")
     public String editMailGroup(@PathVariable Long mailGroupId, Model model) {
         MailGroup mailGroupById = mailGroupService.findMailGroupById(mailGroupId);
-        if (mailGroupById.getId() == null) {
-            return "mailGroup/mailGroupList";
-        }
         model.addAttribute("mailGroup", mailGroupById);
         return "mailGroup/editMailGroup";
     }
 
     @PostMapping("/{mailGroupId}/edit")
     public String edit(@PathVariable Long mailGroupId, @Validated @ModelAttribute("mailGroup") MailGroupForm mailGroupForm,
-                       BindingResult bindingResult, ArrayList<String> delUserIdxArr) {
+                       BindingResult bindingResult, @ModelAttribute("del_id") ArrayList<Long> delUserIdxArr) {
         checkMacroValidation(mailGroupForm, bindingResult);
         if (bindingResult.hasErrors()) {
             return "mailGroup/editMailGroup";
         }
+
         MailGroup mailGroup = modelMapper.map(mailGroupForm, MailGroup.class);
-        mailGroupService.updateMailGroup(mailGroupId, mailGroup);
+        MailGroup findMailGroup = mailGroupService.findMailGroupById(mailGroupId);
+        if (delUserIdxArr.size() != 0) {
+            mailGroupService.deleteUser(delUserIdxArr);
+        }
+        mailGroupService.updateMailGroup(findMailGroup, mailGroup);
         return "redirect:/mailGroup/{mailGroupId}";
     }
 
@@ -123,6 +125,9 @@ public class MailGroupController {
     }
 
     private int countComma(String macro) {
+        if (macro == null || macro.length() <= 0) {
+            return 0;
+        }
         return (int) macro.chars().filter(c -> c == MACRO_POINT_COMMA).count();
     }
 

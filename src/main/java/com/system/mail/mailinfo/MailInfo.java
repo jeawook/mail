@@ -3,6 +3,7 @@ package com.system.mail.mailinfo;
 import com.system.mail.common.BaseTimeEntity;
 import com.system.mail.common.MailAddress;
 import lombok.*;
+import org.hibernate.validator.constraints.Length;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotBlank;
@@ -21,6 +22,7 @@ public class MailInfo extends BaseTimeEntity {
     private Long id;
 
     @NotBlank
+    @Length(max = 255,message = "설정명은 최대 255자")
     private String mailInfoName;
 
     @Embedded

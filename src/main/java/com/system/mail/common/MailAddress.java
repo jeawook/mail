@@ -2,6 +2,7 @@ package com.system.mail.common;
 
 
 import lombok.*;
+import org.hibernate.validator.constraints.Length;
 
 import javax.persistence.Embeddable;
 import javax.validation.constraints.Email;
@@ -14,6 +15,7 @@ import javax.validation.constraints.NotNull;
 @Getter
 public class MailAddress {
 
+    @Length(max = 20,message = "이름은 최대 20자")
     private String name;
 
     @Email

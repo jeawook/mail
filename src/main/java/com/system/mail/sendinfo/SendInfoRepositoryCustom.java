@@ -5,8 +5,9 @@ import org.springframework.data.domain.Pageable;
 
 import java.time.LocalDateTime;
 import java.util.List;
+import java.util.Optional;
 
 public interface SendInfoRepositoryCustom {
-    SendInfo findByStatusAndSendTime(Status status, LocalDateTime localDateTime);
+    Optional<SendInfo> findByStatusAndSendTime(Status status, LocalDateTime localDateTime);
     Page<SendInfo> findByDateAndSubject(LocalDateTime data, String subject, Pageable pageable);
 }

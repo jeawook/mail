@@ -44,7 +44,6 @@ public class MailInfoController {
      * @param model
      * @return
      */
-
     @GetMapping("/{mailInfoId}")
     public String mailInfo(@PathVariable Long mailInfoId, Model model) {
         MailInfo mailInfo = mailInfoService.findMailInfoById(mailInfoId);
