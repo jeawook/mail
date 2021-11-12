@@ -39,9 +39,7 @@ public class MailGroupController {
     @GetMapping("/{mailGroupId}")
     public String mailGroup(@PathVariable Long mailGroupId, Model model) {
         MailGroup mailGroupById = mailGroupService.findMailGroupById(mailGroupId);
-        if (mailGroupById.getId() == null) {
-            return "redirect:mailGroup/mailGroupList";
-        }
+
         model.addAttribute("mailGroup", mailGroupById);
 
         return "mailGroup/mailGroup";
