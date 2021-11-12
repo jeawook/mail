@@ -54,7 +54,13 @@ mail:
   propertyMap:    
     returnPath: test@test.co.kr       // returnPath 입니다 smtp 통신 단계의 회신 주소 입니다.   
     MIME-Version: 1.0                 // MIME-Version           
-    DKIM-Signature: test              // dkim 을 사용 할경우 설정이 가능합니다.    
+    DKIM-Signature: test              // dkim 을 사용 할경우 설정이 가능합니다.
+domain:                               // 메일 발송 관련 설정인 domain 별 connection 설정 입니다. default 값이 필수여야 합니다 각 메일 업체별 권장 connection 을 지켜야 차단을 안당합니다.
+  domainConnectionInfo:
+    naver.com: 10
+    nate.com: 10
+    daum.net: 6
+    default: 15
 ``` 
     
 위 설정은 기본적인 메일 발송 관련 설정 이고    
