@@ -9,5 +9,6 @@ import java.util.Optional;
 
 public interface SendInfoRepositoryCustom {
     Optional<SendInfo> findByStatusAndSendTime(Status status, LocalDateTime localDateTime);
-    Page<SendInfo> findByDateAndSubject(LocalDateTime data, String subject, Pageable pageable);
+    Page<SendInfo> findByDateAndSubject(Pageable pageable, String subject);
+    Page<SendInfo> findByDate(Pageable pageable, LocalDateTime sendDate);
 }

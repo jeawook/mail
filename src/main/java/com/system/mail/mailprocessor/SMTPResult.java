@@ -21,6 +21,7 @@ public class SMTPResult {
                 ", resultMessage='" + resultMessage + '\'' +
                 '}';
     }
+
     public static SMTPResultBuilder builder(String resultCode, String resultMessage) {
         return SMTPResultBuilder().resultCode(resultCode).resultMessage(resultMessage);
     }

@@ -59,7 +59,7 @@ public class SendInfoController {
     }
 
     @GetMapping("/list")
-    public String sendInfoList(@PageableDefault(size = 10, sort = "id", direction = Sort.Direction.DESC)Pageable pageable, Model model) {
+    public String sendInfoList(@PageableDefault(size = 10, sort = "id", direction = Sort.Direction.DESC)Pageable pageable, String subject, Model model) {
 
         Page<SendInfo> sendInfoList = sendInfoService.findSendInfoList(pageable);
 

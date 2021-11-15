@@ -23,8 +23,17 @@ public class SendInfoService {
         return sendInfoRepository.findById(id).orElseGet(SendInfo::new);
     }
 
+
     public Page<SendInfo> findSendInfoList(Pageable pageable) {
         return sendInfoRepository.findAll(pageable);
+    }
+
+    public Page<SendInfo> findSendInfoListBySubject(Pageable pageable, String subject) {
+
+    }
+
+    public Page<SendInfo> findSendInfoListByDate(Pageable pageable, LocalDateTime sendDate) {
+
     }
 
     public SendInfo findSendInfo(Status status, LocalDateTime sendDate) {
