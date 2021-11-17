@@ -5,9 +5,9 @@ import lombok.*;
 
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @AllArgsConstructor
-@Builder(builderMethodName = "MailDTOBuilder")
+@Builder(builderMethodName = "MailDtoBuilder")
 @Getter @Setter
-public class MailDTO {
+public class MailDto {
 
     private MailAddress rcpTo;
 
@@ -24,7 +24,7 @@ public class MailDTO {
     public String getMailFromAddress() {
         return mailFrom.getAddress();
     }
-    public static MailDTOBuilder builder(MailAddress rcpTo, MailAddress mailFrom, String data) {
-        return MailDTOBuilder().rcpTo(rcpTo).mailFrom(mailFrom).data(data);
+    public static MailDtoBuilder builder(MailAddress rcpTo, MailAddress mailFrom, String data) {
+        return MailDtoBuilder().rcpTo(rcpTo).mailFrom(mailFrom).data(data);
     }
 }
