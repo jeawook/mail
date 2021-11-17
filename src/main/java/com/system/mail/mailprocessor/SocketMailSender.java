@@ -5,7 +5,6 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Component;
 
-import javax.annotation.PostConstruct;
 import javax.naming.NamingException;
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -28,16 +27,16 @@ public class SocketMailSender {
 
     private final DNSLookup dnsLookup;
 
-    public SMTPResult send(MailDTO mailDTO) {
+    public SMTPResult send(MailDto mailDto) {
         String resultMessage;
         String resultCode;
         try {
-            if (isConnect(mailDTO.getRcpToDomain())) {
+            if (isConnect(mailDto.getRcpToDomain())) {
                 sendMessage(createMessage(SMTPCommand.HELO, mailProperties.getDomain()), SMTPCode.SUCCESS);
-                sendMessage(createMessage(SMTPCommand.MAILFROM, mailDTO.getMailFromAddress()), SMTPCode.SUCCESS);
-                sendMessage(createMessage(SMTPCommand.RECPTO, mailDTO.getRcpTo()), SMTPCode.SUCCESS);
+                sendMessage(createMessage(SMTPCommand.MAILFROM, mailDto.getMailFromAddress()), SMTPCode.SUCCESS);
+                sendMessage(createMessage(SMTPCommand.RECPTO, mailDto.getRcpTo()), SMTPCode.SUCCESS);
                 sendMessage(SMTPCommand.DATA.getValue(), SMTPCode.PROCESS);
-                sendMessage(mailDTO.getData());
+                sendMessage(mailDto.getData());
                 resultMessage = sendMessage(SMTPCommand.DOT.getValue(), SMTPCode.SUCCESS);
                 sendMessage(SMTPCommand.QUIT.getValue(), SMTPCode.SERVER_CLOSE);
                 resultCode = SMTPCode.SUCCESS.getValue();

@@ -67,11 +67,11 @@ public class MailProcessor {
         return  connectionCnt.get(domain) < domainConnectionProperties.getConnection(domain);
     }
 
-    private MailDTO makeMailDTO(SendInfo sendInfo, SendResultDetail sendResultDetail) {
+    private MailDto makeMailDTO(SendInfo sendInfo, SendResultDetail sendResultDetail) {
         String data = makeData(sendInfo, sendResultDetail);
         MailAddress mailFrom = sendInfo.getMailFrom();
         MailAddress rcpTo = sendResultDetail.getMailAddress();
-        return MailDTO.builder(rcpTo, mailFrom, data).build();
+        return MailDto.builder(rcpTo, mailFrom, data).build();
     }
 
     private String makeData(SendInfo sendInfo, SendResultDetail sendResultDetail) {
