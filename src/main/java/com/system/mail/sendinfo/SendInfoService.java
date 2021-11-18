@@ -28,16 +28,12 @@ public class SendInfoService {
         return sendInfoRepository.findAll(pageable);
     }
 
-    public Page<SendInfo> findSendInfoListBySubject(Pageable pageable, String subject) {
-
-    }
-
-    public Page<SendInfo> findSendInfoListByDate(Pageable pageable, LocalDateTime sendDate) {
-
+    public Page<SendInfo> findSendInfoListBySubject(Pageable pageable, String subject, LocalDateTime startDate, LocalDateTime endDate) {
+        return sendInfoRepository.findByDateAndSubject(pageable, subject, startDate, endDate);
     }
 
     public SendInfo findSendInfo(Status status, LocalDateTime sendDate) {
-        return sendInfoRepository.findByStatusAndSendTime(status, sendDate).orElse(null);
+        return sendInfoRepository.findByStatusAndSendTime(status, sendDate);
     }
 
     @Transactional

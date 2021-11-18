@@ -8,7 +8,6 @@ import java.util.List;
 import java.util.Optional;
 
 public interface SendInfoRepositoryCustom {
-    Optional<SendInfo> findByStatusAndSendTime(Status status, LocalDateTime localDateTime);
-    Page<SendInfo> findByDateAndSubject(Pageable pageable, String subject);
-    Page<SendInfo> findByDate(Pageable pageable, LocalDateTime sendDate);
+    SendInfo findByStatusAndSendTime(Status status, LocalDateTime localDateTime);
+    Page<SendInfo> findByDateAndSubject(Pageable pageable, String subject, LocalDateTime startDate, LocalDateTime endDate);
 }

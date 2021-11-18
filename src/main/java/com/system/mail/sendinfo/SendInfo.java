@@ -16,6 +16,7 @@ import java.time.LocalDateTime;
 @AllArgsConstructor
 @Builder(builderMethodName = "SendInfoBuilder")
 @Getter @Setter
+@ToString
 public class SendInfo extends BaseTimeEntity {
 
     @Id @GeneratedValue
