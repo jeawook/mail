@@ -29,14 +29,15 @@ public class MailGroupController {
     static final char MACRO_POINT_COMMA = ',';
 
     @GetMapping("/list")
-    public String mailGroupList(@PageableDefault(size = 10, sort = "id")Pageable pageable ,Model model) {
+    public String mailGroupList(Pageable pageable,String searchKey ,Model model) {
         Page<MailGroup> list = mailGroupService.findMailGroupList(null, pageable);
         model.addAttribute("mailGroupList", list);
         return "mailGroup/mailGroupList";
     }
-    @GetMapping("/search")
-    public String searchMailGroup() {
-
+    @GetMapping("/list/search")
+    public String searchMailGroup(Pageable pageable,@RequestParam String searchKey, Model model) {
+        Page<MailGroup> list = mailGroupService.findMailGroupList(searchKey, pageable);
+        model.addAttribute("mailGroupList", list);
         return "mailGroup/mailGroupList";
     }
 

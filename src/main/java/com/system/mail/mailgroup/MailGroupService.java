@@ -26,8 +26,8 @@ public class MailGroupService {
         return mailGroupRepository.findById(id).orElseThrow(IllegalArgumentException::new);
     }
 
-    public Page<MailGroup> findMailGroupList(String name, Pageable pageable) {
-        return mailGroupRepository.searchByName(name, pageable);
+    public Page<MailGroup> findMailGroupList(String searchKey, Pageable pageable) {
+        return mailGroupRepository.searchByName(searchKey, pageable);
     }
 
     public List<MailGroup> findMailGroupAll(Sort orders) {

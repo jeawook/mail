@@ -33,6 +33,10 @@ public class MailInfoService {
         return mailInfoRepository.findAll(pageable);
     }
 
+    public Page<MailInfo> findMailInfoByName(String searchKey, Pageable pageable) {
+        return mailInfoRepository.searchByName(searchKey, pageable);
+    }
+
     public List<MailInfo> findMailInfoAll(Sort sort) {
         return mailInfoRepository.findAll(sort);
     }
@@ -41,5 +45,6 @@ public class MailInfoService {
         MailInfo mailInfo = mailInfoRepository.findById(mailInfoId).orElseThrow(IllegalArgumentException::new);
         mailInfo.updateByMailInfoForm(mailInfoForm);
     }
+
 
 }

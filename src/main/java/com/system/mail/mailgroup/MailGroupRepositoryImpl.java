@@ -16,10 +16,10 @@ public class MailGroupRepositoryImpl implements MailGroupRepositoryCustom{
 
     private final JPAQueryFactory queryFactory;
     @Override
-    public Page<MailGroup> searchByName(String name, Pageable pageable) {
+    public Page<MailGroup> searchByName(String searchKey, Pageable pageable) {
         QueryResults<MailGroup> results = queryFactory
                 .selectFrom(mailGroup)
-                .where(nameContain(name))
+                .where(nameContain(searchKey))
                 .offset(pageable.getOffset())
                 .limit(pageable.getPageSize())
                 .orderBy(mailGroup.id.desc())

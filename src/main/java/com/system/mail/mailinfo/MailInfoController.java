@@ -38,6 +38,13 @@ public class MailInfoController {
         return "mailInfo/mailInfoList";
     }
 
+    @GetMapping("/list/search")
+    public String searchMailInfo(Pageable pageable,@RequestParam String searchKey, Model model) {
+        Page<MailInfo> mailInfoByName = mailInfoService.findMailInfoByName(searchKey, pageable);
+        model.addAttribute("mailInfoList", mailInfoByName);
+        return "mailInfo/mailInfoList";
+    }
+
     /**
      * mailInfo 조회 mailInfo 의 primary key 로 조회
      * @param mailInfoId

@@ -5,5 +5,5 @@ import org.springframework.data.domain.Pageable;
 
 public interface MailGroupRepositoryCustom {
 
-    Page<MailGroup> searchByName(String mailGroupName, Pageable pageable);
+    Page<MailGroup> searchByName(String searchKey, Pageable pageable);
 }
