@@ -54,6 +54,17 @@
                 <li><a aria-label="Next" class="pager" th:href="@{/mailGroup/list(page=${maxPage - 1})}">&raquo;</a></li>
             </ul>
         </nav>
+        <div class="row">
+            <div class="col">
+            </div>
+            <div class="col">
+                <input type="text" th:field="searchName" th:onclick="|location.href='@{/mailGroup/search}'|"  >
+                <input type="button" type="button" th:text="#{label.mailGroup.search}">
+            </div>
+            <div class="col">
+            </div>
+
+        </div>
     </div>
 </div> <!-- /container -->
 

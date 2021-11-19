@@ -1,21 +1,17 @@
 package com.system.mail.sendinfo;
 
 import com.querydsl.core.QueryResults;
-import com.querydsl.core.types.Predicate;
 import com.querydsl.core.types.dsl.BooleanExpression;
 import com.querydsl.jpa.impl.JPAQueryFactory;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.Pageable;
-import org.springframework.util.StringUtils;
 
 import java.time.LocalDateTime;
-import java.util.BitSet;
-import java.util.Optional;
 
 import static com.system.mail.sendinfo.QSendInfo.sendInfo;
-import static org.springframework.util.StringUtils.*;
+import static org.springframework.util.StringUtils.hasText;
 
 @RequiredArgsConstructor
 public class SendInfoRepositoryImpl implements  SendInfoRepositoryCustom {
@@ -24,9 +20,13 @@ public class SendInfoRepositoryImpl implements  SendInfoRepositoryCustom {
     @Override
     public SendInfo findByStatusAndSendTime(Status status, LocalDateTime sendDate) {
         return queryFactory.selectFrom(sendInfo)
-                .where(sendInfo.status.eq(status), sendDateBefore(sendDate))
+                .where(statusEq(status), sendDateBefore(sendDate))
                 .orderBy(sendInfo.sendDate.desc())
                 .fetchFirst();
+    }
+
+    private BooleanExpression statusEq(Status status) {
+        return status != null ? sendInfo.status.eq(status) : null;
     }
 
     private BooleanExpression sendDateBefore(LocalDateTime sendDate) {

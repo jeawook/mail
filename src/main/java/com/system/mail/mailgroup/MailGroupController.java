@@ -7,7 +7,6 @@ import lombok.RequiredArgsConstructor;
 import org.modelmapper.ModelMapper;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
-import org.springframework.data.domain.Sort;
 import org.springframework.data.web.PageableDefault;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -30,9 +29,14 @@ public class MailGroupController {
     static final char MACRO_POINT_COMMA = ',';
 
     @GetMapping("/list")
-    public String mailGroupList(@PageableDefault(size = 10, sort = "id", direction = Sort.Direction.DESC)Pageable pageable, Model model) {
-        Page<MailGroup> list = mailGroupService.findMailGroupList(pageable);
+    public String mailGroupList(@PageableDefault(size = 10, sort = "id")Pageable pageable ,Model model) {
+        Page<MailGroup> list = mailGroupService.findMailGroupList(null, pageable);
         model.addAttribute("mailGroupList", list);
+        return "mailGroup/mailGroupList";
+    }
+    @GetMapping("/search")
+    public String searchMailGroup() {
+
         return "mailGroup/mailGroupList";
     }
 

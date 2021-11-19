@@ -11,7 +11,6 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Optional;
 
 @Service
 @RequiredArgsConstructor
@@ -27,8 +26,8 @@ public class MailGroupService {
         return mailGroupRepository.findById(id).orElseThrow(IllegalArgumentException::new);
     }
 
-    public Page<MailGroup> findMailGroupList(Pageable pageable) {
-        return mailGroupRepository.findAll(pageable);
+    public Page<MailGroup> findMailGroupList(String name, Pageable pageable) {
+        return mailGroupRepository.searchByName(name, pageable);
     }
 
     public List<MailGroup> findMailGroupAll(Sort orders) {
