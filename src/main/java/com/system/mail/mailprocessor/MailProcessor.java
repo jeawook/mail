@@ -37,8 +37,7 @@ public class MailProcessor {
         SendInfo sendInfo = sendInfoService.findSendInfoById(sendInfoId);
         sendInfo.mailStatusSending();
 
-        MailGroup mailGroup = sendInfo.getMailGroup();
-        SendResult sendResult = createResult(mailGroup);
+        SendResult sendResult = createResult(sendInfo);
 
         sendInfo.setSendResult(sendResult);
         LinkedList<SendResultDetail> resultDetailLinkedList = new LinkedList<>(sendResult.getSendResultDetails());
@@ -137,9 +136,8 @@ public class MailProcessor {
 
 
     @Transactional
-    private SendResult createResult(MailGroup mailGroup) {
-        SendResult sendResult = SendResult.builder(mailGroup).build();
-        sendResult.createSendResultDetails(mailGroup.getUsers());
+    private SendResult createResult(SendInfo sendInfo) {
+        SendResult sendResult = SendResult.builder().sendInfo(sendInfo).build();
         sendResultService.saveSendResult(sendResult);
         return sendResult;
     }

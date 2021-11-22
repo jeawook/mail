@@ -4,6 +4,7 @@ import com.system.mail.sendresultdetail.SendResultDetailForm;
 import lombok.Data;
 
 import javax.validation.constraints.NotNull;
+import java.time.LocalDateTime;
 import java.util.List;
 
 @Data
@@ -20,6 +21,10 @@ public class SendResultForm {
     private int completedCnt;
 
     private String macroKey;
+
+    private LocalDateTime sendDate;
+
+    private LocalDateTime completedDate;
 
     private List<SendResultDetailForm> sendResultDetails;
 }

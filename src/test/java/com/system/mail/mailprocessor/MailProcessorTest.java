@@ -92,14 +92,12 @@ class MailProcessorTest {
                 .contentType(ContentType.HTML)
                 .mailInfoName("테스트 설정")
                 .build();
-        SendResult sendResult = SendResult.builder(mailGroup).build();
-        sendResult.createSendResultDetails(mailGroup.getUsers());
         SendInfo saveSendInfo = SendInfo.builder(subject,content,LocalDateTime.now(), Status.WAIT)
                 .mailInfo(mailInfo)
                 .sendDate(LocalDateTime.now())
                 .mailGroup(mailGroup)
-                .sendResult(sendResult)
                 .build();
+        SendResult sendResult = SendResult.builder().sendInfo(saveSendInfo).build();
         mailGroupRepository.save(mailGroup);
         mailInfoRepository.save(mailInfo);
         sendResultRepository.save(sendResult);
@@ -149,14 +147,12 @@ class MailProcessorTest {
                 .contentType(ContentType.HTML)
                 .mailInfoName("테스트 설정")
                 .build();
-        SendResult sendResult = SendResult.builder(mailGroup).build();
-        sendResult.createSendResultDetails(mailGroup.getUsers());
         SendInfo saveSendInfo = SendInfo.builder(subject,content,LocalDateTime.now(), Status.WAIT)
                 .mailInfo(mailInfo)
                 .sendDate(LocalDateTime.now())
                 .mailGroup(mailGroup)
-                .sendResult(sendResult)
                 .build();
+        SendResult sendResult = SendResult.builder().sendInfo(saveSendInfo).build();
         mailGroupRepository.save(mailGroup);
         mailInfoRepository.save(mailInfo);
         sendResultRepository.save(sendResult);

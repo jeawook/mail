@@ -1,9 +1,11 @@
 package com.system.mail.sendresult;
 
 import com.system.mail.mailgroup.MailGroup;
+import com.system.mail.sendinfo.SendInfo;
 import com.system.mail.user.User;
 import com.system.mail.sendresultdetail.SendResultDetail;
 import lombok.*;
+import org.springframework.util.StringUtils;
 
 import javax.persistence.*;
 import javax.validation.constraints.Min;
@@ -15,21 +17,18 @@ import java.util.List;
 @Getter
 @AllArgsConstructor
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
-@Builder(builderMethodName = "SendResultBuilder")
 public class SendResult {
 
     @Id @GeneratedValue
     @Column(name = "send_result_id")
     private Long id;
 
-    @NotNull
     @OneToOne
-    @JoinColumn(name = "mail_group_id")
-    private MailGroup mailGroup;
+    @JoinColumn(name = "send_info_id")
+    private SendInfo sendInfo;
 
     private String macroKey;
-    
-    @Builder.Default
+
     private int totalCnt = 0;
 
     @Builder.Default
@@ -45,6 +44,20 @@ public class SendResult {
     @Builder.Default
     private final List<SendResultDetail> sendResultDetails = new ArrayList<>();
 
+    @Builder
+    public SendResult(SendInfo sendInfo) {
+        setSendInfo(sendInfo);
+        this.macroKey = sendInfo.getMacroKey();
+        this.totalCnt = sendInfo.getMailGroup().getUserCnt();
+        createSendResultDetails(sendInfo.getMailGroup().getUsers());
+    }
+
+
+    private void setSendInfo(SendInfo sendInfo) {
+        this.sendInfo = sendInfo;
+        sendInfo.setSendResult(this);
+    }
+
     private void addCompleteCnt() {
         this.completedCnt++;
     }
@@ -54,14 +67,13 @@ public class SendResult {
         sendResultDetail.setSendResult(this);
     }
 
-    public void createSendResultDetails(List<User> users) {
+    private void createSendResultDetails(List<User> users) {
         users.forEach(user -> addSendResultDetail(SendResultDetail.builder(user).build()));
-        setTotalCnt(users.size());
     }
+
     private void setTotalCnt(int totalCnt) {
         this.totalCnt = totalCnt;
     }
-
     private void addSuccessCnt() {
         this.successCnt++;
         addCompletedCnt();
@@ -72,11 +84,6 @@ public class SendResult {
     }
     private void addCompletedCnt() {
         this.completedCnt++;
-    }
-    public static SendResultBuilder builder(MailGroup mailGroup) {
-        return SendResultBuilder()
-                .mailGroup(mailGroup)
-                 .macroKey(mailGroup.getMacroKey());
     }
 
     public void checkResultAddCnt(String resultCode) {
