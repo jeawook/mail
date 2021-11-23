@@ -31,17 +31,13 @@ public class SendResult {
 
     private int totalCnt = 0;
 
-    @Builder.Default
     private int completedCnt = 0;
 
-    @Builder.Default
     private int errorCnt = 0;
 
-    @Builder.Default
     private int successCnt = 0;
 
     @OneToMany(mappedBy = "sendResult", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
-    @Builder.Default
     private final List<SendResultDetail> sendResultDetails = new ArrayList<>();
 
     @Builder
@@ -68,7 +64,9 @@ public class SendResult {
     }
 
     private void createSendResultDetails(List<User> users) {
-        users.forEach(user -> addSendResultDetail(SendResultDetail.builder(user).build()));
+        users.forEach(user -> addSendResultDetail(SendResultDetail.builder()
+                .mailAddress(user.getMailAddress())
+                .macroValue(user.getMacroValue()).build()));
     }
 
     private void setTotalCnt(int totalCnt) {

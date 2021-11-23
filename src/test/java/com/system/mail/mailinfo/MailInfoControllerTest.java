@@ -15,13 +15,13 @@ class MailInfoControllerTest {
 
     @Test
     void mailInfoServiceSaveTest() {
-        MailAddress mail = MailAddress.builder("no_reply", "test@email.com").build();
+        MailAddress mail = MailAddress.builder().name("no_reply").email("test@email.com").build();
 
         ContentEncoding encoding = ContentEncoding.BASE64;
         ContentType contentType = ContentType.HTML;
         String charset = "utf-8";
         String mailInfoName = "테스트 설정";
-        MailInfo mailInfo = MailInfo.MailInfoBuilder()
+        MailInfo mailInfo = MailInfo.builder()
                 .mailFrom(mail)
                 .replyTo(mail)
                 .charset(charset)

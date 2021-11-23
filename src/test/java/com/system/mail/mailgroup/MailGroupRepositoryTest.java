@@ -18,7 +18,7 @@ class MailGroupRepositoryTest {
     @BeforeEach
     void before() {
         for (int i = 0; i < 100; i++) {
-            mailGroupRepository.save(MailGroup.builder("name_"+i, "").build());
+            mailGroupRepository.save(MailGroup.builder().mailGroupName("name_"+i).macroKey("").build());
         }
     }
     @Test

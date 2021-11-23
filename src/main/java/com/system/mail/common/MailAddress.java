@@ -1,6 +1,7 @@
 package com.system.mail.common;
 
 
+import com.mysema.commons.lang.Assert;
 import lombok.*;
 import org.hibernate.validator.constraints.Length;
 
@@ -9,9 +10,7 @@ import javax.validation.constraints.Email;
 import javax.validation.constraints.NotNull;
 
 @Embeddable
-@AllArgsConstructor
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
-@Builder(builderMethodName = "MailAddressBuilder")
 @Getter
 public class MailAddress {
 
@@ -35,11 +34,12 @@ public class MailAddress {
         return "<"+email+">";
     }
 
-    public static MailAddressBuilder builder(String name, String email) {
-        return MailAddressBuilder()
-                .name(name)
-                .email(email);
+    @Builder
+    public MailAddress(@Length(max = 20, message = "이름은 최대 20자") String name, @Email @NotNull String email) {
+        Assert.notNull(name, "name must not be null");
+        Assert.notNull(email, "email must not be null");
+        this.name = name;
+        this.email = email;
     }
-
 
 }

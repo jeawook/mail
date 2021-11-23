@@ -139,48 +139,16 @@ public class MailGroupController {
      */
     @PostConstruct
     public void init() {
-        mailGroupService.saveMailGroup(MailGroup.MailGroupBuilder().mailGroupName("테스트1").build());
-        mailGroupService.saveMailGroup(MailGroup.MailGroupBuilder().mailGroupName("테스트2").build());
-        mailGroupService.saveMailGroup(MailGroup.MailGroupBuilder().mailGroupName("테스트3").build());
-        mailGroupService.saveMailGroup(MailGroup.MailGroupBuilder().mailGroupName("테스트4").build());
-        mailGroupService.saveMailGroup(MailGroup.MailGroupBuilder().mailGroupName("테스트5").build());
-        mailGroupService.saveMailGroup(MailGroup.MailGroupBuilder().mailGroupName("테스트6").build());
-        mailGroupService.saveMailGroup(MailGroup.MailGroupBuilder().mailGroupName("테스트7").build());
-        mailGroupService.saveMailGroup(MailGroup.MailGroupBuilder().mailGroupName("테스트8").build());
-        mailGroupService.saveMailGroup(MailGroup.MailGroupBuilder().mailGroupName("테스트9").build());
-        mailGroupService.saveMailGroup(MailGroup.MailGroupBuilder().mailGroupName("테스트10").build());
-        mailGroupService.saveMailGroup(MailGroup.MailGroupBuilder().mailGroupName("테스트11").build());
-        mailGroupService.saveMailGroup(MailGroup.MailGroupBuilder().mailGroupName("테스트12").build());
-        mailGroupService.saveMailGroup(MailGroup.MailGroupBuilder().mailGroupName("테스트13").build());
-        mailGroupService.saveMailGroup(MailGroup.MailGroupBuilder().mailGroupName("테스트1").build());
-        mailGroupService.saveMailGroup(MailGroup.MailGroupBuilder().mailGroupName("테스트2").build());
-        mailGroupService.saveMailGroup(MailGroup.MailGroupBuilder().mailGroupName("테스트3").build());
-        mailGroupService.saveMailGroup(MailGroup.MailGroupBuilder().mailGroupName("테스트4").build());
-        mailGroupService.saveMailGroup(MailGroup.MailGroupBuilder().mailGroupName("테스트5").build());
-        mailGroupService.saveMailGroup(MailGroup.MailGroupBuilder().mailGroupName("테스트6").build());
-        mailGroupService.saveMailGroup(MailGroup.MailGroupBuilder().mailGroupName("테스트7").build());
-        mailGroupService.saveMailGroup(MailGroup.MailGroupBuilder().mailGroupName("테스트8").build());
-        mailGroupService.saveMailGroup(MailGroup.MailGroupBuilder().mailGroupName("테스트9").build());
-        mailGroupService.saveMailGroup(MailGroup.MailGroupBuilder().mailGroupName("테스트10").build());
-        mailGroupService.saveMailGroup(MailGroup.MailGroupBuilder().mailGroupName("테스트11").build());
-        mailGroupService.saveMailGroup(MailGroup.MailGroupBuilder().mailGroupName("테스트12").build());
-        mailGroupService.saveMailGroup(MailGroup.MailGroupBuilder().mailGroupName("테스트13").build());
-        mailGroupService.saveMailGroup(MailGroup.MailGroupBuilder().mailGroupName("테스트1").build());
-        mailGroupService.saveMailGroup(MailGroup.MailGroupBuilder().mailGroupName("테스트2").build());
-        mailGroupService.saveMailGroup(MailGroup.MailGroupBuilder().mailGroupName("테스트3").build());
-        mailGroupService.saveMailGroup(MailGroup.MailGroupBuilder().mailGroupName("테스트4").build());
-        mailGroupService.saveMailGroup(MailGroup.MailGroupBuilder().mailGroupName("테스트5").build());
-        mailGroupService.saveMailGroup(MailGroup.MailGroupBuilder().mailGroupName("테스트6").build());
-        mailGroupService.saveMailGroup(MailGroup.MailGroupBuilder().mailGroupName("테스트7").build());
-        mailGroupService.saveMailGroup(MailGroup.MailGroupBuilder().mailGroupName("테스트8").build());
-        mailGroupService.saveMailGroup(MailGroup.MailGroupBuilder().mailGroupName("테스트9").build());
-        mailGroupService.saveMailGroup(MailGroup.MailGroupBuilder().mailGroupName("테스트10").build());
-        mailGroupService.saveMailGroup(MailGroup.MailGroupBuilder().mailGroupName("테스트11").build());
-        mailGroupService.saveMailGroup(MailGroup.MailGroupBuilder().mailGroupName("테스트12").build());
-        MailAddress mailAddress = MailAddress.builder("박재욱", "pdj13579@nate.com").build();
-        MailGroup mailGroup = MailGroup.builder("테스트그룹", "subject,content").build();
-        User user = User.builder(mailAddress, "제목입니다,본문입니다").build();
-        mailGroup.addUser(user);
+        for (int i = 0; i < 100; i++) {
+            MailGroup mailGroup = MailGroup.builder().mailGroupName("테스트그룹_"+i).macroKey("").build();
+            mailGroupService.saveMailGroup(mailGroup);
+        }
+        MailAddress mailAddress = MailAddress.builder().name("박재욱").email("pdj13579@nate.com").build();
+        MailGroup mailGroup = MailGroup.builder().mailGroupName("테스트그룹").macroKey("subject,content").build();
+        User user = User.builder().mailAddress(mailAddress).macroValue("제목입니다,본문입니다").build();
+        for (int i = 0; i < 10; i++) {
+            mailGroup.addUser(user);
+        }
         mailGroupService.saveMailGroup(mailGroup);
     }
 }

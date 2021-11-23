@@ -15,7 +15,7 @@ class MailAddressTest {
     void createMailAddressTest() {
         String name = "이름";
         String email = "test@test.com";
-        MailAddress mailAddress = MailAddress.builder(name, email).build();
+        MailAddress mailAddress = MailAddress.builder().name(name).email(email).build();
         assertThat(mailAddress.getName()).isEqualTo(name);
         assertThat(mailAddress.getEmail()).isEqualTo(email);
         assertThat(mailAddress.getAddress()).isEqualTo("<"+email+">");

@@ -1,5 +1,6 @@
 package com.system.mail.sendinfo;
 
+import com.mysema.commons.lang.Assert;
 import com.system.mail.common.BaseTimeEntity;
 import com.system.mail.common.MailAddress;
 import com.system.mail.mailgroup.MailGroup;
@@ -13,7 +14,7 @@ import java.time.LocalDateTime;
 
 @Entity
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
-@Builder(builderMethodName = "SendInfoBuilder")
+@AllArgsConstructor
 @Getter @Setter
 @ToString
 public class SendInfo extends BaseTimeEntity {
@@ -48,17 +49,22 @@ public class SendInfo extends BaseTimeEntity {
     @NotNull
     private MailGroup mailGroup;
 
+    @Builder
+    public SendInfo(@NotNull LocalDateTime sendDate, @NotNull String subject, @NotNull String content, @NotNull Status status) {
+        Assert.notNull(sendDate, "sendDate must not be null");
+        Assert.notNull(subject, "subject must not be null");
+        Assert.notNull(content, "content must not be null");
+        Assert.notNull(status, "status must not be null");
+        this.sendDate = sendDate;
+        this.subject = subject;
+        this.content = content;
+        this.status = status;
+    }
+
+
     @OneToOne
     @JoinColumn(name = "send_result_id")
     private SendResult sendResult;
-
-
-    public static SendInfoBuilder builder(String subject, String content, LocalDateTime sendDate, Status status) {
-        return SendInfoBuilder().subject(subject)
-                .content(content)
-                .sendDate(sendDate)
-                .status(status);
-    }
     public void setMailInfo(MailInfo mailInfo) {
         this.mailInfo = mailInfo;
     }

@@ -1,16 +1,16 @@
 package com.system.mail.user;
 
+import com.mysema.commons.lang.Assert;
 import com.system.mail.common.MailAddress;
 import com.system.mail.mailgroup.MailGroup;
 import lombok.*;
 
 import javax.persistence.*;
+import javax.validation.Valid;
 import javax.validation.constraints.NotNull;
 
 @Entity
-@AllArgsConstructor
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
-@Builder(builderMethodName = "UserBuilder")
 @Getter @Setter
 public class User {
 
@@ -19,6 +19,7 @@ public class User {
     private Long id;
 
     @Embedded
+    @Valid
     private MailAddress mailAddress;
 
     private String macroValue;
@@ -27,6 +28,14 @@ public class User {
     @ManyToOne
     @JoinColumn(name = "mail_group_id")
     private MailGroup mailGroup;
+
+    @Builder
+    public User(@Valid MailAddress mailAddress, String macroValue) {
+        Assert.notNull(mailAddress,"mailAddress must not be null" );
+        Assert.notNull(macroValue,"macroValue must not be null" );
+        this.mailAddress = mailAddress;
+        this.macroValue = macroValue;
+    }
 
     public void setMailGroup(MailGroup mailGroup) {
         this.mailGroup = mailGroup;
@@ -37,15 +46,4 @@ public class User {
         this.macroValue = macroValue;
     }
 
-    public static UserBuilder builder(MailAddress mailAddress, String macroValue) {
-        return UserBuilder()
-                .mailAddress(mailAddress)
-                .macroValue(macroValue);
-    }
-    public boolean isChange(User user) {
-        if (!this.macroValue.equals(user.getMacroValue()) || !this.mailAddress.equals(user.getMailAddress()) ) {
-            return true;
-        }
-        return false;
-    }
 }

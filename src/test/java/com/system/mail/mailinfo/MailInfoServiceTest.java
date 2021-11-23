@@ -16,10 +16,10 @@ class MailInfoServiceTest {
     @Test
     @DisplayName("메일 정보 생성 테스트")
     void mailInfoServiceSaveTest () {
-        MailAddress mailAddress = MailAddress.builder("no_reply", "test@email.com").build();
-        MailInfo mailInfo = MailInfo.MailInfoBuilder()
-                .mailFrom(mailAddress)
-                .replyTo(mailAddress)
+        MailAddress mail = MailAddress.builder().name("no_reply").email("test@email.com").build();
+        MailInfo mailInfo = MailInfo.builder()
+                .mailFrom(mail)
+                .replyTo(mail)
                 .charset("utf-8")
                 .encoding(ContentEncoding.BASE64)
                 .contentType(ContentType.HTML)

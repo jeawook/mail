@@ -70,7 +70,7 @@ public class MailProcessor {
         String data = makeData(sendInfo, sendResultDetail);
         MailAddress mailFrom = sendInfo.getMailFrom();
         MailAddress rcpTo = sendResultDetail.getMailAddress();
-        return MailDto.builder(rcpTo, mailFrom, data).build();
+        return MailDto.builder().rcpTo(rcpTo).mailFrom(mailFrom).data(data).build();
     }
 
     private String makeData(SendInfo sendInfo, SendResultDetail sendResultDetail) {

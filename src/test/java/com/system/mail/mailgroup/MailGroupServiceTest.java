@@ -17,9 +17,9 @@ class MailGroupServiceTest {
     @Test
     @DisplayName("메일 그룹 생성 테스트")
     void mailGroupServiceSaveTest() {
-        MailAddress mailAddress = MailAddress.builder("고객", "pdj13579@nate.com").build();
-        MailGroup mailGroup = MailGroup.builder("테스트 그룹", "macro1,macro2").build();
-        User user = User.builder(mailAddress, "안녕하세요,10000").build();
+        MailAddress mailAddress = MailAddress.builder().name("고객").email("pdj13579@nate.com").build();
+        MailGroup mailGroup = MailGroup.builder().mailGroupName("테스트 그룹").macroKey("macro1,macro2").build();
+        User user = User.builder().mailAddress(mailAddress).macroValue("안녕하세요,10000").build();
         mailGroup.addUser(user);
         MailGroup saveMailGroup = mailGroupService.saveMailGroup(mailGroup);
         assertThat(mailGroup).isEqualTo(saveMailGroup);

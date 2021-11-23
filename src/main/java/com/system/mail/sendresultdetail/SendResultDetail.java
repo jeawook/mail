@@ -1,9 +1,11 @@
 package com.system.mail.sendresultdetail;
 
+import com.mysema.commons.lang.Assert;
 import com.system.mail.common.MailAddress;
 import com.system.mail.user.User;
 import com.system.mail.mailprocessor.SMTPResult;
 import com.system.mail.sendresult.SendResult;
+import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.NoArgsConstructor;
@@ -11,10 +13,11 @@ import lombok.NoArgsConstructor;
 import javax.persistence.*;
 import java.time.LocalDateTime;
 
+import static com.mysema.commons.lang.Assert.*;
+
 @Entity
-@NoArgsConstructor
+@NoArgsConstructor(access = AccessLevel.PROTECTED)
 @AllArgsConstructor
-@Builder(builderMethodName = "SendResultDetailBuilder")
 public class SendResultDetail {
 
     @Id @GeneratedValue
@@ -72,9 +75,11 @@ public class SendResultDetail {
         setCompleted();
     }
 
-    public static SendResultDetailBuilder builder(User user) {
-        return SendResultDetailBuilder()
-                .mailAddress(user.getMailAddress())
-                .macroValue(user.getMacroValue());
+    @Builder
+    public SendResultDetail(MailAddress mailAddress, String macroValue) {
+        notNull(mailAddress, "mailAddress must not be null");
+        notNull(macroValue, "macroValue must not be null");
+        this.mailAddress = mailAddress;
+        this.macroValue = macroValue;
     }
 }

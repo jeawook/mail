@@ -11,7 +11,6 @@ class MailInfoTest {
     @DisplayName("mailInfo 객체 생성테스트")
     @Test
     void createMailInfoTest() {
-        MailInfo test = MailInfo.MailInfoBuilder().mailInfoName("test").build();
 
     }
 

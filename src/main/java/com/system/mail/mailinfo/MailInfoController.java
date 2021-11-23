@@ -116,8 +116,9 @@ public class MailInfoController {
      */
     @PostConstruct
     public void init() {
-        MailAddress mailAddress = MailAddress.builder("test", "test@test.com").build();
-        MailInfo mailInfo = MailInfo.builder("테스트 정보", ContentEncoding.BASE64, ContentType.HTML, "utf-8", mailAddress, mailAddress).build();
+        MailAddress mailAddress = MailAddress.builder().name("test").email("test@infomail.com").build();
+        MailInfo mailInfo = MailInfo.builder().mailInfoName("테스트 정보").encoding(ContentEncoding.BASE64).contentType( ContentType.HTML)
+                .charset( "utf-8").mailFrom( mailAddress).replyTo( mailAddress).build();
         mailInfoService.saveMailInfo(mailInfo);
     }
 
