@@ -152,7 +152,11 @@ class MailProcessorTest {
                 .contentType(ContentType.HTML)
                 .mailInfoName("테스트 설정")
                 .build();
-        SendInfo saveSendInfo = SendInfo.builder(subject,content,LocalDateTime.now(), Status.WAIT)
+        SendInfo saveSendInfo = SendInfo.builder()
+                .subject(subject)
+                .content(content)
+                .sendDate(LocalDateTime.now())
+                .status(Status.WAIT)
                 .mailInfo(mailInfo)
                 .sendDate(LocalDateTime.now())
                 .mailGroup(mailGroup)

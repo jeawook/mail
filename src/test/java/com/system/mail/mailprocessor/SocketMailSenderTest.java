@@ -27,10 +27,10 @@ class SocketMailSenderTest {
     @Test
     @DisplayName("smtp server error 테스트")
     void sendExceptionTest() {
-        MailAddress rcpTo = MailAddress.builder().name("수신자").email("pdj13579@nate.com").build();
+        MailAddress rcpTo = MailAddress.builder().name("수신자").email("pdj13579@rcpto.ttt").build();
         MailAddress mailFrom = MailAddress.builder().name("발신자").email("pdj13579@nate.com").build();
         MailDto mailDto = MailDto.builder().rcpTo(rcpTo).mailFrom(mailFrom).data("테스트메일").build();
         SMTPResult smtpResult = socketMailSender.send(mailDto);
-        assertThat(smtpResult.getResultCode()).isEqualTo(SMTPCode.SYSTEM_ERROR.getValue());
+        assertThat(smtpResult.getResultCode()).isEqualTo(SMTPCode.SERVER_ERROR.getValue());
     }
 }

@@ -34,7 +34,7 @@ public class SocketMailSender {
             if (isConnect(mailDto.getRcpToDomain())) {
                 sendMessage(createMessage(SMTPCommand.HELO, mailProperties.getDomain()), SMTPCode.SUCCESS);
                 sendMessage(createMessage(SMTPCommand.MAILFROM, mailDto.getMailFromAddress()), SMTPCode.SUCCESS);
-                sendMessage(createMessage(SMTPCommand.RECPTO, mailDto.getRcpTo()), SMTPCode.SUCCESS);
+                sendMessage(createMessage(SMTPCommand.RECPTO, mailDto.getRcpToAddress()), SMTPCode.SUCCESS);
                 sendMessage(SMTPCommand.DATA.getValue(), SMTPCode.PROCESS);
                 sendMessage(mailDto.getData());
                 resultMessage = sendMessage(SMTPCommand.DOT.getValue(), SMTPCode.SUCCESS);

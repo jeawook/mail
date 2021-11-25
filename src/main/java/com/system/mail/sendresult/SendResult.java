@@ -49,7 +49,7 @@ public class SendResult {
     }
 
 
-    private void setSendInfo(SendInfo sendInfo) {
+    public void setSendInfo(SendInfo sendInfo) {
         this.sendInfo = sendInfo;
         sendInfo.setSendResult(this);
     }

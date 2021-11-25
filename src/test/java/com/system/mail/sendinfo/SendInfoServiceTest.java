@@ -34,13 +34,15 @@ class SendInfoServiceTest {
     @Test
     @DisplayName("발송 정보 생성 테스트")
     void sendInfoServiceSaveTest() {
-        MailAddress mail = MailAddress.builder("no_reply", "pdj13579@nate.com").build();
-        MailAddress mailAddress = MailAddress.builder("고객", "pdj13579@nate.com").build();
-        MailGroup mailGroup = MailGroup.builder("테스트 그룹", "macro1,macro2").build();
-        User user = User.builder(mailAddress, "안녕하세요,10000").build();
+        String content = "메일 본문";
+        String subject = "제목";
+        MailAddress mail = MailAddress.builder().name("no_reply").email("pdj13579@nate.com").build();
+        MailAddress mailAddress = MailAddress.builder().name("고객").email("pdj13579@nate.com").build();
+        MailGroup mailGroup = MailGroup.builder().mailGroupName("테스트 그룹").macroKey("macro1,macro2").build();
+        User user = User.builder().mailAddress(mailAddress).macroValue("안녕하세요,10000").build();
         mailGroup.addUser(user);
 
-        MailInfo mailInfo = MailInfo.MailInfoBuilder()
+        MailInfo mailInfo = MailInfo.builder()
                 .mailFrom(mail)
                 .replyTo(mail)
                 .charset("utf-8")
@@ -48,19 +50,23 @@ class SendInfoServiceTest {
                 .contentType(ContentType.HTML)
                 .mailInfoName("테스트 설정")
                 .build();
-        SendResult sendResult = SendResult.builder(mailGroup).build();
-        sendResult.createSendResultDetails(mailGroup.getUsers());
-        SendInfo sendInfo = SendInfo.builder("제목","본문",LocalDateTime.now(), Status.WAIT)
+        SendInfo sendInfo = SendInfo.builder()
+                .subject(subject)
+                .content(content)
+                .sendDate(LocalDateTime.now())
+                .status(Status.WAIT)
                 .mailInfo(mailInfo)
                 .sendDate(LocalDateTime.now())
                 .mailGroup(mailGroup)
-                .sendResult(sendResult)
                 .build();
         MailGroup saveMailGroup = mailGroupRepository.save(mailGroup);
         MailInfo saveMailInfo = mailInfoRepository.save(mailInfo);
-        SendResult saveSendResult = sendResultRepository.save(sendResult);
 
         SendInfo saveSendInfo = sendInfoService.saveSendInfo(sendInfo);
+
+        SendResult sendResult = SendResult.builder().sendInfo(saveSendInfo).build();
+        SendResult saveSendResult = sendResultRepository.save(sendResult);
+
         assertThat(mailGroup).isEqualTo(saveMailGroup);
         assertThat(mailInfo).isEqualTo(saveMailInfo);
         assertThat(sendInfo).isEqualTo(saveSendInfo);

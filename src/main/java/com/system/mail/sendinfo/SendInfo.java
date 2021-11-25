@@ -12,6 +12,8 @@ import javax.persistence.*;
 import javax.validation.constraints.NotNull;
 import java.time.LocalDateTime;
 
+import static com.mysema.commons.lang.Assert.*;
+
 @Entity
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @AllArgsConstructor
@@ -50,11 +52,17 @@ public class SendInfo extends BaseTimeEntity {
     private MailGroup mailGroup;
 
     @Builder
-    public SendInfo(@NotNull LocalDateTime sendDate, @NotNull String subject, @NotNull String content, @NotNull Status status) {
-        Assert.notNull(sendDate, "sendDate must not be null");
-        Assert.notNull(subject, "subject must not be null");
-        Assert.notNull(content, "content must not be null");
-        Assert.notNull(status, "status must not be null");
+    public SendInfo(@NotNull LocalDateTime sendDate,@NotNull MailInfo mailInfo, @NotNull MailGroup mailGroup,
+                    @NotNull String subject, @NotNull String content, @NotNull Status status) {
+        notNull(sendDate, "sendDate must not be null");
+        notNull(subject, "subject must not be null");
+        notNull(content, "content must not be null");
+        notNull(status, "status must not be null");
+        notNull(mailInfo, "mailInfo must not be null");
+        notNull(mailGroup, "mailGroup must not be null");
+
+        this.mailGroup = mailGroup;
+        this.mailInfo = mailInfo;
         this.sendDate = sendDate;
         this.subject = subject;
         this.content = content;
@@ -65,6 +73,7 @@ public class SendInfo extends BaseTimeEntity {
     @OneToOne
     @JoinColumn(name = "send_result_id")
     private SendResult sendResult;
+
     public void setMailInfo(MailInfo mailInfo) {
         this.mailInfo = mailInfo;
     }

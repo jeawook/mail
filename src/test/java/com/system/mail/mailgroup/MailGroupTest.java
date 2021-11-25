@@ -24,7 +24,20 @@ class MailGroupTest {
         assertThat(mailGroup.getUsers().size()).isEqualTo(1);
         assertThat(mailGroup.getMacroKey()).isEqualTo(macroKey);
         assertThat(mailGroup.getMailGroupName()).isEqualTo(mailGroupName);
-        assertThat(mailGroup.getUsers()).extracting("email").containsExactly(email);
+        assertThat(mailGroup.getUsers()).extracting("mailAddress").containsExactly(mailAddress);
+    }
+
+    @Test
+    void mailGroupConstructorIllegalArgumentExceptionTest() {
+        String macroKey = "subject, content";
+        String mailGroupName = "test";
+
+        assertThatThrownBy(() -> MailGroup.builder().mailGroupName(null).macroKey(macroKey).build())
+                .isExactlyInstanceOf(IllegalArgumentException.class)
+                .hasMessageContaining("mailGroupName must not be null");
+        assertThatThrownBy(() -> MailGroup.builder().mailGroupName(mailGroupName).macroKey(null).build())
+                .isExactlyInstanceOf(IllegalArgumentException.class)
+                .hasMessageContaining("macroKey must not be null");
 
     }
 

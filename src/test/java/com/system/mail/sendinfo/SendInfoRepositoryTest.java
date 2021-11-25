@@ -40,15 +40,16 @@ class SendInfoRepositoryTest {
     private final static String subject = "subject";
     private final static String content = "content";
     private final static LocalDateTime nowDate = LocalDateTime.now();
+
     @BeforeEach
     void before() {
-        MailAddress mail = MailAddress.builder("no_reply", "pdj13579@nate.com").build();
-        MailAddress mailAddress = MailAddress.builder("고객", "pdj13579@nate.com").build();
-        MailGroup mailGroup = MailGroup.builder("테스트 그룹", "macro1,macro2").build();
-        User user = User.builder(mailAddress, "안녕하세요,10000").build();
+        MailAddress mail = MailAddress.builder().name("no_reply").email("pdj13579@nate.com").build();
+        MailAddress mailAddress = MailAddress.builder().name("고객").email("pdj13579@nate.com").build();
+        MailGroup mailGroup = MailGroup.builder().mailGroupName("테스트 그룹").macroKey("macro1,macro2").build();
+        User user = User.builder().mailAddress(mailAddress).macroValue("안녕하세요,10000").build();
         mailGroup.addUser(user);
 
-        MailInfo mailInfo = MailInfo.MailInfoBuilder()
+        MailInfo mailInfo = MailInfo.builder()
                 .mailFrom(mail)
                 .replyTo(mail)
                 .charset("utf-8")
@@ -56,28 +57,29 @@ class SendInfoRepositoryTest {
                 .contentType(ContentType.HTML)
                 .mailInfoName("테스트 설정")
                 .build();
-        SendResult sendResult = SendResult.builder(mailGroup).build();
-        sendResult.createSendResultDetails(mailGroup.getUsers());
 
         mailGroupRepository.save(mailGroup);
         mailInfoRepository.save(mailInfo);
-        sendResultRepository.save(sendResult);
         for (int i = 0; i < 100; i++) {
-            SendInfo sendInfo = SendInfo.builder(subject+"_"+i,content+"_"+i,LocalDateTime.now(), Status.WAIT)
+            SendInfo sendInfo = SendInfo.builder()
+                    .subject(subject+"_"+i)
+                    .content(content+"_"+i)
+                    .status(Status.WAIT)
                     .mailInfo(mailInfo)
                     .sendDate(nowDate)
                     .mailGroup(mailGroup)
-                    .sendResult(sendResult)
                     .build();
             sendInfoRepository.save(sendInfo);
         }
 
         for (int i = 0; i < 100; i++) {
-            SendInfo sendInfo = SendInfo.builder(subject+"_"+i,content+"_"+i,LocalDateTime.now(), Status.WAIT)
+            SendInfo sendInfo = SendInfo.builder()
+                    .subject(subject+"_"+i)
+                    .content(content+"_"+i)
+                    .status(Status.WAIT)
                     .mailInfo(mailInfo)
                     .sendDate(nowDate.plusDays(1))
                     .mailGroup(mailGroup)
-                    .sendResult(sendResult)
                     .build();
             sendInfoRepository.save(sendInfo);
         }

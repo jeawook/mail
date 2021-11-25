@@ -6,10 +6,12 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
+import org.springframework.transaction.annotation.Transactional;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
 @SpringBootTest
+@Transactional
 class MailGroupRepositoryTest {
 
     @Autowired
@@ -22,20 +24,22 @@ class MailGroupRepositoryTest {
         }
     }
     @Test
-    void searchTest() {
+    void searchByNameTest() {
         PageRequest pageRequest = PageRequest.of(0, 10);
         Page<MailGroup> result = mailGroupRepository.searchByName("name", pageRequest);
 
         assertThat(result.getTotalPages()).isEqualTo(10);
         assertThat(result.getSize()).isEqualTo(10);
     }
+
     @Test
-    void searchNameNullTest() {
+    void searchByNameNullTest() {
         PageRequest pageRequest = PageRequest.of(0, 10);
         Page<MailGroup> result = mailGroupRepository.searchByName(null, pageRequest);
 
         assertThat(result.getTotalPages()).isEqualTo(10);
         assertThat(result.getSize()).isEqualTo(10);
     }
+
 
 }

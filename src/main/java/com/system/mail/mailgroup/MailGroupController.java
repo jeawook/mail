@@ -137,7 +137,7 @@ public class MailGroupController {
     /**
      * paging 및 test 확인을 위한 데이터
      */
-    @PostConstruct
+//    @PostConstruct
     public void init() {
         for (int i = 0; i < 100; i++) {
             MailGroup mailGroup = MailGroup.builder().mailGroupName("테스트그룹_"+i).macroKey("").build();
