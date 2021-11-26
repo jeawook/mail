@@ -25,6 +25,7 @@ import java.util.Optional;
 
 import static org.assertj.core.api.Assertions.*;
 
+@Transactional
 @SpringBootTest
 class MailProcessorTest {
 

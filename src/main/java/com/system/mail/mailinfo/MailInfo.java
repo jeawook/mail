@@ -1,6 +1,5 @@
 package com.system.mail.mailinfo;
 
-import com.mysema.commons.lang.Assert;
 import com.system.mail.common.BaseTimeEntity;
 import com.system.mail.common.MailAddress;
 import lombok.*;
@@ -68,13 +67,13 @@ public class MailInfo extends BaseTimeEntity {
         return contentType.getValue() + ";charset=\"" + charset + "\"";
     }
 
-    public void updateByMailInfoForm(MailInfoForm mailInfoForm) {
-        this.mailInfoName = mailInfoForm.getMailInfoName();
-        this.charset = mailInfoForm.getCharset();
-        this.contentType = mailInfoForm.getContentType();
-        this.encoding = mailInfoForm.getEncoding();
-        this.replyTo = mailInfoForm.getReplyTo();
-        this.mailFrom = mailInfoForm.getMailFrom();
+    public void updateByMailInfoForm(MailInfo mailInfo) {
+        this.mailInfoName = mailInfo.getMailInfoName();
+        this.charset = mailInfo.getCharset();
+        this.contentType = mailInfo.getContentType();
+        this.encoding = mailInfo.getEncoding();
+        this.replyTo = mailInfo.getReplyTo();
+        this.mailFrom = mailInfo.getMailFrom();
     }
 
 

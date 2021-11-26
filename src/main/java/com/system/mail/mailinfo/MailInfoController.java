@@ -1,6 +1,5 @@
 package com.system.mail.mailinfo;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
 import com.system.mail.common.MailAddress;
 import lombok.RequiredArgsConstructor;
 import org.modelmapper.ModelMapper;
@@ -15,7 +14,6 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import javax.annotation.PostConstruct;
-import java.util.Optional;
 
 @Controller
 @RequestMapping("/mailInfo")
@@ -86,7 +84,8 @@ public class MailInfoController {
             return "mailInfo/mailInfoList";
         }
 
-        mailInfoService.updateMailInfo(mailInfoId, mailInfoForm);
+        MailInfo mailInfo = modelMapper.map(mailInfoForm, MailInfo.class);
+        mailInfoService.updateMailInfo(mailInfoId, mailInfo);
 
         return "redirect:/mailInfo/{mailInfoId}";
 

@@ -1,43 +1,56 @@
-package com.system.mail.sendinfo;
+package com.system.mail.sendresultdetail;
 
 import com.system.mail.common.MailAddress;
 import com.system.mail.mailgroup.MailGroup;
 import com.system.mail.mailgroup.MailGroupRepository;
-import com.system.mail.user.User;
+import com.system.mail.mailinfo.ContentEncoding;
 import com.system.mail.mailinfo.ContentType;
 import com.system.mail.mailinfo.MailInfo;
 import com.system.mail.mailinfo.MailInfoRepository;
-import com.system.mail.mailinfo.ContentEncoding;
+import com.system.mail.sendinfo.SendInfo;
+import com.system.mail.sendinfo.SendInfoRepository;
+import com.system.mail.sendinfo.Status;
 import com.system.mail.sendresult.SendResult;
 import com.system.mail.sendresult.SendResultRepository;
-import org.junit.jupiter.api.DisplayName;
+import com.system.mail.user.User;
+import org.assertj.core.api.Assertions;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.transaction.annotation.Transactional;
 
+import javax.persistence.EntityManager;
 import java.time.LocalDateTime;
+import java.util.Optional;
 
 import static org.assertj.core.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.*;
 
-@Transactional
 @SpringBootTest
-class SendInfoServiceTest {
-    @Autowired
-    private MailInfoRepository mailInfoRepository;
-    @Autowired
-    private MailGroupRepository mailGroupRepository;
-    @Autowired
-    private SendResultRepository sendResultRepository;
+@Transactional
+class SendResultDetailRepositoryTest {
 
     @Autowired
-    private SendInfoService sendInfoService;
+    SendResultDetailRepository sendResultDetailRepository;
+    @Autowired
+    SendResultRepository sendResultRepository;
+    @Autowired
+    SendInfoRepository sendInfoRepository;
+    @Autowired
+    MailInfoRepository mailInfoRepository;
+    @Autowired
+    MailGroupRepository mailGroupRepository;
+    @Autowired
+    EntityManager em;
 
-    @Test
-    @DisplayName("발송 정보 생성 테스트")
-    void sendInfoServiceSaveTest() {
-        String content = "메일 본문";
-        String subject = "제목";
+    private final static String subject = "subject";
+    private final static String content = "content";
+    private final static LocalDateTime nowDate = LocalDateTime.now();
+
+
+
+    private SendInfo getSendInfo() {
         MailAddress mail = MailAddress.builder().name("no_reply").email("pdj13579@nate.com").build();
         MailAddress mailAddress = MailAddress.builder().name("고객").email("pdj13579@nate.com").build();
         MailGroup mailGroup = MailGroup.builder().mailGroupName("테스트 그룹").macroKey("macro1,macro2").build();
@@ -52,30 +65,33 @@ class SendInfoServiceTest {
                 .contentType(ContentType.HTML)
                 .mailInfoName("테스트 설정")
                 .build();
+
+        mailGroupRepository.save(mailGroup);
+        mailInfoRepository.save(mailInfo);
         SendInfo sendInfo = SendInfo.builder()
                 .subject(subject)
                 .content(content)
-                .sendDate(LocalDateTime.now())
                 .status(Status.WAIT)
                 .mailInfo(mailInfo)
-                .sendDate(LocalDateTime.now())
+                .sendDate(nowDate)
                 .mailGroup(mailGroup)
                 .build();
-        MailGroup saveMailGroup = mailGroupRepository.save(mailGroup);
-        MailInfo saveMailInfo = mailInfoRepository.save(mailInfo);
+        return sendInfoRepository.save(sendInfo);
+    }
 
-        SendInfo saveSendInfo = sendInfoService.saveSendInfo(sendInfo);
+    @Test
+    void saveTest() {
 
-        SendResult sendResult = SendResult.builder().sendInfo(saveSendInfo).build();
+        SendInfo sendInfo = getSendInfo();
+
+        SendResult sendResult = SendResult.builder().sendInfo(sendInfo).build();
         SendResult saveSendResult = sendResultRepository.save(sendResult);
 
-        assertThat(mailGroup).isEqualTo(saveMailGroup);
-        assertThat(mailInfo).isEqualTo(saveMailInfo);
-        assertThat(sendInfo).isEqualTo(saveSendInfo);
-        assertThat(saveSendResult).isEqualTo(sendInfo.getSendResult());
-        assertThat(saveMailInfo).isEqualTo(sendInfo.getMailInfo());
-        assertThat(saveMailGroup).isEqualTo(sendInfo.getMailGroup());
-        assertThat(saveSendResult.getSendResultDetails()).isEqualTo(saveSendInfo.getSendResult().getSendResultDetails());
+        em.clear();
+        SendResult findSendResult = sendResultRepository.findById(saveSendResult.getId()).orElseGet(null);
+        assertThat(findSendResult.getMacroKey()).isEqualTo(sendResult.getMacroKey());
+        assertThat(findSendResult.getSendResultDetails().size()).isEqualTo(sendResult.getSendResultDetails().size());
+        assertThat(findSendResult.getSendInfo().getId()).isEqualTo(sendResult.getSendInfo().getId());
 
     }
 

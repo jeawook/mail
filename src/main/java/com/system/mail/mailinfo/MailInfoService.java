@@ -7,11 +7,8 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import org.springframework.web.bind.annotation.PostMapping;
 
-import java.util.ArrayList;
 import java.util.List;
-import java.util.Optional;
 
 @Service
 @RequiredArgsConstructor
@@ -41,9 +38,9 @@ public class MailInfoService {
         return mailInfoRepository.findAll(sort);
     }
     @Transactional
-    public void updateMailInfo(Long mailInfoId, MailInfoForm mailInfoForm) {
-        MailInfo mailInfo = mailInfoRepository.findById(mailInfoId).orElseThrow(IllegalArgumentException::new);
-        mailInfo.updateByMailInfoForm(mailInfoForm);
+    public void updateMailInfo(Long mailInfoId, MailInfo mailInfo) {
+        MailInfo findMailInfo = mailInfoRepository.findById(mailInfoId).orElseThrow(IllegalArgumentException::new);
+        findMailInfo.updateByMailInfoForm(mailInfo);
     }
 
 
