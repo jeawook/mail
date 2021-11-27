@@ -13,19 +13,17 @@ import com.system.mail.sendinfo.Status;
 import com.system.mail.sendresult.SendResult;
 import com.system.mail.sendresult.SendResultRepository;
 import com.system.mail.user.User;
-import org.assertj.core.api.Assertions;
-import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.transaction.annotation.Transactional;
 
 import javax.persistence.EntityManager;
 import java.time.LocalDateTime;
-import java.util.Optional;
 
-import static org.assertj.core.api.Assertions.*;
-import static org.junit.jupiter.api.Assertions.*;
+import static org.assertj.core.api.Assertions.assertThat;
 
 @SpringBootTest
 @Transactional
@@ -49,17 +47,31 @@ class SendResultDetailRepositoryTest {
     private final static LocalDateTime nowDate = LocalDateTime.now();
 
 
-
     private SendInfo getSendInfo() {
-        MailAddress mail = MailAddress.builder().name("no_reply").email("pdj13579@nate.com").build();
-        MailAddress mailAddress = MailAddress.builder().name("고객").email("pdj13579@nate.com").build();
+        MailAddress replyTo = MailAddress.builder().name("no_reply").email("pdj13579@nate.com").build();
+        MailAddress mailFrom1 = MailAddress.builder().name("고객").email("pdj13579@nate.com").build();
+
         MailGroup mailGroup = MailGroup.builder().mailGroupName("테스트 그룹").macroKey("macro1,macro2").build();
-        User user = User.builder().mailAddress(mailAddress).macroValue("안녕하세요,10000").build();
-        mailGroup.addUser(user);
+        User user = User.builder().mailAddress(mailFrom1).macroValue("안녕하세요,10000").build();
+        for (int i = 0; i < 10; i++) {
+            mailGroup.addUser(user);
+        }
+        
+        MailAddress mailFrom2 = MailAddress.builder().name("회원").email("pdj13579@nate.com").build();
+        User user2 = User.builder().mailAddress(mailFrom2).macroValue("안녕하세요,10000").build();
+        for (int i = 0; i < 15; i++) {
+            mailGroup.addUser(user2);
+        }
+        
+        MailAddress mailFrom3 = MailAddress.builder().name("회원").email("test@nate.com").build();
+        User user3 = User.builder().mailAddress(mailFrom3).macroValue("안녕하세요,10000").build();
+        
+        mailGroup.addUser(user3);
+        
 
         MailInfo mailInfo = MailInfo.builder()
-                .mailFrom(mail)
-                .replyTo(mail)
+                .mailFrom(replyTo)
+                .replyTo(replyTo)
                 .charset("utf-8")
                 .encoding(ContentEncoding.BASE64)
                 .contentType(ContentType.HTML)
@@ -86,13 +98,48 @@ class SendResultDetailRepositoryTest {
 
         SendResult sendResult = SendResult.builder().sendInfo(sendInfo).build();
         SendResult saveSendResult = sendResultRepository.save(sendResult);
-
+        em.flush();
         em.clear();
-        SendResult findSendResult = sendResultRepository.findById(saveSendResult.getId()).orElseGet(null);
-        assertThat(findSendResult.getMacroKey()).isEqualTo(sendResult.getMacroKey());
-        assertThat(findSendResult.getSendResultDetails().size()).isEqualTo(sendResult.getSendResultDetails().size());
-        assertThat(findSendResult.getSendInfo().getId()).isEqualTo(sendResult.getSendInfo().getId());
+        PageRequest pageRequest = PageRequest.of(0, 10);
+        Page<SendResultDetail> resultDetails = sendResultDetailRepository.findByResultId(saveSendResult.getId(), pageRequest);
 
+        assertThat(resultDetails.getSize()).isEqualTo(10);
+        assertThat(resultDetails.getTotalPages()).isEqualTo(3);
+    }
+
+    @Test
+    void searchByNameTest() {
+
+        SendInfo sendInfo = getSendInfo();
+
+        SendResult sendResult = SendResult.builder().sendInfo(sendInfo).build();
+        SendResult saveSendResult = sendResultRepository.save(sendResult);
+        em.flush();
+        em.clear();
+        PageRequest pageRequest = PageRequest.of(0, 10);
+        SendResultDetailSearchCond cond = SendResultDetailSearchCond.builder().type(ReusltSearchType.NAME).value("회원").build();
+        Page<SendResultDetail> resultDetails = sendResultDetailRepository.findByNameOrEmail(saveSendResult.getId(),cond, pageRequest);
+
+        assertThat(resultDetails.getSize()).isEqualTo(10);
+        assertThat(resultDetails.getTotalPages()).isEqualTo(2);
+    }
+
+    @Test
+    void searchByEmailTest() {
+
+        SendInfo sendInfo = getSendInfo();
+
+        SendResult sendResult = SendResult.builder().sendInfo(sendInfo).build();
+        SendResult saveSendResult = sendResultRepository.save(sendResult);
+        em.flush();
+        em.clear();
+        PageRequest pageRequest = PageRequest.of(0, 10);
+        SendResultDetailSearchCond cond = SendResultDetailSearchCond.builder().type(ReusltSearchType.EMAIL).value("test").build();
+        Page<SendResultDetail> resultDetails = sendResultDetailRepository.findByNameOrEmail(saveSendResult.getId(),cond, pageRequest);
+
+        assertThat(resultDetails.getSize()).isEqualTo(10);
+        assertThat(resultDetails.getContent().size()).isEqualTo(1);
+        assertThat(resultDetails.getTotalPages()).isEqualTo(1);
     }
 
 }

@@ -15,12 +15,12 @@ public class SendInfoService {
 
     private final SendInfoRepository sendInfoRepository;
 
-    public SendInfo saveSendInfo(SendInfo sendInfo) {
+    public SendInfo save(SendInfo sendInfo) {
         return sendInfoRepository.save(sendInfo);
     }
 
-    public SendInfo findSendInfoById(Long id) {
-        return sendInfoRepository.findById(id).orElseGet(SendInfo::new);
+    public SendInfoDto findById(Long id) {
+        return sendInfoRepository.findSendInfoDtoById(id);
     }
 
 

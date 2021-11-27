@@ -45,6 +45,27 @@ public class SendInfoRepositoryImpl implements  SendInfoRepositoryCustom {
         return new PageImpl<>(results.getResults(), pageable, results.getTotal());
     }
 
+    @Override
+    public SendInfoDto findSendInfoDtoById(Long id) {
+        return queryFactory
+                .select(new QSendInfoDto(sendInfo.sendDate,
+                        sendInfo.completedDate,
+                        sendInfo.mailInfo.mailInfoName,
+                        sendInfo.mailGroup.mailGroupName,
+                        sendInfo.status,
+                        sendInfo.subject,
+                        sendInfo.content,
+                        sendInfo.sendResult.id.as("sendResultId")
+                ))
+                .from(sendInfo)
+                .where(idEq(id))
+                .fetchOne();
+    }
+
+    private BooleanExpression idEq(Long id) {
+        return id != null ? sendInfo.id.eq(id) : null;
+    }
+
     private BooleanExpression dateBetween(LocalDateTime startDate, LocalDateTime endDate) {
         return startDate != null || endDate != null ? sendInfo.sendDate.between(startDate, endDate) : null;
     }

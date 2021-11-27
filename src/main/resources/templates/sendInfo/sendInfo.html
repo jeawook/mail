@@ -15,7 +15,7 @@
             <div class="col">
                 <button  th:if="*{status.name()} eq 'WAIT'" class="w-100 btn btn-secondary btn-lg">메일 발송</button>
                 <button th:if="*{status.name()} eq 'COMPLETE'"
-                        th:onclick="|location.href='@{/sendInfo/{sendInfoId}/result(sendInfoId=${sendInfo.id})}'|"
+                        th:onclick="|location.href='@{/result/{sendResultId}(sendInfoId=${sendInfo.id})}'|"
                         type="button" class="w-100 btn btn-secondary btn-lg">결과 보기</button>
             </div>
         </div>

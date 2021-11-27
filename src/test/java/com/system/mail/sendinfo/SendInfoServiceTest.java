@@ -64,7 +64,7 @@ class SendInfoServiceTest {
         MailGroup saveMailGroup = mailGroupRepository.save(mailGroup);
         MailInfo saveMailInfo = mailInfoRepository.save(mailInfo);
 
-        SendInfo saveSendInfo = sendInfoService.saveSendInfo(sendInfo);
+        SendInfo saveSendInfo = sendInfoService.save(sendInfo);
 
         SendResult sendResult = SendResult.builder().sendInfo(saveSendInfo).build();
         SendResult saveSendResult = sendResultRepository.save(sendResult);

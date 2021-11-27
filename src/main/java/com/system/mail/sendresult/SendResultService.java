@@ -12,7 +12,7 @@ public class SendResultService {
     public SendResult saveSendResult(SendResult sendResult) {
         return sendResultRepository.save(sendResult);
     }
-    public SendResult findSendResultById(Long id) {
-        return sendResultRepository.findById(id).orElseGet(null);
+    public SendResult findById(Long id) {
+        return sendResultRepository.findById(id).orElseThrow(IllegalArgumentException::new);
     }
 }

@@ -25,6 +25,4 @@ public class SendResultForm {
     private LocalDateTime sendDate;
 
     private LocalDateTime completedDate;
-
-    private List<SendResultDetailForm> sendResultDetails;
 }

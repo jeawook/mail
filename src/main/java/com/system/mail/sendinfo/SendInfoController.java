@@ -4,10 +4,6 @@ import com.system.mail.mailgroup.MailGroup;
 import com.system.mail.mailgroup.MailGroupService;
 import com.system.mail.mailinfo.MailInfo;
 import com.system.mail.mailinfo.MailInfoService;
-import com.system.mail.sendresult.SendResult;
-import com.system.mail.sendresult.SendResultForm;
-import com.system.mail.sendresultdetail.SendResultDetail;
-import com.system.mail.sendresultdetail.SendResultDetailForm;
 import lombok.AllArgsConstructor;
 import org.modelmapper.ModelMapper;
 import org.slf4j.Logger;
@@ -26,7 +22,6 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.stream.Collectors;
 
 @Controller
 @AllArgsConstructor
@@ -68,10 +63,12 @@ public class SendInfoController {
         return "sendInfo/sendInfoList";
     }
 
-    @GetMapping("/{mailInfoId}")
-    public String sendInfo(@PathVariable Long mailInfoId, Model model) {
-        SendInfo sendInfoById = sendInfoService.findSendInfoById(mailInfoId);
-        model.addAttribute("sendInfo", sendInfoById);
+    @GetMapping("/{id}")
+    public String sendInfo(@PathVariable Long id, Model model) {
+        SendInfoDto byId = sendInfoService.findById(id);
+
+        model.addAttribute("sendInfo", byId);
+
         return "sendInfo/sendInfo";
     }
 
@@ -98,7 +95,7 @@ public class SendInfoController {
 
         SendInfo sendInfo = mapToSendInfo(sendInfoForm, mailInfo, mailGroup);
 
-        Long sendInfoId = sendInfoService.saveSendInfo(sendInfo).getId();
+        Long sendInfoId = sendInfoService.save(sendInfo).getId();
 
         redirectAttributes.addAttribute("sendInfoId", sendInfoId);
 
@@ -109,7 +106,7 @@ public class SendInfoController {
     @PostMapping("/{sendInfoId}/send")
     public String sendMail(@PathVariable Long sendInfoId) {
         logger.info("sendMail");
-        SendInfo sendInfoById = sendInfoService.findSendInfoById(sendInfoId);
+        SendInfo sendInfoById = sendInfoService.findById(sendInfoId);
         if (sendInfoById.getId() == null) {
             return "redirect:/sendInfo/list";
         }
@@ -121,7 +118,7 @@ public class SendInfoController {
     @GetMapping("/{sendInfoId}/edit")
     public String updateSendInfoForm(@PathVariable Long sendInfoId, Model model) {
 
-        SendInfo sendInfo = sendInfoService.findSendInfoById(sendInfoId);
+        SendInfo sendInfo = sendInfoService.findById(sendInfoId);
         if (sendInfo == null) {
             return "redirect:/sendInfo/list";
         }
@@ -135,7 +132,7 @@ public class SendInfoController {
         if (bindingResult.hasErrors()) {
             return "sendInfo/editSendInfo";
         }
-        SendInfo sendInfoById = sendInfoService.findSendInfoById(sendInfoId);
+        SendInfo sendInfoById = sendInfoService.findById(sendInfoId);
         MailInfo mailInfo = mailInfoService.findMailInfoById(sendInfoForm.getMailInfoId());
         MailGroup mailGroup = mailGroupService.findMailGroupById(sendInfoForm.getSendInfoId());
         if (isNullCheck(bindingResult, sendInfoById, "sendInfo") || !sendInfoById.getStatus().equals(Status.WAIT)
@@ -150,27 +147,6 @@ public class SendInfoController {
         return "redirect:/sendInfo/{sendInfoId}";
     }
 
-    @GetMapping("/{sendInfoId}/result")
-    public String sendResult(@PathVariable Long sendInfoId, Model model) {
-        SendInfo sendInfo = sendInfoService.findSendInfoById(sendInfoId);
-        if (!sendInfo.getStatus().equals(Status.COMPLETE)) {
-            return "redirect:/sendInfo/{sendInfoId}";
-        }
-        SendResult sendResult = sendInfo.getSendResult();
-
-        SendResultForm sendResultForm = modelMapper.map(sendResult, SendResultForm.class);
-        sendResultForm.setSendResultDetails(mapResultLisToResultForm(sendResult));
-
-        model.addAttribute("sendResult", sendResultForm);
-
-        return "sendInfo/sendResult";
-    }
-
-    private List<SendResultDetailForm> mapResultLisToResultForm(SendResult sendResult) {
-        return sendResult.getSendResultDetails().stream()
-                .map(sendResultDetail -> modelMapper.map(sendResultDetail, SendResultDetailForm.class))
-                .collect(Collectors.toList());
-    }
 
 
     private SendInfo mapToSendInfo(SendInfoForm sendInfoForm, MailInfo mailInfo, MailGroup mailGroup) {

@@ -2,7 +2,6 @@ package com.system.mail.converter;
 
 import com.system.mail.common.MailAddress;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.core.convert.ConversionException;
 import org.springframework.core.convert.converter.Converter;
 
 @Slf4j

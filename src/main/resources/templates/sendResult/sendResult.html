@@ -50,16 +50,36 @@
                     </tr>
                     </thead>
                     <tbody>
-                    <tr th:each="detail : *{sendResultDetails}">
-                        <td th:text="${detail.mailAddress.email}"></td>
-                        <td th:text="${detail.mailAddress.name}"></td>
-                        <td th:text="${detail.macroValue}"></td>
-                        <td th:text="${detail.resultCode}"></td>
-                        <td th:text="${detail.resultMessage}"></td>
-                        <td th:text="${{detail.completedDate}}"></td>
+                    <tr th:each="sendResultDetail : *{sendResultDetails}">
+                        <td th:text="${sendResultDetail.mailAddress.name}"></td>
+                        <td th:text="${sendResultDetail.mailAddress.email}"></td>
+                        <td th:text="${sendResultDetail.macroValue}"></td>
+                        <td th:text="${sendResultDetail.resultCode}"></td>
+                        <td th:text="${sendResultDetail.resultMessage}"></td>
+                        <td th:text="${{sendResultDetail.completedDate}}"></td>
                     </tr>
                     </tbody>
                 </table>
+                <div>
+                    <nav class="dataTable-pagination" aria-label="Page navigation">
+                        <ul class="dataTable-pagination-list justify-content-center" th:with="start=${T(Math).floor(sendResultDetails.number/10)*10 + 1},
+                    maxPage=${sendResultDetails.totalPages},
+                    last=(${maxPage == 0 ? 1 : (start + (maxPage - 1) < maxPage ? start + (maxPage - 1) : maxPage)})">
+                            <li><a aria-label="Previous" href="/result/${sendResult.id}?page=0">&laquo;</a></li>
+                            <li th:style="${sendResultDetails.first} ? 'display:none'">
+                                <a th:href="@{/result/${sendResult.id}(page=${sendResultDetails.number - 1})}">&lsaquo;</a>
+                            </li>
+                            <li th:each="page: ${#numbers.sequence(start, last)}"
+                                th:class="${page - 1 == sendResultDetails.number} ? 'active'">
+                                <a th:text="${page}" th:href="@{/result/${sendResult.id}(page=${page - 1})}"></a>
+                            </li>
+                            <li th:style="${sendResultDetails.last} ? 'display:none'">
+                                <a th:href="@{/result/${sendResult.id}(page=${sendResultDetails.number}+1)}">&rsaquo;</a>
+                            </li>
+                            <li><a aria-label="Next" class="pager" th:href="@{/result/${sendResult.id}(page=${maxPage - 1})}">&raquo;</a></li>
+                        </ul>
+                    </nav>
+                </div>
             </div>
         </div>
     </div>

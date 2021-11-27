@@ -1,6 +1,7 @@
 package com.system.mail.sendresult;
 
 import com.querydsl.core.QueryResults;
+import com.querydsl.core.types.dsl.BooleanExpression;
 import com.querydsl.jpa.JPQLQueryFactory;
 import com.system.mail.sendinfo.QSendInfo;
 import lombok.RequiredArgsConstructor;
@@ -31,5 +32,17 @@ public class SendResultRepositoryImpl implements SendResultRepositoryCustom {
                 .leftJoin(sendResult.sendInfo, sendInfo)
                 .where(sendResult.id.eq(id))
                 .fetchOne();
+    }
+
+    @Override
+    public SendResult findBySendInfoId(Long sendInfoId) {
+        return queryFactory
+                .selectFrom(sendResult)
+                .where(sendInfoIdEq(sendInfoId))
+                .fetchOne();
+    }
+
+    private BooleanExpression sendInfoIdEq(Long sendInfoId) {
+        return sendInfoId != null ? sendResult.sendInfo.id.eq(sendInfoId) : null;
     }
 }

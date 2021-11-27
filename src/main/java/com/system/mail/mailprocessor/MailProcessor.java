@@ -1,7 +1,6 @@
 package com.system.mail.mailprocessor;
 
 import com.system.mail.common.MailAddress;
-import com.system.mail.mailgroup.MailGroup;
 import com.system.mail.mailinfo.ContentEncoding;
 import com.system.mail.mailinfo.MailInfo;
 import com.system.mail.sendinfo.SendInfo;
@@ -34,7 +33,7 @@ public class MailProcessor {
 
     @Transactional
     public void process(Long sendInfoId) {
-        SendInfo sendInfo = sendInfoService.findSendInfoById(sendInfoId);
+        SendInfo sendInfo = sendInfoService.findById(sendInfoId);
         sendInfo.mailStatusSending();
 
         SendResult sendResult = createResult(sendInfo);

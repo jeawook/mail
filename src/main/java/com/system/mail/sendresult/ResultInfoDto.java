@@ -1,6 +1,7 @@
 package com.system.mail.sendresult;
 
 import com.querydsl.core.annotations.QueryProjection;
+import lombok.Builder;
 import lombok.Data;
 
 import java.time.LocalDateTime;
@@ -22,6 +23,7 @@ public class ResultInfoDto {
 
     private LocalDateTime completedDate;
 
+    @Builder
     @QueryProjection
     public ResultInfoDto(Long sendResultId, int totalCnt, int errorCnt,
                          int successCnt, int completedCnt, String macroKey, LocalDateTime sendDate, LocalDateTime completedDate) {

@@ -5,4 +5,6 @@ import org.springframework.data.domain.Pageable;
 
 public interface SendResultRepositoryCustom {
     ResultInfoDto findSendResult(Long id);
+    SendResult findBySendInfoId(Long sendInfoId);
+
 }

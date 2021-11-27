@@ -18,6 +18,8 @@ public class SendInfoForm {
     @NotNull
     private Long mailInfoId;
 
+    private Long sendResultId;
+
     @NotNull
     @DateTimeFormat(pattern = "yyyyMMddHHmm")
     private LocalDateTime sendDate;
