@@ -13,18 +13,14 @@
             <div class="col"></div>
             <div class="col"></div>
             <div class="col">
-                <button  th:if="*{status.name()} eq 'WAIT'" class="w-100 btn btn-secondary btn-lg">메일 발송</button>
-                <button th:if="*{status.name()} eq 'COMPLETE'"
-                        th:onclick="|location.href='@{/result/{sendResultId}(sendInfoId=${sendInfo.id})}'|"
+                <button  th:if="*{status.name()} == 'WAIT'" class="w-100 btn btn-secondary btn-lg">메일 발송</button>
+                <button th:if="*{status.name()} == 'COMPLETE' and *{sendResultId} != null"
+                        th:onclick="|location.href='@{/result/{sendResultId}(sendInfoId=${sendResultId})}'|"
                         type="button" class="w-100 btn btn-secondary btn-lg">결과 보기</button>
             </div>
         </div>
         <!-- 추가 -->
     <!--    <h2 th:if="${param.status}" th:text="'저장 완료'"></h2>-->
-        <div>
-            <label for="sendInfoId" th:text="#{label.id}">ID</label>
-            <input type="text" id="sendInfoId" th:field="*{id}" class="form-control" value="1" th:value="*{id}" readonly>
-        </div>
         <div>
             <label for="sendDate" th:text="#{label.sendInfo.sendDate}">발송 예정 시간</label>
             <input type="text" id="sendDate" th:field="*{sendDate}" class="form-control" value="sendDate" th:value="*{sendDate}" readonly>
@@ -34,8 +30,12 @@
             <input type="text" id="completedDate" th:field="*{completedDate}" class="form-control" value="completedDate" th:value="*{completedDate}" readonly>
         </div>
         <div>
-            <label for="mailGroupName" th:text="#{label.mailGroup}">그룹</label>
-            <input type="text" id="mailGroupName" th:field="*{mailGroup.mailGroupName}" class="form-control" value="10000" th:value="*{mailGroup.mailGroupName}" readonly>
+            <label for="mailGroupName" th:text="#{label.mailInfo}">설정명</label>
+            <input type="text" id="mailInfoName" th:field="*{mailInfoName}" class="form-control" value="10000" th:value="*{mailInfoName}" readonly>
+        </div>
+        <div>
+            <label for="mailGroupName" th:text="#{label.mailGroup}">그룹명</label>
+            <input type="text" id="mailGroupName" th:field="*{mailGroupName}" class="form-control" value="10000" th:value="*{mailGroupName}" readonly>
         </div>
         <div>
             <label for="status" th:text="#{label.sendInfo.status}">발송 상태</label>

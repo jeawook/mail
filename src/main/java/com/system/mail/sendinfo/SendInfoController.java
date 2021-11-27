@@ -65,7 +65,7 @@ public class SendInfoController {
 
     @GetMapping("/{id}")
     public String sendInfo(@PathVariable Long id, Model model) {
-        SendInfoDto byId = sendInfoService.findById(id);
+        SendInfoDto byId = sendInfoService.findSendInfoDtoById(id);
 
         model.addAttribute("sendInfo", byId);
 

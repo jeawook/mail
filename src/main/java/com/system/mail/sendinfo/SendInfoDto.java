@@ -9,6 +9,8 @@ import java.time.LocalDateTime;
 @Data
 public class SendInfoDto {
 
+    private Long id;
+
     private LocalDateTime sendDate;
 
     private LocalDateTime completedDate;
@@ -27,7 +29,8 @@ public class SendInfoDto {
 
     @Builder
     @QueryProjection
-    public SendInfoDto(LocalDateTime sendDate, LocalDateTime completedDate, String mailInfoName, String mailGroupName, Status status, String subject, String content, Long sendResultId) {
+    public SendInfoDto(Long id, LocalDateTime sendDate, LocalDateTime completedDate, String mailInfoName, String mailGroupName, Status status, String subject, String content, Long sendResultId) {
+        this.id = id;
         this.sendDate = sendDate;
         this.completedDate = completedDate;
         this.mailInfoName = mailInfoName;

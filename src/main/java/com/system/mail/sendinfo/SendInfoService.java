@@ -19,8 +19,12 @@ public class SendInfoService {
         return sendInfoRepository.save(sendInfo);
     }
 
-    public SendInfoDto findById(Long id) {
+    public SendInfoDto findSendInfoDtoById(Long id) {
         return sendInfoRepository.findSendInfoDtoById(id);
+    }
+
+    public SendInfo findById(Long id) {
+        return sendInfoRepository.findById(id).orElseThrow(IllegalArgumentException::new);
     }
 
 

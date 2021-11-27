@@ -41,22 +41,13 @@ class SendInfoRepositoryTest {
     private final static String content = "content";
     private final static LocalDateTime nowDate = LocalDateTime.now();
 
-    @BeforeEach
-    void before() {
+
+    private void createData() {
         MailAddress mail = MailAddress.builder().name("no_reply").email("pdj13579@nate.com").build();
         MailAddress mailAddress = MailAddress.builder().name("고객").email("pdj13579@nate.com").build();
-        MailGroup mailGroup = MailGroup.builder().mailGroupName("테스트 그룹").macroKey("macro1,macro2").build();
-        User user = User.builder().mailAddress(mailAddress).macroValue("안녕하세요,10000").build();
-        mailGroup.addUser(user);
+        MailGroup mailGroup = getMailGroup(mailAddress);
 
-        MailInfo mailInfo = MailInfo.builder()
-                .mailFrom(mail)
-                .replyTo(mail)
-                .charset("utf-8")
-                .encoding(ContentEncoding.BASE64)
-                .contentType(ContentType.HTML)
-                .mailInfoName("테스트 설정")
-                .build();
+        MailInfo mailInfo = getMailInfo(mail);
 
         mailGroupRepository.save(mailGroup);
         mailInfoRepository.save(mailInfo);
@@ -84,8 +75,58 @@ class SendInfoRepositoryTest {
             sendInfoRepository.save(sendInfo);
         }
     }
+
+    private MailInfo getMailInfo(MailAddress mail) {
+        MailInfo mailInfo = MailInfo.builder()
+                .mailFrom(mail)
+                .replyTo(mail)
+                .charset("utf-8")
+                .encoding(ContentEncoding.BASE64)
+                .contentType(ContentType.HTML)
+                .mailInfoName("테스트 설정")
+                .build();
+        return mailInfo;
+    }
+
+    private MailGroup getMailGroup(MailAddress mailAddress) {
+        MailGroup mailGroup = MailGroup.builder().mailGroupName("테스트 그룹").macroKey("macro1,macro2").build();
+        User user = User.builder().mailAddress(mailAddress).macroValue("안녕하세요,10000").build();
+        mailGroup.addUser(user);
+        return mailGroup;
+    }
+
     @Test
-    public void findByDateAndSubjectTest() {
+    void findBySendInfoDtoTest() {
+        MailAddress mail = MailAddress.builder().name("no_reply").email("pdj13579@nate.com").build();
+        MailAddress mailAddress = MailAddress.builder().name("고객").email("pdj13579@nate.com").build();
+        MailGroup mailGroup = getMailGroup(mailAddress);
+
+        MailInfo mailInfo = getMailInfo(mail);
+
+        mailGroupRepository.save(mailGroup);
+        mailInfoRepository.save(mailInfo);
+        SendInfo sendInfo = SendInfo.builder()
+                .subject(subject)
+                .content(content)
+                .status(Status.WAIT)
+                .mailInfo(mailInfo)
+                .sendDate(nowDate)
+                .mailGroup(mailGroup)
+                .build();
+
+        SendInfo save = sendInfoRepository.save(sendInfo);
+        SendInfoDto dto = sendInfoRepository.findSendInfoDtoById(save.getId());
+
+        assertThat(dto.getMailGroupName()).isEqualTo(mailGroup.getMailGroupName());
+        assertThat(dto.getMailInfoName()).isEqualTo(mailInfo.getMailInfoName());
+        assertThat(dto.getContent()).isEqualTo(save.getContent());
+//        assertThat(dto.getSendDate()).isEqualTo(save.getSendDate());
+        assertThat(dto.getSendResultId()).isNull();
+    }
+
+    @Test
+    void findByDateAndSubjectTest() {
+        createData();
         LocalDateTime startDate = LocalDateTime.of(nowDate.getYear(), nowDate.getMonth(), nowDate.getDayOfMonth(), 0, 0);
 
         PageRequest pageRequest = PageRequest.of(0, 10);
@@ -98,7 +139,8 @@ class SendInfoRepositoryTest {
     }
 
     @Test
-    public void findByDateAndSubjectNullTest() {
+    void findByDateAndSubjectNullTest() {
+        createData();
         LocalDateTime startDate = LocalDateTime.of(nowDate.getYear(), nowDate.getMonth(), nowDate.getDayOfMonth(), 0, 0);
 
         PageRequest pageRequest = PageRequest.of(0, 10);
@@ -109,7 +151,8 @@ class SendInfoRepositoryTest {
         assertThat(result.getSize()).isEqualTo(10);
     }
     @Test
-    public void findByEndDateNullAndSubjectNullTest() {
+    void findByEndDateNullAndSubjectNullTest() {
+        createData();
         LocalDateTime startDate = LocalDateTime.of(nowDate.getYear(), nowDate.getMonth(), nowDate.getDayOfMonth(), 0, 0);
 
         PageRequest pageRequest = PageRequest.of(0, 10);

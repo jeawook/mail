@@ -48,7 +48,9 @@ public class SendInfoRepositoryImpl implements  SendInfoRepositoryCustom {
     @Override
     public SendInfoDto findSendInfoDtoById(Long id) {
         return queryFactory
-                .select(new QSendInfoDto(sendInfo.sendDate,
+                .select(new QSendInfoDto(
+                        sendInfo.id,
+                        sendInfo.sendDate,
                         sendInfo.completedDate,
                         sendInfo.mailInfo.mailInfoName,
                         sendInfo.mailGroup.mailGroupName,
