@@ -137,16 +137,12 @@ public class MailGroupController {
     /**
      * paging 및 test 확인을 위한 데이터
      */
-//    @PostConstruct
+    @PostConstruct
     public void init() {
-        for (int i = 0; i < 100; i++) {
-            MailGroup mailGroup = MailGroup.builder().mailGroupName("테스트그룹_"+i).macroKey("").build();
-            mailGroupService.saveMailGroup(mailGroup);
-        }
+        MailGroup mailGroup = MailGroup.builder().mailGroupName("테스트그룹").macroKey("").build();
         MailAddress mailAddress = MailAddress.builder().name("박재욱").email("pdj13579@nate.com").build();
-        MailGroup mailGroup = MailGroup.builder().mailGroupName("테스트그룹").macroKey("subject,content").build();
-        User user = User.builder().mailAddress(mailAddress).macroValue("제목입니다,본문입니다").build();
-        for (int i = 0; i < 10; i++) {
+        for (int i = 0; i < 20; i++) {
+            User user = User.builder().mailAddress(mailAddress).macroValue("제목입니다,본문입니다").build();
             mailGroup.addUser(user);
         }
         mailGroupService.saveMailGroup(mailGroup);

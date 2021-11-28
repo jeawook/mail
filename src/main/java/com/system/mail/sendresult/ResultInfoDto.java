@@ -9,6 +9,7 @@ import java.time.LocalDateTime;
 @Data
 public class ResultInfoDto {
     private Long sendResultId;
+
     private int totalCnt;
 
     private int errorCnt;

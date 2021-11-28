@@ -10,7 +10,7 @@ import java.util.List;
 @Data
 public class SendResultForm {
 
-    private Long sendResultId;
+    private Long id;
 
     private int totalCnt;
 

@@ -7,6 +7,7 @@ import lombok.RequiredArgsConstructor;
 import org.modelmapper.ModelMapper;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.web.PageableDefault;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -23,7 +24,7 @@ public class SendResultController {
     private final ModelMapper modelMapper;
 
     @GetMapping("/{id}")
-    public String sendResult(@PathVariable Long id, Pageable pageable, Model model) {
+    public String sendResult(@PathVariable Long id, @PageableDefault Pageable pageable, Model model) {
 
         SendResult sendResultById = sendResultService.findById(id);
         SendResultForm sendResultForm = modelMapper.map(sendResultById, SendResultForm.class);
@@ -36,7 +37,7 @@ public class SendResultController {
     }
 
     @GetMapping("/{id}/search")
-    public String searchSendResult(@PathVariable Long id, SendResultDetailSearchCond searchCond, Pageable pageable, Model model) {
+    public String searchSendResult(@PathVariable Long id, SendResultDetailSearchCond searchCond,@PageableDefault Pageable pageable, Model model) {
 
         SendResult sendResultById = sendResultService.findById(id);
         Page<SendResultDetail> bySendResultId = sendResultDetailService.findByNameOrEmail(id, searchCond, pageable);
