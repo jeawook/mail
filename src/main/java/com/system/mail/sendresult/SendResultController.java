@@ -11,6 +11,7 @@ import org.springframework.data.web.PageableDefault;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 
@@ -24,7 +25,7 @@ public class SendResultController {
     private final ModelMapper modelMapper;
 
     @GetMapping("/{id}")
-    public String sendResult(@PathVariable Long id, @PageableDefault Pageable pageable, Model model) {
+    public String sendResult(@PathVariable Long id, @PageableDefault Pageable pageable, @ModelAttribute(name = "searchCond") SendResultDetailSearchCond searchCond, Model model) {
 
         SendResult sendResultById = sendResultService.findById(id);
         SendResultForm sendResultForm = modelMapper.map(sendResultById, SendResultForm.class);
@@ -37,7 +38,7 @@ public class SendResultController {
     }
 
     @GetMapping("/{id}/search")
-    public String searchSendResult(@PathVariable Long id, SendResultDetailSearchCond searchCond,@PageableDefault Pageable pageable, Model model) {
+    public String searchSendResult(@PathVariable Long id,@ModelAttribute(name = "searchCond") SendResultDetailSearchCond searchCond,@PageableDefault Pageable pageable, Model model) {
 
         SendResult sendResultById = sendResultService.findById(id);
         Page<SendResultDetail> bySendResultId = sendResultDetailService.findByNameOrEmail(id, searchCond, pageable);

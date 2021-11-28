@@ -1,5 +1,5 @@
 package com.system.mail.sendresultdetail;
 
-public enum ReusltSearchType {
+public enum ResultSearchType {
     NAME, EMAIL
 }

@@ -38,17 +38,19 @@
                 메일 발송 상세 결과
             </div>
             <div class="dataTable-top">
-                <div class="dataTable-dropdown">
-                    <label>
-
-                    </label>
+                <div class="dataTable-dropdown"></div>
+                <div class="dataTable-search">
+                    <select class="dataTable-selector" th:field="${searchCond.type}">
+                        <option th:each="searchCond : ${T(com.system.mail.sendresultdetail.ResultSearchType).values()}"
+                                th:value="${searchCond.name()}"
+                                th:text="${searchCond.name()}"></option>
+                    </select>
                 </div>
                 <div class="dataTable-search">
-                    <select class="dataTable-selector"
-                            th:each="searchCond : ${T(com.system.mail.sendresultdetail.SendResultDetailSearchCond).values()}">
-                    </select>
-                    <input class="dataTable-input" placeholder="Search..." type="text">
-                    <button class="button" th:href="@{/result/{id}/search(id=*{id})">검색</button>
+                    <input class="dataTable-input" th:field="${searchCond.value}" placeholder="Search..." type="text">
+                </div>
+                <div class="dataTable-search">
+                    <button class="button" th:href="@{/result/{id}/search(id=*{id})}">검색</button>
                 </div>
             </div>
             <div class="card-body">

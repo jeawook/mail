@@ -44,10 +44,10 @@ public class SendResultDetailRepositoryImpl implements SendResultDetailRepositor
         return new PageImpl<>(results.getResults(), pageable, results.getTotal());
     }
 
-    private BooleanExpression searchable( ReusltSearchType searchType, String value) {
-        if (searchType.equals(ReusltSearchType.NAME)) {
+    private BooleanExpression searchable(ResultSearchType searchType, String value) {
+        if (searchType.equals(ResultSearchType.NAME)) {
             return mailAddressNameContain(value);
-        } else if (searchType.equals(ReusltSearchType.EMAIL)) {
+        } else if (searchType.equals(ResultSearchType.EMAIL)) {
             return mailAddressEmailContain(value);
         } else {
             return mailAddressNameContain(value).or(mailAddressEmailContain(value));
