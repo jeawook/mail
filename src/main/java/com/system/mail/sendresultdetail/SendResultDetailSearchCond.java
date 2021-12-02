@@ -6,12 +6,12 @@ import lombok.Data;
 @Data
 public class SendResultDetailSearchCond {
 
-    private String value;
-    private ResultSearchType type;
+    private String searchKey;
+    private ResultSearchType searchType;
 
     @Builder
-    public SendResultDetailSearchCond(String value, ResultSearchType type) {
-        this.value = value;
-        this.type = type;
+    public SendResultDetailSearchCond(String searchKey, ResultSearchType searchType) {
+        this.searchKey = searchKey;
+        this.searchType = searchType;
     }
 }

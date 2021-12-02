@@ -117,7 +117,7 @@ class SendResultDetailRepositoryTest {
         em.flush();
         em.clear();
         PageRequest pageRequest = PageRequest.of(0, 10);
-        SendResultDetailSearchCond cond = SendResultDetailSearchCond.builder().type(ResultSearchType.NAME).value("회원").build();
+        SendResultDetailSearchCond cond = SendResultDetailSearchCond.builder().searchType(ResultSearchType.NAME).searchKey("회원").build();
         Page<SendResultDetail> resultDetails = sendResultDetailRepository.findByNameOrEmail(saveSendResult.getId(),cond, pageRequest);
 
         assertThat(resultDetails.getSize()).isEqualTo(10);
@@ -134,7 +134,7 @@ class SendResultDetailRepositoryTest {
         em.flush();
         em.clear();
         PageRequest pageRequest = PageRequest.of(0, 10);
-        SendResultDetailSearchCond cond = SendResultDetailSearchCond.builder().type(ResultSearchType.EMAIL).value("test").build();
+        SendResultDetailSearchCond cond = SendResultDetailSearchCond.builder().searchType(ResultSearchType.EMAIL).searchKey("test").build();
         Page<SendResultDetail> resultDetails = sendResultDetailRepository.findByNameOrEmail(saveSendResult.getId(),cond, pageRequest);
 
         assertThat(resultDetails.getSize()).isEqualTo(10);

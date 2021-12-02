@@ -29,13 +29,13 @@ public class MailGroupController {
     static final char MACRO_POINT_COMMA = ',';
 
     @GetMapping("/list")
-    public String mailGroupList(Pageable pageable,String searchKey ,Model model) {
-        Page<MailGroup> list = mailGroupService.findMailGroupList(null, pageable);
-        model.addAttribute("mailGroupList", list);
+    public String mailGroupList(@PageableDefault Pageable pageable,String searchKey ,Model model) {
+        Page<MailGroup> mailGroupList = mailGroupService.findMailGroupList(null, pageable);
+        model.addAttribute("mailGroupList", mailGroupList);
         return "mailGroup/mailGroupList";
     }
     @GetMapping("/list/search")
-    public String searchMailGroup(Pageable pageable,@RequestParam String searchKey, Model model) {
+    public String searchMailGroup(@PageableDefault Pageable pageable,@RequestParam String searchKey, Model model) {
         Page<MailGroup> list = mailGroupService.findMailGroupList(searchKey, pageable);
         model.addAttribute("mailGroupList", list);
         return "mailGroup/mailGroupList";
@@ -43,9 +43,9 @@ public class MailGroupController {
 
     @GetMapping("/{mailGroupId}")
     public String mailGroup(@PathVariable Long mailGroupId, Model model) {
-        MailGroup mailGroupById = mailGroupService.findMailGroupById(mailGroupId);
+        MailGroup mailGroup = mailGroupService.findMailGroupById(mailGroupId);
 
-        model.addAttribute("mailGroup", mailGroupById);
+        model.addAttribute("mailGroup", mailGroup);
 
         return "mailGroup/mailGroup";
     }
@@ -139,7 +139,7 @@ public class MailGroupController {
      */
     @PostConstruct
     public void init() {
-        MailGroup mailGroup = MailGroup.builder().mailGroupName("테스트그룹").macroKey("").build();
+        MailGroup mailGroup = MailGroup.builder().mailGroupName("테스트그룹").macroKey("subject,content").build();
         MailAddress mailAddress = MailAddress.builder().name("박재욱").email("pdj13579@nate.com").build();
         for (int i = 0; i < 20; i++) {
             User user = User.builder().mailAddress(mailAddress).macroValue("제목입니다,본문입니다").build();

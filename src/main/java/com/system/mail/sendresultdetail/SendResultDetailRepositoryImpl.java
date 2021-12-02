@@ -36,7 +36,7 @@ public class SendResultDetailRepositoryImpl implements SendResultDetailRepositor
     public Page<SendResultDetail> findByNameOrEmail(Long resultId, SendResultDetailSearchCond searchCond, Pageable pageable) {
         QueryResults<SendResultDetail> results = queryFactory
                 .selectFrom(sendResultDetail)
-                .where(searchable(searchCond.getType(), searchCond.getValue()) , resultIdEq(resultId))
+                .where(searchable(searchCond.getSearchType(), searchCond.getSearchKey()) , resultIdEq(resultId))
                 .offset(pageable.getOffset())
                 .limit(pageable.getPageSize())
                 .orderBy(sendResultDetail.id.desc())

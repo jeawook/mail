@@ -38,20 +38,21 @@
                 메일 발송 상세 결과
             </div>
             <div class="dataTable-top">
-                <div class="dataTable-dropdown"></div>
-                <div class="dataTable-search">
-                    <select class="dataTable-selector" th:field="${searchCond.type}">
-                        <option th:each="searchCond : ${T(com.system.mail.sendresultdetail.ResultSearchType).values()}"
-                                th:value="${searchCond.name()}"
-                                th:text="${searchCond.name()}"></option>
-                    </select>
-                </div>
-                <div class="dataTable-search">
-                    <input class="dataTable-input" th:field="${searchCond.value}" placeholder="Search..." type="text">
-                </div>
-                <div class="dataTable-search">
-                    <button class="button" th:href="@{/result/{id}/search(id=*{id})}">검색</button>
-                </div>
+                <form class="form-group row justify-content-right" th:action="@{/result/{id}/search(id=*{id})}">
+                    <div class="w-100 col" >
+                        <select class="form-select" th:field="${searchCond.searchType}">
+                            <option th:each="searchType : ${T(com.system.mail.sendresultdetail.ResultSearchType).values()}"
+                                    th:value="${searchType.name()}"
+                                    th:text="${searchType.name()}" th:selected="${searchType.name()} eq ${searchCond.searchType}"></option>
+                        </select>
+                    </div>
+                    <div class="w-200 col" >
+                        <input type="text" th:field="${searchCond.searchKey}" class="form-control form-control-sm">
+                    </div>
+                    <div class="col">
+                        <button class="btn btn-sm btn-primary" id="btnSearch">검색</button>
+                    </div>
+                </form>
             </div>
             <div class="card-body">
                 <table class="table table-bordered">
@@ -84,17 +85,19 @@
                     maxPage=${sendResultDetails.totalPages},
                     last=(${maxPage == 0 ? 1 : (start + (maxPage - 1) < maxPage ? start + (maxPage - 1) : maxPage)})">
                             <li><a aria-label="Previous" th:href="@{/result/{id}?page=0(id=*{id})}">&laquo;</a></li>
-                            <li th:style="${sendResultDetails.first} ? 'display:none'">
+                            <li th:style="${sendResultDetails.number} < 0 ? 'display:none'">
                                 <a th:href="@{/result/{id}(page=${sendResultDetails.number - 1},id=*{id})}">&lsaquo;</a>
                             </li>
                             <li th:each="page: ${#numbers.sequence(start, last)}"
                                 th:class="${page - 1 == sendResultDetails.number} ? 'active'">
                                 <a th:text="${page}" th:href="@{/result/{id}(page=${page - 1},id=*{id})}"></a>
                             </li>
-                            <li th:style="${sendResultDetails.last} ? 'display:none'">
-                                <a th:href="@{/result/{id}(page=${sendResultDetails.number}+1,id=*{id}})">&rsaquo;</a>
+                            <li th:style="${sendResultDetails.number} < ${maxPage} ? 'display:none'">
+                                <a th:href="@{/result/{id}(page=${sendResultDetails.number}+1,id=*{id})}">&rsaquo;</a>
                             </li>
-                            <li><a aria-label="Next" class="pager" th:href="@{/result/{id}(page=${maxPage - 1},id=*{id})}">&raquo;</a></li>
+                            <li>
+                                <a aria-label="Next" class="pager" th:href="@{/result/{id}/search(page=${maxPage - 1},id=*{id})}">&raquo;</a>
+                            </li>
                         </ul>
                     </nav>
                 </div>

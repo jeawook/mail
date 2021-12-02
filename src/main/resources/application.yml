@@ -12,6 +12,10 @@ spring:
         # show_sql: true
          format_sql: true
          use_sql_comments: true
+  thymeleaf:
+    cache: false
+    resources:
+      cache-period: 0
 logging:
   level:
 #    root: info

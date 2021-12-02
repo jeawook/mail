@@ -40,12 +40,14 @@ public class SendResultController {
     @GetMapping("/{id}/search")
     public String searchSendResult(@PathVariable Long id,@ModelAttribute(name = "searchCond") SendResultDetailSearchCond searchCond,@PageableDefault Pageable pageable, Model model) {
 
-        SendResult sendResultById = sendResultService.findById(id);
-        Page<SendResultDetail> bySendResultId = sendResultDetailService.findByNameOrEmail(id, searchCond, pageable);
-        SendResultForm sendResultForm = modelMapper.map(sendResultById, SendResultForm.class);
+        SendResult sendResult = sendResultService.findById(id);
+
+        Page<SendResultDetail> sendResultDetails = sendResultDetailService.findByNameOrEmail(id, searchCond, pageable);
+
+        SendResultForm sendResultForm = modelMapper.map(sendResult, SendResultForm.class);
 
         model.addAttribute("sendResult", sendResultForm);
-        model.addAttribute("sendResultDetails", bySendResultId);
+        model.addAttribute("sendResultDetails", sendResultDetails);
         return "sendResult/sendResult";
     }
 

@@ -47,19 +47,36 @@ class MailInfoServiceTest {
                 .build();
         return mailInfo;
     }
+    @Test
+    @DisplayName("findMailInfoListByPage 테스트")
+    void findMailInfoListByPageTest() {
+        String mailInfoName = "테스트_";
+        int pageSize = 10;
+        for (int i = 0; i < 10; i++) {
+            MailInfo mailInfo = createMailInfo(mailInfoName + i);
+            mailInfoService.saveMailInfo(mailInfo);
+        }
+        PageRequest pageRequest = PageRequest.of(0, pageSize);
+        Page<MailInfo> mailInfoByName = mailInfoService.findMailInfoListByPage(pageRequest);
+        assertThat(mailInfoByName.getSize()).isEqualTo(pageSize);
+        assertThat(mailInfoByName.getTotalPages()).isEqualTo(2);
+        assertThat(mailInfoByName.getNumber()).isEqualTo(0);
+    }
 
     @Test
     @DisplayName("mailInfo findMailInfoByName 테스트")
     void findMailInfoByNameTest() {
         String mailInfoName = "테스트_";
+        int pageSize = 10;
         for (int i = 0; i < 10; i++) {
             MailInfo mailInfo = createMailInfo(mailInfoName + i);
             mailInfoService.saveMailInfo(mailInfo);
         }
-        PageRequest pageRequest = PageRequest.of(0, 5);
+        PageRequest pageRequest = PageRequest.of(0, pageSize);
         Page<MailInfo> mailInfoByName = mailInfoService.findMailInfoByName(mailInfoName, pageRequest);
-        assertThat(mailInfoByName.getSize()).isEqualTo(5);
+        assertThat(mailInfoByName.getSize()).isEqualTo(pageSize);
         assertThat(mailInfoByName.getTotalPages()).isEqualTo(2);
+        assertThat(mailInfoByName.getNumber()).isEqualTo(0);
     }
     @Test
     @DisplayName("updateMailInfo 테스트")
@@ -69,7 +86,7 @@ class MailInfoServiceTest {
         MailInfo saveMailInfo = mailInfoService.saveMailInfo(mailInfo);
         MailInfo afterMailInfo = createMailInfo(name);
         mailInfoService.updateMailInfo(saveMailInfo.getId(), afterMailInfo);
-
+        em.flush();
         em.clear();
 
         MailInfo mailInfoById = mailInfoService.findMailInfoById(saveMailInfo.getId());
