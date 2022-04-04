@@ -8,6 +8,8 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.Pageable;
 
+import java.util.List;
+
 import static com.system.mail.mailgroup.QMailGroup.mailGroup;
 import static org.springframework.util.StringUtils.hasText;
 
@@ -17,14 +19,14 @@ public class MailGroupRepositoryImpl implements MailGroupRepositoryCustom{
     private final JPAQueryFactory queryFactory;
     @Override
     public Page<MailGroup> searchByName(String searchKey, Pageable pageable) {
-        QueryResults<MailGroup> results = queryFactory
+        List<MailGroup> fetch = queryFactory
                 .selectFrom(mailGroup)
                 .where(nameContain(searchKey))
                 .offset(pageable.getOffset())
                 .limit(pageable.getPageSize())
                 .orderBy(mailGroup.id.desc())
-                .fetchResults();
-        return new PageImpl<>(results.getResults(),pageable, results.getTotal() );
+                .fetch();
+        return new PageImpl<>(fetch,pageable, fetch.size() );
     }
 
     private BooleanExpression nameContain(String name) {
