@@ -9,7 +9,7 @@ import javax.persistence.*;
 import javax.validation.Valid;
 import javax.validation.constraints.NotNull;
 
-@Entity
+@Entity(name = "userInfo")
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @Getter @Setter
 public class User {
