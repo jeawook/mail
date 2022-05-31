@@ -73,7 +73,7 @@ public class MailProcessor {
     }
 
     private String makeData(SendInfo sendInfo, SendResultDetail sendResultDetail) {
-        StringBuilder sb = new StringBuilder();
+        StringBuffer sb = new StringBuffer();
         sb.append(makeHeader(sendInfo, sendResultDetail));
 
         String content = makeMacroProcess(sendInfo, sendResultDetail, sendInfo.getContent());
@@ -90,12 +90,12 @@ public class MailProcessor {
     }
 
     private String makeHeader(SendInfo sendInfo, SendResultDetail sendResultDetail) {
-        StringBuilder sb = new StringBuilder();
+        StringBuffer sb = new StringBuffer();
         MailInfo mailInfo = sendInfo.getMailInfo();
         String charset = getCharset(mailInfo);
 
         String subject = makeMacroProcess(sendInfo, sendResultDetail, sendInfo.getSubject());
-        sb.append(encodeHeader(subject, charset));
+        sb.append(encodeHeader(MailHeader.SUBJECT, subject, charset));
 
         sb.append(encodeNameHeader(MailHeader.FROM, mailInfo.getHeaderFrom(), charset));
         sb.append(encodeNameHeader(MailHeader.REPLY_TO, mailInfo.getHeaderReply(), charset));
@@ -111,7 +111,7 @@ public class MailProcessor {
         return sb.toString();
     }
 
-    private void createHeaderProperties(StringBuilder sb) {
+    private void createHeaderProperties(StringBuffer sb) {
         Set<String> properties = mailProperties.getProperties();
         properties.forEach(propertyKey -> sb.append(createHeader(propertyKey, mailProperties.getProperty(propertyKey))));
     }
@@ -123,8 +123,8 @@ public class MailProcessor {
         }
         return charset;
     }
-    private String encodeHeader(String value, String charset ) {
-        return mailHeaderEncoder.encode(MailHeader.SUBJECT.getValue(), value, charset);
+    private String encodeHeader(MailHeader mailHeader, String value, String charset ) {
+        return mailHeaderEncoder.encode(mailHeader.getValue(), value, charset);
     }
     private String encodeNameHeader(MailHeader mailHeader, String value, String charset ) {
         return mailHeaderEncoder.encodeNameHeader(mailHeader.getValue(), value, charset);
@@ -135,7 +135,7 @@ public class MailProcessor {
 
 
     @Transactional
-    public SendResult createResult(SendInfo sendInfo) {
+    private SendResult createResult(SendInfo sendInfo) {
         SendResult sendResult = SendResult.builder().sendInfo(sendInfo).build();
         sendResultService.saveSendResult(sendResult);
         return sendResult;
