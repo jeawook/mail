@@ -75,7 +75,7 @@ class MailInfoServiceTest {
         PageRequest pageRequest = PageRequest.of(0, pageSize);
         Page<MailInfo> mailInfoByName = mailInfoService.findMailInfoByName(mailInfoName, pageRequest);
         assertThat(mailInfoByName.getSize()).isEqualTo(pageSize);
-        //assertThat(mailInfoByName.getTotalPages()).isEqualTo(2);
+        assertThat(mailInfoByName.getTotalPages()).isEqualTo(2);
         assertThat(mailInfoByName.getNumber()).isEqualTo(0);
     }
     @Test

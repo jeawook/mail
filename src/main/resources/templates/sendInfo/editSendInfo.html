@@ -7,11 +7,11 @@
     <script th:inline="javascript">
         function sortSelect(selId)
         {
-            const sel = $('#' + selId);
-            const optionList = sel.find('option');
+            var sel = $('#'+selId);
+            var optionList = sel.find('option');
             optionList.sort(function(a, b){
-                const aVal = Number(a.value);
-                const bVal = Number(b.value);
+            var aVal = Number(a.value);
+            var bVal = Number(b.value);
                 if (aVal > bVal)
                     return -1;
                 else if (aVal < bVal)

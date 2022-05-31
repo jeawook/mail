@@ -24,7 +24,6 @@ public class SendResultDetail {
     @Column(name = "send_result_detail_id")
     private Long id;
 
-    @Embedded
     private MailAddress mailAddress;
 
     private String macroValue;

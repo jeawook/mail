@@ -9,7 +9,6 @@ import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.Pageable;
 
 import java.time.LocalDateTime;
-import java.util.List;
 
 import static com.system.mail.sendinfo.QSendInfo.sendInfo;
 import static org.springframework.util.StringUtils.hasText;
@@ -36,15 +35,14 @@ public class SendInfoRepositoryImpl implements  SendInfoRepositoryCustom {
 
     @Override
     public Page<SendInfo> findByDateAndSubject(Pageable pageable, String subject, LocalDateTime startDate, LocalDateTime endDate) {
-        List<SendInfo> fetch = queryFactory
+        QueryResults<SendInfo> results = queryFactory
                 .selectFrom(sendInfo)
                 .where(subjectContain(subject), dateBetween(startDate, endDate))
                 .offset(pageable.getOffset())
                 .limit(pageable.getPageSize())
                 .orderBy(sendInfo.sendDate.desc())
-                .fetch();
-
-        return new PageImpl<>(fetch, pageable, fetch.size());
+                .fetchResults();
+        return new PageImpl<>(results.getResults(), pageable, results.getTotal());
     }
 
     @Override
