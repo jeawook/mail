@@ -34,7 +34,7 @@ public class SendInfo extends BaseTimeEntity {
     private String subject;
 
     @NotNull
-    @Column(columnDefinition = "LONGTEXT")
+    @Column(columnDefinition = "CLOB")
     private String content;
 
     @Enumerated(EnumType.STRING)
