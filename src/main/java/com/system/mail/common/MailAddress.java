@@ -5,12 +5,15 @@ import com.mysema.commons.lang.Assert;
 import lombok.*;
 import org.hibernate.validator.constraints.Length;
 
+import javax.persistence.Access;
+import javax.persistence.AccessType;
 import javax.persistence.Embeddable;
 import javax.validation.constraints.Email;
 import javax.validation.constraints.NotNull;
 
 @Embeddable
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
+@Access(AccessType.FIELD)
 @Getter
 public class MailAddress {
 
