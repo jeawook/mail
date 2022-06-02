@@ -12,7 +12,6 @@ import static com.mysema.commons.lang.Assert.*;
 public class MailDto {
 
     private MailAddress rcpTo;
-
     private MailAddress mailFrom;
 
     private String data;

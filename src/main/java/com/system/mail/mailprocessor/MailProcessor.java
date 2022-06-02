@@ -22,9 +22,11 @@ import java.util.*;
 public class MailProcessor {
 
     private final Logger logger = LoggerFactory.getLogger(this.getClass());
-    private static HashMap<String, Integer> connectionCnt = new HashMap<>();
+    private static final HashMap<String, Integer> connectionCnt = new HashMap<>();
     private final MacroProcessor macroProcessor;
-    private final DomainConnectionProperties domainConnectionProperties;
+
+    private final ConnectionManager connManager;
+
     private final MailProperties mailProperties;
     private final MailHeaderEncoder mailHeaderEncoder;
     private final SendInfoService sendInfoService;
@@ -46,23 +48,16 @@ public class MailProcessor {
             SendResultDetail sendResultDetail = resultDetailLinkedList.poll();
             String domain = sendResultDetail.getDomain();
 
-            if (isDomainConnectionCheck(domain)) {
-                connectionCnt.put(domain, connectionCnt.get(domain)+1);
+            if (connManager.addConn(domain)) {
 
                 SMTPResult smtpResult = socketMailSender.send(makeMailDTO(sendInfo, sendResultDetail));
                 logger.info("smtpResult : "+smtpResult.getResultCode()+", "+smtpResult.getResultMessage());
                 sendResultDetail.setResult(smtpResult);
-
-                connectionCnt.put(domain, connectionCnt.get(domain)-1);
                 continue;
             }
             resultDetailLinkedList.add(sendResultDetail);
         }
         sendInfo.mailStatusComplete();
-    }
-    private boolean isDomainConnectionCheck(String domain) {
-        connectionCnt.putIfAbsent(domain, 0);
-        return  connectionCnt.get(domain) < domainConnectionProperties.getConnection(domain);
     }
 
     private MailDto makeMailDTO(SendInfo sendInfo, SendResultDetail sendResultDetail) {
@@ -73,7 +68,7 @@ public class MailProcessor {
     }
 
     private String makeData(SendInfo sendInfo, SendResultDetail sendResultDetail) {
-        StringBuffer sb = new StringBuffer();
+        StringBuilder sb = new StringBuilder();
         sb.append(makeHeader(sendInfo, sendResultDetail));
 
         String content = makeMacroProcess(sendInfo, sendResultDetail, sendInfo.getContent());
@@ -90,12 +85,12 @@ public class MailProcessor {
     }
 
     private String makeHeader(SendInfo sendInfo, SendResultDetail sendResultDetail) {
-        StringBuffer sb = new StringBuffer();
+        StringBuilder sb = new StringBuilder();
         MailInfo mailInfo = sendInfo.getMailInfo();
         String charset = getCharset(mailInfo);
 
         String subject = makeMacroProcess(sendInfo, sendResultDetail, sendInfo.getSubject());
-        sb.append(encodeHeader(MailHeader.SUBJECT, subject, charset));
+        sb.append(encodeHeader(subject, charset));
 
         sb.append(encodeNameHeader(MailHeader.FROM, mailInfo.getHeaderFrom(), charset));
         sb.append(encodeNameHeader(MailHeader.REPLY_TO, mailInfo.getHeaderReply(), charset));
@@ -111,7 +106,7 @@ public class MailProcessor {
         return sb.toString();
     }
 
-    private void createHeaderProperties(StringBuffer sb) {
+    private void createHeaderProperties(StringBuilder sb) {
         Set<String> properties = mailProperties.getProperties();
         properties.forEach(propertyKey -> sb.append(createHeader(propertyKey, mailProperties.getProperty(propertyKey))));
     }
@@ -123,8 +118,8 @@ public class MailProcessor {
         }
         return charset;
     }
-    private String encodeHeader(MailHeader mailHeader, String value, String charset ) {
-        return mailHeaderEncoder.encode(mailHeader.getValue(), value, charset);
+    private String encodeHeader(String value, String charset ) {
+        return mailHeaderEncoder.encode(MailHeader.SUBJECT.getValue(), value, charset);
     }
     private String encodeNameHeader(MailHeader mailHeader, String value, String charset ) {
         return mailHeaderEncoder.encodeNameHeader(mailHeader.getValue(), value, charset);
@@ -135,7 +130,7 @@ public class MailProcessor {
 
 
     @Transactional
-    private SendResult createResult(SendInfo sendInfo) {
+    SendResult createResult(SendInfo sendInfo) {
         SendResult sendResult = SendResult.builder().sendInfo(sendInfo).build();
         sendResultService.saveSendResult(sendResult);
         return sendResult;

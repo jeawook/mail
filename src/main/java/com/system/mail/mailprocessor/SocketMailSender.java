@@ -25,11 +25,12 @@ public class SocketMailSender {
     private static final String LINE_FEED_CHAR = "\r\n";
     private final Logger logger = LoggerFactory.getLogger(this.getClass());
 
+    private final ConnectionManager connManager;
     private final DNSLookup dnsLookup;
 
     public SMTPResult send(MailDto mailDto) {
-        String resultMessage;
-        String resultCode;
+        String resultMessage = "";
+        String resultCode = "";
         try {
             if (isConnect(mailDto.getRcpToDomain())) {
                 sendMessage(createMessage(SMTPCommand.HELO, mailProperties.getDomain()), SMTPCode.SUCCESS);
@@ -40,38 +41,39 @@ public class SocketMailSender {
                 resultMessage = sendMessage(SMTPCommand.DOT.getValue(), SMTPCode.SUCCESS);
                 sendMessage(SMTPCommand.QUIT.getValue(), SMTPCode.SERVER_CLOSE);
                 resultCode = SMTPCode.SUCCESS.getValue();
-            } else {
-                resultCode = SMTPCode.SERVER_ERROR.name();
-                resultMessage = SMTPCode.SERVER_ERROR.getValue();
             }
         } catch (SMTPException e) {
             resultMessage = e.getMessage();
             resultCode = e.getCode();
         } catch (IOException e) {
-            resultCode = SMTPCode.SERVER_ERROR.getValue();
             resultMessage = SMTPCode.SERVER_ERROR.name();
+            resultCode = SMTPCode.SERVER_ERROR.getValue();
         } catch (Exception e) {
-            resultCode = SMTPCode.SYSTEM_ERROR.getValue();
             resultMessage = SMTPCode.SYSTEM_ERROR.name();
+            resultCode = SMTPCode.SYSTEM_ERROR.getValue();
         } finally {
+            if (resultMessage.isEmpty() || resultCode.isEmpty()) {
+                resultCode = SMTPCode.SERVER_ERROR.name();
+                resultMessage = SMTPCode.SERVER_ERROR.getValue();
+            }
+            connManager.removeConn(mailDto.getRcpToDomain());
             quit();
         }
+        return getSmtpResult(resultMessage, resultCode);
+    }
+
+    private SMTPResult getSmtpResult(String resultMessage, String resultCode) {
         return SMTPResult.builder().resultCode(resultCode).resultMessage(resultMessage).build();
     }
+
     private boolean isConnect(String domain) throws IOException, SMTPException, NamingException {
         logger.info("lookup domain : "+ domain);
         setConnection(dnsLookup.lookup(domain));
         String code = getResultCode(getMessage());
-        if (isCheckResult(code, SMTPCode.GREETING)) {
-            return false;
-        }
-        return true;
+        return isCheckResult(code, SMTPCode.GREETING);
     }
     private boolean isCheckResult(String code, SMTPCode smtpCode) {
-        if (code.equals(smtpCode.getValue())) {
-            return false;
-        }
-        return true;
+        return code.equals(smtpCode.getValue());
     }
 
     private void setConnection(String mxAddress) throws IOException {
