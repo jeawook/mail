@@ -29,7 +29,6 @@ public class ConnectionManager {
     }
 
     public void removeConn(String conn) {
-        Integer cnt = getConnCnt(conn);
         setConn(conn, -1);
     }
 

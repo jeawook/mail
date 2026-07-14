@@ -33,13 +33,13 @@ public class SocketMailSender {
         String resultCode = "";
         try {
             if (isConnect(mailDto.getRcpToDomain())) {
-                sendMessage(createMessage(SMTPCommand.HELO, mailProperties.getDomain()), SMTPCode.SUCCESS);
-                sendMessage(createMessage(SMTPCommand.MAILFROM, mailDto.getMailFromAddress()), SMTPCode.SUCCESS);
-                sendMessage(createMessage(SMTPCommand.RECPTO, mailDto.getRcpToAddress()), SMTPCode.SUCCESS);
-                sendMessage(SMTPCommand.DATA.getValue(), SMTPCode.PROCESS);
+                sendCommand(createMessage(SMTPCommand.HELO, mailProperties.getDomain()), SMTPCode.SUCCESS);
+                sendCommand(createMessage(SMTPCommand.MAILFROM, mailDto.getMailFromAddress()), SMTPCode.SUCCESS);
+                sendCommand(createMessage(SMTPCommand.RECPTO, mailDto.getRcpToAddress()), SMTPCode.SUCCESS);
+                sendCommand(SMTPCommand.DATA.getValue(), SMTPCode.PROCESS);
                 sendMessage(mailDto.getData());
-                resultMessage = sendMessage(SMTPCommand.DOT.getValue(), SMTPCode.SUCCESS);
-                sendMessage(SMTPCommand.QUIT.getValue(), SMTPCode.SERVER_CLOSE);
+                resultMessage = sendCommand(SMTPCommand.DOT.getValue(), SMTPCode.SUCCESS);
+                sendCommand(SMTPCommand.QUIT.getValue(), SMTPCode.SERVER_CLOSE);
                 resultCode = SMTPCode.SUCCESS.getValue();
             }
         } catch (SMTPException e) {
@@ -92,11 +92,11 @@ public class SocketMailSender {
         logger.info("send message : "+message);
     }
 
-    private String sendMessage(String message, SMTPCode smtpCode) throws IOException, SMTPException {
+    private String sendCommand(String message, SMTPCode smtpCode) throws IOException, SMTPException {
         sendMessage(message);
         String resultMessage = getMessage();
         String resultCode = getResultCode(resultMessage);
-        if (isCheckResult(resultCode, smtpCode)) {
+        if (!isCheckResult(resultCode, smtpCode)) {
             throw new SMTPException("Smtp protocol Exception " + resultMessage, resultCode );
         }
         return resultMessage;
