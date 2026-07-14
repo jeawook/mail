@@ -102,18 +102,30 @@ class SendInfoTest {
                 .isExactlyInstanceOf(IllegalArgumentException.class)
                 .hasMessage("mailInfo must not be null");
 
-        assertThatThrownBy(() -> SendInfo.builder()
+     }
+
+    @Test
+    void sendInfoCreateWithoutMailGroupTest() {
+        // API 단발성 발송처럼 mailGroup 없이 macroKey 를 직접 전달하는 경우
+        String content = "메일 본문";
+        String subject = "제목";
+        Status status = Status.REGISTER;
+        LocalDateTime sendDate = LocalDateTime.now();
+        MailAddress mail = MailAddress.builder().name("no_reply").email("pdj13579@nate.com").build();
+        MailInfo mailInfo = getMailInfo(mail);
+
+        SendInfo sendInfo = SendInfo.builder()
                 .subject(subject)
                 .content(content)
-                .status(status)
                 .sendDate(sendDate)
+                .status(status)
                 .mailInfo(mailInfo)
-                .mailGroup(null)
-                .build())
-                .isExactlyInstanceOf(IllegalArgumentException.class)
-                .hasMessage("mailGroup must not be null");
+                .macroKey("name,grade")
+                .build();
 
-     }
+        assertThat(sendInfo.getMailGroup()).isNull();
+        assertThat(sendInfo.getMacroKey()).isEqualTo("name,grade");
+    }
 
     @Test
     public void sendInfoStatusTest() {

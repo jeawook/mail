@@ -11,6 +11,8 @@ import lombok.*;
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
 import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.List;
 
 import static com.mysema.commons.lang.Assert.*;
 
@@ -46,20 +48,25 @@ public class SendInfo extends BaseTimeEntity {
     @NotNull
     private MailInfo mailInfo;
 
+    // MailGroup 을 사전 등록하지 않는 API 단발성 발송에서는 null 일 수 있음
     @ManyToOne
     @JoinColumn(name = "mail_group_id")
-    @NotNull
     private MailGroup mailGroup;
 
+    // mailGroup 이 있으면 mailGroup.macroKey 를 등록 시점에 복사, 없으면(API 단발성 발송) 직접 전달된 값
+    private String macroKey;
+
+    @OneToMany(mappedBy = "sendInfo", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    private List<SendRecipient> recipients = new ArrayList<>();
+
     @Builder
-    public SendInfo(@NotNull LocalDateTime sendDate,@NotNull MailInfo mailInfo, @NotNull MailGroup mailGroup,
-                    @NotNull String subject, @NotNull String content, @NotNull Status status) {
+    public SendInfo(@NotNull LocalDateTime sendDate,@NotNull MailInfo mailInfo, MailGroup mailGroup,
+                    @NotNull String subject, @NotNull String content, @NotNull Status status, String macroKey) {
         notNull(sendDate, "sendDate must not be null");
         notNull(subject, "subject must not be null");
         notNull(content, "content must not be null");
         notNull(status, "status must not be null");
         notNull(mailInfo, "mailInfo must not be null");
-        notNull(mailGroup, "mailGroup must not be null");
 
         this.mailGroup = mailGroup;
         this.mailInfo = mailInfo;
@@ -67,6 +74,12 @@ public class SendInfo extends BaseTimeEntity {
         this.subject = subject;
         this.content = content;
         this.status = status;
+        this.macroKey = mailGroup != null ? mailGroup.getMacroKey() : macroKey;
+    }
+
+    public void addRecipient(SendRecipient recipient) {
+        this.recipients.add(recipient);
+        recipient.setSendInfo(this);
     }
 
 
@@ -100,9 +113,5 @@ public class SendInfo extends BaseTimeEntity {
 
     public void setSendResult(SendResult sendResult) {
         this.sendResult = sendResult;
-    }
-
-    public String getMacroKey() {
-        return mailGroup.getMacroKey();
     }
 }

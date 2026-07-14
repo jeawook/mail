@@ -3,12 +3,33 @@ package com.system.mail.mailprocessor;
 import org.springframework.stereotype.Component;
 
 import java.util.HashMap;
+import java.util.LinkedHashSet;
+import java.util.Set;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 @Component
 public class MacroProcessor {
     private static final String PRE = "\\[\\$";
     private static final String POST = "\\$\\]";
     private static final String MACRO_COMMA = ",";
+    private static final Pattern PLACEHOLDER_PATTERN = Pattern.compile(PRE + "(.+?)" + POST);
+
+    /**
+     * target 에 [$key$] 형태로 실제 사용된 매크로 키 목록을 등장 순서대로 추출한다.
+     */
+    public Set<String> extractKeys(String target) {
+        Set<String> keys = new LinkedHashSet<>();
+        if (target == null) {
+            return keys;
+        }
+        Matcher matcher = PLACEHOLDER_PATTERN.matcher(target);
+        while (matcher.find()) {
+            keys.add(matcher.group(1));
+        }
+        return keys;
+    }
+
     public String process(String macroKey, String macroValue, String target) {
         HashMap<String, String> macro = makeMacroMap(macroKey, macroValue);
         for (String key : macro.keySet()) {
@@ -20,8 +41,7 @@ public class MacroProcessor {
 
 
     private String removeMacro(String content) {
-        String s = content.replaceAll("[" + PRE + POST + "]", "");
-        return s;
+        return content.replaceAll("[" + PRE + POST + "]", "");
     }
 
 

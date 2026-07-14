@@ -153,6 +153,7 @@ public class SendInfoController {
         SendInfo sendInfo = modelMapper.map(sendInfoForm, SendInfo.class);
         sendInfo.setMailInfo(mailInfo);
         sendInfo.setMailGroup(mailGroup);
+        sendInfo.setMacroKey(mailGroup.getMacroKey());
         sendInfo.setStatus(Status.WAIT);
         return sendInfo;
     }

@@ -4,6 +4,8 @@ import com.querydsl.core.QueryResults;
 import com.querydsl.core.types.dsl.BooleanExpression;
 import com.querydsl.jpa.impl.JPAQueryFactory;
 import lombok.RequiredArgsConstructor;
+
+import static com.system.mail.mailgroup.QMailGroup.mailGroup;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.Pageable;
@@ -60,6 +62,7 @@ public class SendInfoRepositoryImpl implements  SendInfoRepositoryCustom {
                         sendInfo.sendResult.id.as("sendResultId")
                 ))
                 .from(sendInfo)
+                .leftJoin(sendInfo.mailGroup, mailGroup)
                 .where(idEq(id))
                 .fetchOne();
     }

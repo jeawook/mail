@@ -1,17 +1,13 @@
 package com.system.mail.sendresult;
 
-import com.system.mail.mailgroup.MailGroup;
 import com.system.mail.sendinfo.SendInfo;
-import com.system.mail.user.User;
 import com.system.mail.sendresultdetail.SendResultDetail;
 import lombok.*;
-import org.springframework.util.StringUtils;
 
 import javax.persistence.*;
-import javax.validation.constraints.Min;
-import javax.validation.constraints.NotNull;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Entity
 @Getter
@@ -44,8 +40,27 @@ public class SendResult {
     public SendResult(SendInfo sendInfo) {
         setSendInfo(sendInfo);
         this.macroKey = sendInfo.getMacroKey();
-        this.totalCnt = sendInfo.getMailGroup().getUserCnt();
-        createSendResultDetails(sendInfo.getMailGroup().getUsers());
+        List<SendResultDetail> details = resolveRecipients(sendInfo);
+        this.totalCnt = details.size();
+        details.forEach(this::addSendResultDetail);
+    }
+
+    // mailGroup 이 등록된 발송(UI)은 mailGroup.users, 없는 단발성 발송(API)은 sendInfo.recipients 를 사용
+    private List<SendResultDetail> resolveRecipients(SendInfo sendInfo) {
+        if (sendInfo.getMailGroup() != null) {
+            return sendInfo.getMailGroup().getUsers().stream()
+                    .map(user -> SendResultDetail.builder()
+                            .mailAddress(user.getMailAddress())
+                            .macroValue(user.getMacroValue())
+                            .build())
+                    .collect(Collectors.toList());
+        }
+        return sendInfo.getRecipients().stream()
+                .map(recipient -> SendResultDetail.builder()
+                        .mailAddress(recipient.getMailAddress())
+                        .macroValue(recipient.getMacroValue())
+                        .build())
+                .collect(Collectors.toList());
     }
 
 
@@ -61,12 +76,6 @@ public class SendResult {
     public void addSendResultDetail(SendResultDetail sendResultDetail) {
         this.sendResultDetails.add(sendResultDetail);
         sendResultDetail.setSendResult(this);
-    }
-
-    private void createSendResultDetails(List<User> users) {
-        users.forEach(user -> addSendResultDetail(SendResultDetail.builder()
-                .mailAddress(user.getMailAddress())
-                .macroValue(user.getMacroValue()).build()));
     }
 
     private void setTotalCnt(int totalCnt) {

@@ -1,0 +1,78 @@
+<!DOCTYPE HTML>
+<html xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{layout/layout}">
+<body>
+
+<div class="container-fluid px-4" layout:fragment="content">
+    <div class="py-2">
+        <h2 th:text="#{page.mailTemplate.list}">메일 템플릿 목록</h2>
+    </div>
+
+    <div class="row">
+        <div class="col">
+            <button class="btn btn-primary float-end"
+                    onclick="location.href='createMailTemplate.html'"
+                    th:onclick="|location.href='@{/template/add}'|"
+                    type="button" th:text="#{button.add}">등록</button>
+        </div>
+    </div>
+
+    <hr class="my-4">
+    <div>
+        <table class="table">
+            <thead>
+            <tr>
+                <th th:text="#{label.id}">ID</th>
+                <th th:text="#{label.mailTemplate.templateName}">템플릿명</th>
+                <th th:text="#{label.sendInfo.subject}">제목</th>
+                <th th:text="#{label.createdDate}">등록일</th>
+                <th th:text="#{label.lastModifiedDate}">수정일</th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr th:each="mailTemplate : ${mailTemplateList}">
+                <td><a href="item.html" th:href="@{/template/{mailTemplateId}(mailTemplateId=${mailTemplate.id})}" th:text="${mailTemplate.id}">템플릿 id</a></td>
+                <td><a href="item.html" th:href="@{/template/{mailTemplateId}(mailTemplateId=${mailTemplate.id})}" th:text="${mailTemplate.templateName}">템플릿명</a></td>
+                <td th:text="${mailTemplate.subject}"></td>
+                <td th:text="${{mailTemplate.createdDate}}"></td>
+                <td th:text="${{mailTemplate.lastModifiedDate}}"></td>
+            </tr>
+            </tbody>
+        </table>
+        <nav class="dataTable-pagination" aria-label="Page navigation">
+            <ul class="dataTable-pagination-list justify-content-center" th:with="start=${T(Math).floor(mailTemplateList.number/10)*10 + 1},
+                    maxPage=${mailTemplateList.totalPages},
+                    last=(${maxPage == 0 ? 1 : (start + (maxPage - 1) < maxPage ? start + (maxPage - 1) : maxPage)})">
+                <li><a aria-label="Previous" href="/template/list?page=0">&laquo;</a></li>
+                <li th:style="${mailTemplateList.first} ? 'display:none'">
+                    <a th:href="@{/template/list(page=${mailTemplateList.number - 1})}">&lsaquo;</a>
+                </li>
+                <li th:each="page: ${#numbers.sequence(start, last)}"
+                    th:class="${page - 1 == mailTemplateList.number} ? 'active'">
+                    <a th:text="${page}" th:href="@{/template/list(page=${page - 1})}"></a>
+                </li>
+                <li th:style="${mailTemplateList.last} ? 'display:none'">
+                    <a th:href="@{/template/list(page=${mailTemplateList.number}+1)}">&rsaquo;</a>
+                </li>
+                <li><a aria-label="Next" class="pager" th:href="@{/template/list(page=${maxPage - 1})}">&raquo;</a></li>
+            </ul>
+        </nav>
+        <form th:action="@{/template/list/search}" method="get">
+            <div class="row">
+                <div class="col">
+                </div>
+                <div class="col">
+                    <input name="searchKey" id="searchKey" type="text" th:value="${searchKey}" class="form-control">
+                </div>
+                <div class="col">
+                    <button class="btn btn-primary" th:text="#{label.search}">검색</button>
+                </div>
+                <div class="col">
+                </div>
+            </div>
+        </form>
+    </div>
+</div> <!-- /container -->
+
+</body>
+</html>

@@ -33,4 +33,16 @@ class MacroProcessorTest {
         assertThat(result).isEqualTo("");
     }
 
+    @Test
+    void extractKeysReturnsDistinctKeysInOrderOfAppearance() {
+        String target = "[$name$]님 안녕하세요, [$email$], [$name$] 다시 등장";
+        assertThat(macroProcessor.extractKeys(target)).containsExactly("name", "email");
+    }
+
+    @Test
+    void extractKeysReturnsEmptySetWhenNoPlaceholder() {
+        assertThat(macroProcessor.extractKeys("플레이스홀더가 없는 문장")).isEmpty();
+        assertThat(macroProcessor.extractKeys(null)).isEmpty();
+    }
+
 }

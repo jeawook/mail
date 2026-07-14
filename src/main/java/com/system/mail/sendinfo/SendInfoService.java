@@ -50,6 +50,7 @@ public class SendInfoService {
     public void updateSendInfo(Long sendInfoId, SendInfo sendInfo) {
         SendInfo findSendInfo = sendInfoRepository.findById(sendInfoId).orElseGet(SendInfo::new);
         findSendInfo.setMailGroup(sendInfo.getMailGroup());
+        findSendInfo.setMacroKey(sendInfo.getMacroKey());
         findSendInfo.setSendDate(sendInfo.getSendDate());
         findSendInfo.setSubject(sendInfo.getSubject());
         findSendInfo.setContent(sendInfo.getContent());

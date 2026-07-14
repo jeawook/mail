@@ -1,0 +1,60 @@
+<!DOCTYPE HTML>
+<html xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{layout/layout}">
+<body>
+
+<div class="container-fluid px-4" layout:fragment="content">
+
+    <div class="py-2">
+        <h2 th:text="#{page.mailTemplate}">메일 템플릿 정보</h2>
+    </div>
+
+    <div>
+        <label for="id" th:text="#{label.id}">ID</label>
+        <input type="text" id="id" class="form-control" th:value="${mailTemplate.id}" readonly>
+    </div>
+    <div>
+        <label for="templateName" th:text="#{label.mailTemplate.templateName}">템플릿명</label>
+        <input type="text" id="templateName" class="form-control" th:value="${mailTemplate.templateName}" readonly>
+    </div>
+    <div>
+        <label for="subject" th:text="#{label.sendInfo.subject}">제목</label>
+        <input type="text" id="subject" class="form-control" th:value="${mailTemplate.subject}" readonly>
+    </div>
+    <div>
+        <label for="content" th:text="#{label.sendInfo.content}">메일 본문</label>
+        <textarea id="content" class="form-control" rows="10" readonly th:text="${mailTemplate.content}"></textarea>
+    </div>
+    <div>
+        <label for="macroKey" th:text="#{label.mailTemplate.macroKey}">macroKey</label>
+        <input type="text" id="macroKey" class="form-control" th:value="${mailTemplate.macroKey}" readonly>
+    </div>
+    <div>
+        <label for="lastModifiedDate" th:text="#{label.lastModifiedDate}">최종 수정일</label>
+        <input type="text" id="lastModifiedDate" class="form-control" th:value="${{mailTemplate.lastModifiedDate}}" readonly>
+    </div>
+    <div>
+        <label for="createdDate" th:text="#{label.createdDate}">생성일</label>
+        <input type="text" id="createdDate" class="form-control" th:value="${{mailTemplate.createdDate}}" readonly>
+    </div>
+
+    <hr class="my-4">
+
+    <div class="row">
+        <div class="col">
+            <button class="w-100 btn btn-primary btn-lg"
+                    onclick="location.href='editForm.html'"
+                    th:onclick="|location.href='@{/template/{mailTemplateId}/edit(mailTemplateId=${mailTemplate.id})}'|"
+                    type="button" th:text="#{button.update}">수정</button>
+        </div>
+        <div class="col">
+            <button class="w-100 btn btn-secondary btn-lg"
+                    onclick="location.href='items.html'"
+                    th:onclick="|location.href='@{/template/list}'|"
+                    type="button" th:text="#{button.list}">목록으로</button>
+        </div>
+    </div>
+
+</div> <!-- /container -->
+</body>
+</html>
