@@ -2,6 +2,10 @@
 
 This file provides guidance to Claude Code (claude.ai/code) when working with code in this repository.
 
+## 언어 설정
+
+Claude는 이 저장소에서 작업할 때 사용자와 항상 한글로 응답한다.
+
 ## 프로젝트 개요
 
 Spring Boot 기반 메일 대량발송 관리 시스템(SystemMail). JavaMail 같은 라이브러리를 쓰지 않고, DNS(MX) lookup으로 수신 서버 주소를 직접 조회한 뒤 소켓으로 SMTP 프로토콜을 구현해 메일을 발송한다. 발송은 UI(Thymeleaf)에서 등록하고, 실제 발송은 스케줄러가 백그라운드에서 처리한다.
@@ -18,7 +22,7 @@ gradlew.bat test --tests "com.system.mail.mailprocessor.MailProcessorTest.mailSe
 gradlew.bat bootRun             # 애플리케이션 실행 (기본 포트 8080)
 ```
 
-QueryDSL Q타입은 `compileQuerydsl` 태스크(`build.gradle`)가 `build/generated/querydsl`에 생성한다. `*RepositoryImpl` 클래스에서 컴파일 에러가 나면 먼저 build를 한번 돌려 Q클래스를 생성해야 한다.
+QueryDSL Q타입은 Gradle 표준 `annotationProcessor`(`com.querydsl:querydsl-apt::jpa`)로 `compileJava` 과정 중에 `build/generated/sources/annotationProcessor/java/main`에 생성된다(과거에 쓰던 `com.ewerk.gradle.plugins:querydsl-plugin`은 2018년 이후 업데이트가 없어 제거함). 별도 `compileQuerydsl` 태스크가 없으므로 `gradlew.bat compileJava`(또는 `build`/`bootRun`/`test`) 한 번이면 Q클래스가 함께 생성된다.
 
 ## 사전 설정
 

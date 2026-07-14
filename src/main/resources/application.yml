@@ -1,8 +1,8 @@
 spring:
   datasource:
     url: jdbc:mysql://127.0.0.1:3306/systemmail
-    username: DBtester
-    password: test123
+    username: mailadmin
+    password: mailadmin
     driver-class-name: com.mysql.cj.jdbc.Driver
   jpa:
     hibernate:
@@ -16,6 +16,9 @@ spring:
     cache: false
     resources:
       cache-period: 0
+  jackson:
+    serialization:
+      write-dates-as-timestamps: false
 logging:
   level:
 #    root: info

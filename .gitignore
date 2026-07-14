@@ -1,3 +1,6 @@
+# Local machine-specific Gradle overrides (e.g. org.gradle.java.home)
+gradle.properties
+
 # Compiled class file
 *.class
 
