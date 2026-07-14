@@ -1,6 +1,7 @@
 package com.system.mail.mailinfo;
 
 import com.system.mail.common.MailAddress;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -20,7 +21,16 @@ class MailInfoServiceTest {
     @Autowired
     private MailInfoService mailInfoService;
     @Autowired
+    private MailInfoRepository mailInfoRepository;
+    @Autowired
     private EntityManager em;
+
+    @BeforeEach
+    void before() {
+        // MailInfoController.init() 등 @PostConstruct 시딩 데이터가 있어도 카운트 기반 검증이
+        // 흔들리지 않도록, 각 테스트가 스스로 만든 데이터만 존재하는 상태로 초기화한다.
+        mailInfoRepository.deleteAll();
+    }
 
     @Test
     @DisplayName("메일 정보 생성 테스트")
@@ -59,7 +69,7 @@ class MailInfoServiceTest {
         PageRequest pageRequest = PageRequest.of(0, pageSize);
         Page<MailInfo> mailInfoByName = mailInfoService.findMailInfoListByPage(pageRequest);
         assertThat(mailInfoByName.getSize()).isEqualTo(pageSize);
-        assertThat(mailInfoByName.getTotalPages()).isEqualTo(2);
+        assertThat(mailInfoByName.getTotalPages()).isEqualTo(1);
         assertThat(mailInfoByName.getNumber()).isEqualTo(0);
     }
 
@@ -75,7 +85,7 @@ class MailInfoServiceTest {
         PageRequest pageRequest = PageRequest.of(0, pageSize);
         Page<MailInfo> mailInfoByName = mailInfoService.findMailInfoByName(mailInfoName, pageRequest);
         assertThat(mailInfoByName.getSize()).isEqualTo(pageSize);
-        assertThat(mailInfoByName.getTotalPages()).isEqualTo(2);
+        assertThat(mailInfoByName.getTotalPages()).isEqualTo(1);
         assertThat(mailInfoByName.getNumber()).isEqualTo(0);
     }
     @Test

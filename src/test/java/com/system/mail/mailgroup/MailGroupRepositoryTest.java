@@ -19,6 +19,9 @@ class MailGroupRepositoryTest {
 
     @BeforeEach
     void before() {
+        // MailGroupController.init() 등 @PostConstruct 시딩 데이터가 있어도 카운트 기반 검증이
+        // 흔들리지 않도록, 각 테스트가 스스로 만든 100건만 존재하는 상태로 초기화한다.
+        mailGroupRepository.deleteAll();
         for (int i = 0; i < 100; i++) {
             mailGroupRepository.save(MailGroup.builder().mailGroupName("name_"+i).macroKey("").build());
         }
