@@ -1,15 +1,12 @@
 package com.system.mail.sendinfo;
 
-import com.system.mail.common.MailAddress;
 import com.system.mail.mailgroup.MailGroup;
-import com.system.mail.mailinfo.ContentEncoding;
-import com.system.mail.mailinfo.ContentType;
 import com.system.mail.mailinfo.MailInfo;
-import com.system.mail.user.User;
 import org.junit.jupiter.api.Test;
 
 import java.time.LocalDateTime;
 
+import static com.system.mail.support.MailFixtures.*;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
@@ -21,12 +18,8 @@ class SendInfoTest {
         String subject = "제목";
         Status status = Status.WAIT;
         LocalDateTime sendDate = LocalDateTime.now();
-        MailAddress mail = MailAddress.builder().name("no_reply").email("pdj13579@nate.com").build();
-        MailAddress mailAddress = MailAddress.builder().name("고객").email("pdj13579@nate.com").build();
-
-        MailGroup mailGroup = getMailGroup(mailAddress);
-
-        MailInfo mailInfo = getMailInfo(mail);
+        MailGroup mailGroup = mailGroupWithUser(customerAddress());
+        MailInfo mailInfo = mailInfo(noReplyAddress());
         SendInfo sendInfo = SendInfo.builder()
                 .subject(subject)
                 .content(content)
@@ -51,12 +44,8 @@ class SendInfoTest {
         String subject = "제목";
         Status status = Status.WAIT;
         LocalDateTime sendDate = LocalDateTime.now();
-        MailAddress mail = MailAddress.builder().name("no_reply").email("pdj13579@nate.com").build();
-        MailAddress mailAddress = MailAddress.builder().name("고객").email("pdj13579@nate.com").build();
-
-        MailGroup mailGroup = getMailGroup(mailAddress);
-
-        MailInfo mailInfo = getMailInfo(mail);
+        MailGroup mailGroup = mailGroupWithUser(customerAddress());
+        MailInfo mailInfo = mailInfo(noReplyAddress());
 
         assertThatThrownBy(() -> SendInfo.builder()
                 .subject(null)
@@ -111,8 +100,7 @@ class SendInfoTest {
         String subject = "제목";
         Status status = Status.REGISTER;
         LocalDateTime sendDate = LocalDateTime.now();
-        MailAddress mail = MailAddress.builder().name("no_reply").email("pdj13579@nate.com").build();
-        MailInfo mailInfo = getMailInfo(mail);
+        MailInfo mailInfo = mailInfo(noReplyAddress());
 
         SendInfo sendInfo = SendInfo.builder()
                 .subject(subject)
@@ -133,12 +121,8 @@ class SendInfoTest {
         String subject = "제목";
         Status status = Status.WAIT;
         LocalDateTime sendDate = LocalDateTime.now();
-        MailAddress mail = MailAddress.builder().name("no_reply").email("pdj13579@nate.com").build();
-        MailAddress mailAddress = MailAddress.builder().name("고객").email("pdj13579@nate.com").build();
-
-        MailGroup mailGroup = getMailGroup(mailAddress);
-
-        MailInfo mailInfo = getMailInfo(mail);
+        MailGroup mailGroup = mailGroupWithUser(customerAddress());
+        MailInfo mailInfo = mailInfo(noReplyAddress());
         SendInfo sendInfo = SendInfo.builder()
                 .subject(subject)
                 .content(content)
@@ -153,25 +137,6 @@ class SendInfoTest {
         assertThat(sendInfo.getStatus()).isEqualTo(Status.SENDING);
         sendInfo.mailStatusComplete();
         assertThat(sendInfo.getStatus()).isEqualTo(Status.COMPLETE);
-    }
-
-    private MailGroup getMailGroup(MailAddress mailAddress) {
-        MailGroup mailGroup = MailGroup.builder().mailGroupName("테스트 그룹").macroKey("macro1,macro2").build();
-        User user = User.builder().mailAddress(mailAddress).macroValue("안녕하세요,10000").build();
-        mailGroup.addUser(user);
-        return mailGroup;
-    }
-
-    private MailInfo getMailInfo(MailAddress mail) {
-        MailInfo mailInfo = MailInfo.builder()
-                .mailFrom(mail)
-                .replyTo(mail)
-                .charset("utf-8")
-                .encoding(ContentEncoding.BASE64)
-                .contentType(ContentType.HTML)
-                .mailInfoName("테스트 설정")
-                .build();
-        return mailInfo;
     }
 
 }

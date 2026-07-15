@@ -1,13 +1,9 @@
 package com.system.mail.sendinfo;
 
-import com.system.mail.common.MailAddress;
 import com.system.mail.mailgroup.MailGroup;
 import com.system.mail.mailgroup.MailGroupRepository;
-import com.system.mail.user.User;
-import com.system.mail.mailinfo.ContentType;
 import com.system.mail.mailinfo.MailInfo;
 import com.system.mail.mailinfo.MailInfoRepository;
-import com.system.mail.mailinfo.ContentEncoding;
 import com.system.mail.sendresult.SendResult;
 import com.system.mail.sendresult.SendResultRepository;
 import org.junit.jupiter.api.DisplayName;
@@ -16,9 +12,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.time.LocalDateTime;
-
-import static org.assertj.core.api.Assertions.*;
+import static com.system.mail.support.MailFixtures.*;
+import static org.assertj.core.api.Assertions.assertThat;
 
 @Transactional
 @SpringBootTest
@@ -38,27 +33,9 @@ class SendInfoServiceTest {
     void sendInfoServiceSaveTest() {
         String content = "메일 본문";
         String subject = "제목";
-        MailAddress mail = MailAddress.builder().name("no_reply").email("pdj13579@nate.com").build();
-        MailAddress mailAddress = MailAddress.builder().name("고객").email("pdj13579@nate.com").build();
-        MailGroup mailGroup = MailGroup.builder().mailGroupName("테스트 그룹").macroKey("macro1,macro2").build();
-        User user = User.builder().mailAddress(mailAddress).macroValue("안녕하세요,10000").build();
-        mailGroup.addUser(user);
-
-        MailInfo mailInfo = MailInfo.builder()
-                .mailFrom(mail)
-                .replyTo(mail)
-                .charset("utf-8")
-                .encoding(ContentEncoding.BASE64)
-                .contentType(ContentType.HTML)
-                .mailInfoName("테스트 설정")
-                .build();
-        SendInfo sendInfo = SendInfo.builder()
-                .subject(subject)
-                .content(content)
-                .sendDate(LocalDateTime.now())
-                .status(Status.WAIT)
-                .mailInfo(mailInfo)
-                .sendDate(LocalDateTime.now())
+        MailGroup mailGroup = mailGroupWithUser(customerAddress());
+        MailInfo mailInfo = mailInfo(noReplyAddress());
+        SendInfo sendInfo = sendInfoBuilder(subject, content, mailInfo)
                 .mailGroup(mailGroup)
                 .build();
         MailGroup saveMailGroup = mailGroupRepository.save(mailGroup);

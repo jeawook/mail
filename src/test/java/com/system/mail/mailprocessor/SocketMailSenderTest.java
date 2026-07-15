@@ -6,7 +6,8 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 
-import static org.assertj.core.api.Assertions.*;
+import static com.system.mail.support.MailFixtures.mailAddress;
+import static org.assertj.core.api.Assertions.assertThat;
 
 
 @SpringBootTest
@@ -17,8 +18,8 @@ class SocketMailSenderTest {
     @Test
     @DisplayName("smtp 통신 테스트")
     void sendTest() {
-        MailAddress rcpTo = MailAddress.builder().name("수신자").email("pdj13579@nate.com").build();
-        MailAddress mailFrom = MailAddress.builder().name("발신자").email("pdj13579@nate.com").build();
+        MailAddress rcpTo = mailAddress("수신자", "pdj13579@nate.com");
+        MailAddress mailFrom = mailAddress("발신자", "pdj13579@nate.com");
         MailDto mailDto = MailDto.builder().rcpTo(rcpTo).mailFrom(mailFrom).data("테스트메일").build();
         SMTPResult smtpResult = socketMailSender.send(mailDto);
         assertThat(smtpResult.getResultCode()).isEqualTo(SMTPCode.SUCCESS.getValue());
@@ -31,8 +32,8 @@ class SocketMailSenderTest {
     @Test
     @DisplayName("smtp server error 테스트")
     void sendExceptionTest() {
-        MailAddress rcpTo = MailAddress.builder().name("수신자").email("pdj13579@rcpto.ttt").build();
-        MailAddress mailFrom = MailAddress.builder().name("발신자").email("pdj13579@nate.com").build();
+        MailAddress rcpTo = mailAddress("수신자", "pdj13579@rcpto.ttt");
+        MailAddress mailFrom = mailAddress("발신자", "pdj13579@nate.com");
         MailDto mailDto = MailDto.builder().rcpTo(rcpTo).mailFrom(mailFrom).data("테스트메일").build();
         SMTPResult smtpResult = socketMailSender.send(mailDto);
         assertThat(smtpResult.getResultCode()).isEqualTo(SMTPCode.SERVER_ERROR.getValue());

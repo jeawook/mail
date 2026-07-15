@@ -1,6 +1,5 @@
 package com.system.mail.mailinfo;
 
-import com.system.mail.common.MailAddress;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -12,7 +11,10 @@ import org.springframework.transaction.annotation.Transactional;
 
 import javax.persistence.EntityManager;
 
-import static org.assertj.core.api.Assertions.*;
+import static com.system.mail.support.MailFixtures.mailAddress;
+import static com.system.mail.support.MailFixtures.mailInfo;
+import static org.assertj.core.api.Assertions.assertThat;
+import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
 @SpringBootTest
 @Transactional
@@ -46,16 +48,7 @@ class MailInfoServiceTest {
     }
 
     private MailInfo createMailInfo(String mailInfoName) {
-        MailAddress mail = MailAddress.builder().name("no_reply").email("test@email.com").build();
-        MailInfo mailInfo = MailInfo.builder()
-                .mailFrom(mail)
-                .replyTo(mail)
-                .charset("utf-8")
-                .encoding(ContentEncoding.BASE64)
-                .contentType(ContentType.HTML)
-                .mailInfoName(mailInfoName)
-                .build();
-        return mailInfo;
+        return mailInfo(mailAddress("no_reply", "test@email.com"), mailInfoName);
     }
     @Test
     @DisplayName("findMailInfoListByPage 테스트")

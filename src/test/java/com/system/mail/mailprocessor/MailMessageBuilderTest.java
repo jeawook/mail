@@ -14,6 +14,7 @@ import org.springframework.boot.test.context.SpringBootTest;
 import java.time.LocalDateTime;
 import java.util.Base64;
 
+import static com.system.mail.support.MailFixtures.mailAddress;
 import static org.assertj.core.api.Assertions.assertThat;
 
 @SpringBootTest
@@ -24,8 +25,8 @@ class MailMessageBuilderTest {
 
     @Test
     void buildAppliesHeadersAndMacroSubstitution() {
-        MailAddress mailFrom = MailAddress.builder().name("발신자").email("no-reply@test.com").build();
-        MailAddress rcpTo = MailAddress.builder().name("수신자").email("rcpt@test.com").build();
+        MailAddress mailFrom = mailAddress("발신자", "no-reply@test.com");
+        MailAddress rcpTo = mailAddress("수신자", "rcpt@test.com");
 
         MailInfo mailInfo = MailInfo.builder()
                 .mailInfoName("테스트 설정")
@@ -64,8 +65,8 @@ class MailMessageBuilderTest {
 
     @Test
     void buildBase64EncodesContentWhenConfigured() {
-        MailAddress mailFrom = MailAddress.builder().name("발신자").email("no-reply@test.com").build();
-        MailAddress rcpTo = MailAddress.builder().name("수신자").email("rcpt@test.com").build();
+        MailAddress mailFrom = mailAddress("발신자", "no-reply@test.com");
+        MailAddress rcpTo = mailAddress("수신자", "rcpt@test.com");
 
         MailInfo mailInfo = MailInfo.builder()
                 .mailInfoName("테스트 설정")

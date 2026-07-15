@@ -1,14 +1,14 @@
 package com.system.mail.mailgroup;
 
-import com.system.mail.common.MailAddress;
-import com.system.mail.user.User;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.transaction.annotation.Transactional;
 
-import static org.assertj.core.api.Assertions.*;
+import static com.system.mail.support.MailFixtures.customerAddress;
+import static com.system.mail.support.MailFixtures.mailGroupWithUser;
+import static org.assertj.core.api.Assertions.assertThat;
 
 @SpringBootTest
 @Transactional
@@ -19,13 +19,10 @@ class MailGroupServiceTest {
     @Test
     @DisplayName("메일 그룹 생성 테스트")
     void mailGroupServiceSaveTest() {
-        MailAddress mailAddress = MailAddress.builder().name("고객").email("pdj13579@nate.com").build();
-        MailGroup mailGroup = MailGroup.builder().mailGroupName("테스트 그룹").macroKey("macro1,macro2").build();
-        User user = User.builder().mailAddress(mailAddress).macroValue("안녕하세요,10000").build();
-        mailGroup.addUser(user);
+        MailGroup mailGroup = mailGroupWithUser(customerAddress());
         MailGroup saveMailGroup = mailGroupService.saveMailGroup(mailGroup);
         assertThat(mailGroup).isEqualTo(saveMailGroup);
-        assertThat(user).isEqualTo(saveMailGroup.getUsers().get(0));
+        assertThat(mailGroup.getUsers().get(0)).isEqualTo(saveMailGroup.getUsers().get(0));
     }
 
 }
